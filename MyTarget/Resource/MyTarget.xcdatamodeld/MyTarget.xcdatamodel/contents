@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22D68" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="DayBook" representedClassName="DayBook" syncable="YES" codeGenerationType="class">
+        <attribute name="completedTimes" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="dayTime" optional="YES" attributeType="String"/>
+        <attribute name="endTime" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isCompleted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="quartzColor" optional="YES" attributeType="String"/>
+        <attribute name="quartzIcon" optional="YES" attributeType="String"/>
+        <attribute name="quartzId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="quartzName" optional="YES" attributeType="String"/>
+        <attribute name="quartzTimes" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="quartzType" optional="YES" attributeType="String"/>
+        <attribute name="quartzWay" optional="YES" attributeType="String"/>
+        <attribute name="startTime" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Quartz" representedClassName="Quartz" syncable="YES" codeGenerationType="class">
+        <attribute name="endDay" optional="YES" attributeType="String"/>
+        <attribute name="endTime" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="quartzColor" optional="YES" attributeType="String"/>
+        <attribute name="quartzIcon" optional="YES" attributeType="String"/>
+        <attribute name="quartzName" optional="YES" attributeType="String"/>
+        <attribute name="quartzTimes" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="quartzType" optional="YES" attributeType="String"/>
+        <attribute name="quartzWay" optional="YES" attributeType="String"/>
+        <attribute name="startDay" optional="YES" attributeType="String"/>
+        <attribute name="startTime" optional="YES" attributeType="String"/>
+    </entity>
+</model>
