@@ -7,21 +7,25 @@
 
 import SwiftUI
 
+
 extension SummaryScreen {
     
     func makeCircle(_ geometry: GeometryProxy,holdProgress: Double,quitProgress: Double) -> some View {
-        return   ZStack {
+        return  ZStack {
+            let width = min(geometry.size.width,geometry.size.height)
+            
             Circle()
                 .stroke(Color.accentColor.opacity(0.1),lineWidth: 30)
             
             RingInnerShape(progress: 1, thickness: 25)
                 .fill(Color(.red).opacity(0.1))
             
-            SFSymbol.arrowRight
-                .font(.body.bold())
-                .imageScale(.large)
-                .scaleEffect(scale)
-                .animateForever(using: Animation.easeInOut(duration: 1)) { scale = 0.8 }
+            /*   SFSymbol.arrowRight
+             .font(.body.bold())
+             .imageScale(.large)
+             .scaleEffect(scale)
+             .animateForever(using: Animation.easeInOut(duration: 1)) { scale = 0.8 }
+             */
             
             ZStack {
                 ZStack {
@@ -48,17 +52,38 @@ extension SummaryScreen {
                     RingInnerHeader1Shape(progress: quitProgress  , thickness: 25)
                         .fill(Color.red)
                 }
+                
+                Image(systemName: "arrow.down")
+                    .font(.callout.bold())
+                    .foregroundColor(Color.black)
+                    .frame(width: 25, height: 25)
+                    .offset(x: width / 2 - 29)
+                    .rotationEffect(.init(degrees: -91))
             }
+            
+            Image(systemName: "arrow.down")
+                .font(.callout.bold())
+                .foregroundColor(Color.black)
+                .frame(width: 25, height: 25)
+                .offset(x: width / 2 )
+                .rotationEffect(.init(degrees: -91))
         }
-        .padding()
-        .padding(.horizontal, 5)
-        .padding(.vertical, 5)
         .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
         .animation(Animation.easeOut(duration: 1.6),value: holdProgress)
         .animation(Animation.easeOut(duration: 1.6),value: quitProgress)
     }
     
     
+    struct BiteHalfCircle: Shape {
+        func path(in rect: CGRect) -> Path {
+            let offset = rect.maxX - 25
+            let crect = CGRect(origin: .zero, size: CGSize(width: 25, height: 25)).offsetBy(dx: offset, dy: offset)
+            
+            var path = Rectangle().path(in: rect)
+            path.addPath(Circle().path(in: crect))
+            return path
+        }
+    }
     
     // 内环
     struct RingShape: Shape {

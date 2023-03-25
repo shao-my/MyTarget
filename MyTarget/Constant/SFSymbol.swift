@@ -32,8 +32,16 @@ enum SFSymbol: String, CaseIterable {
     case loop = "clock.arrow.2.circlepath"
     
     // MARK: sheme-icon
-    case def = "square.and.pencil"
+    case def = "medal.fill"
     case arrowRight = "arrow.right"
+    case arrowLeft = "arrow.left"
+    case thumbsup = "hand.thumbsup.circle"
+    case calender = "calendar.circle"
+    case target = "target"
+    case chevronLeft =  "chevron.left"
+    case chevronRight =  "chevron.right"
+    //case medal = "medal.fill"
+
 }
 
 extension Label where Title == Text, Icon == Image  {

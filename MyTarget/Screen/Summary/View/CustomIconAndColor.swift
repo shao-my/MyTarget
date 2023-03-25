@@ -20,7 +20,7 @@ struct CustomIconAndColor: View {
     @Binding var customItem: QuartzPrms
     @State var taps: Int = 0 
     @State var loveCount: Int = 0
-    
+     
     
     var body: some View {
         
@@ -47,7 +47,7 @@ struct CustomIconAndColor: View {
                         .padding()
                 }
                 
-                Button {
+                 Button {
                     withAnimation {
                         loveCount = loveCount + 20
                     }
@@ -62,8 +62,11 @@ struct CustomIconAndColor: View {
                 .buttonStyle(.bordered)
                 .roundedRectBackground(radius: 8, fill:Color(SYSColor(rawValue: customItem.quartzColor)!.create))
                 .padding()
-                
-            }.bounce(animCount: taps)
+               
+            }
+            .bounce(animCount: taps)
+            .animation(.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 1), value: customItem.quartzColor)
+               
             
             HStack (spacing: 20){
                 ZStack{
@@ -116,7 +119,7 @@ struct CustomIconAndColor: View {
             
             TabView(selection: $tab) {
                 CustomIcon(customItem: $customItem,taps: $taps).tag("iconView").tabItem {}
-                
+            
                 CustomColor(customItem: $customItem,loveCount: $loveCount).tag("colorView").tabItem {}
             }
             .tabViewStyle(.page)
@@ -133,6 +136,7 @@ struct CustomIconAndColor: View {
     }
 }
 
+ 
 /*
  extension CustomIconAndColor {
  enum Tab:String, View, CaseIterable {

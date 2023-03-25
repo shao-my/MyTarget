@@ -55,4 +55,4 @@ extension View {
     func placedOnCard(_ color: Color,size: CGFloat) -> some View {
         return padding(5).frame(width: size, height: size, alignment: .center).roundedRectBackground(radius: 100,fill: color)
     }
-}
+} 

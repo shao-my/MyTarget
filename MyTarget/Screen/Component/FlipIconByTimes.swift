@@ -110,11 +110,7 @@ struct FlipIconByTimes: View {
             
         }
         .animation(.easeInOut(duration: 0.8), value: flipped)
-        .onTapGesture {
-            print("times:\(times)")
-            print("total:\(total)")
-
-            
+        .onTapGesture { 
             self.flipped.toggle()
             //重置次数
             if (times < total ) {

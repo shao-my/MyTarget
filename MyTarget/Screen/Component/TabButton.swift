@@ -13,24 +13,24 @@ struct TabButton: View {
     var tag: HomeScreen.Tab
     
     @Binding var selected: HomeScreen.Tab
-
     
     var body: some View {
         Button {
-            withAnimation(.spring()){ selected = tag }
+            withAnimation(.spring()){ selected = tag } 
         } label: {
             HStack(spacing: 10) {
-                Image(systemName:  image)
-             //   SFSymbol.house
+                Image(systemName:  image) 
                     .resizable()
                     .renderingMode(.template)
                     .frame(width: 25, height: 25)
-                    .foregroundColor(.white)
+                    //.foregroundColor(.white)
+                    .foregroundColor(Color.accentColor)
                 
                 if selected == tag {
                     Text(title)
                         .fontWeight(.bold)
-                        .foregroundColor(.white)
+                        //   .foregroundColor(.white)
+                        .foregroundColor(Color.accentColor)
                 }
             }
             .padding(.vertical,10)

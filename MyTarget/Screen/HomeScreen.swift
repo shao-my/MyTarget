@@ -9,7 +9,7 @@ import SwiftUI
 
 extension HomeScreen {
     enum Tab:String, View, CaseIterable {
-        case summary,manage,settings
+        case summary,timer,manage,settings
         
         var body: some View {
             content.tabItem { tabLabel }
@@ -19,7 +19,8 @@ extension HomeScreen {
         private var content: some View {
             switch self {
             case .summary: SummaryScreen()
-            case .manage: ManageScreen()
+            case .timer: TimerScreen()
+            case .manage: QuartzScreen()
             case .settings: SettingsScreen()
             }
         }
@@ -28,6 +29,8 @@ extension HomeScreen {
             switch self {
             case .summary:
                 return Label("概要", systemImage: .house)
+            case .timer:
+                return Label("时间", systemImage: .target)
             case .manage:
                 return Label("管理", systemImage: .list)
             case .settings:
@@ -48,7 +51,7 @@ struct HomeScreen: View {
         //@AppStorage(.startTab) var tab = HomeScreen.Tab.settings
         //return tab
     }()
-    
+     
     @State var currentTab = "概要"
     
     var body: some View {
@@ -62,9 +65,11 @@ struct HomeScreen: View {
             .preferredColorScheme(shouldUseDarkMod ? .dark : .light)  //只向上传递一层
             
             HStack(spacing: 0) {
-                TabButton(title: "概要", image: .house, tag: .summary, selected: $tab)
+                TabButton(title: "概要", image: .thumbsup, tag: .summary, selected: $tab)
                 Spacer(minLength: 0)
-                TabButton(title: "管理", image: .list, tag: .manage,selected: $tab)
+                TabButton(title: "时间", image: .calender, tag: .timer,selected: $tab)
+                Spacer(minLength: 0)
+                TabButton(title: "目标", image: .target, tag: .manage,selected: $tab)
                 Spacer(minLength: 0)
                 TabButton(title: "设置", image: .gear, tag: .settings,selected: $tab)
             }

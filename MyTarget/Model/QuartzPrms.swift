@@ -19,8 +19,8 @@ struct QuartzPrms: Equatable, Identifiable {
     var dayTime: String
     var startDay: String
     var endDay: String
-    var startTime: String
-    var endTime: String
+    var startTime: Date
+    var endTime: Date
     
 }
 
@@ -30,13 +30,13 @@ extension QuartzPrms {
                            quartzType: "HOLD",
                            quartzTimes: "0",
                            quartzWay: "BOOL",
-                           quartzIcon: "pencil.and.outline",
+                           quartzIcon: SFSymbol.def.rawValue,
                            quartzColor: "gray",
                            dayTime: getStringForYYYYMMDD(dateTime: Date()),
                            startDay: getStringForYYYYMMDD(dateTime: Date()),
                            endDay:  "",
-                           startTime: getStringForYYYYMMDD(dateTime: Date()) + " " + "09:00",
-                           endTime:  ""
+                           startTime: Date(),
+                           endTime:  Date()
         )
     }
     
@@ -45,13 +45,13 @@ extension QuartzPrms {
                            quartzType: "HOLD",
                            quartzTimes: "0",
                            quartzWay: "BOOL",
-                           quartzIcon: "pencil.and.outline",
+                           quartzIcon: SFSymbol.def.rawValue,
                            quartzColor: "gray",
                            dayTime: getStringForYYYYMMDD(dateTime: Date()),
                            startDay: getStringForYYYYMMDD(dateTime: Date()),
                            endDay:  "",
-                           startTime: getStringForYYYYMMDD(dateTime: Date()) + " " + "09:00",
-                           endTime:  ""
+                           startTime: Date(),
+                           endTime:  Date()
         )
     }
     
@@ -60,13 +60,13 @@ extension QuartzPrms {
                            quartzType: "QUIT",
                            quartzTimes: "0",
                            quartzWay: "BOOL",
-                           quartzIcon: "pencil.and.outline",
+                           quartzIcon: SFSymbol.def.rawValue,
                            quartzColor: "gray",
                            dayTime: getStringForYYYYMMDD(dateTime: Date()),
                            startDay: getStringForYYYYMMDD(dateTime: Date()),
                            endDay:  "",
-                           startTime: getStringForYYYYMMDD(dateTime: Date()) + " " + "09:00",
-                           endTime:  ""
+                           startTime: Date(),
+                           endTime:  Date()
         )
     }
     
@@ -76,13 +76,13 @@ extension QuartzPrms {
                            quartzType: quartz.quartzType ?? "HOLD",
                            quartzTimes: String(quartz.quartzTimes),
                            quartzWay: quartz.quartzWay ?? "BOOL",
-                           quartzIcon: quartz.quartzIcon ?? "pencil.and.outline",
+                           quartzIcon: quartz.quartzIcon ??  SFSymbol.def.rawValue,
                            quartzColor: quartz.quartzColor ?? "gray",
                            dayTime:  getStringForYYYYMMDD(dateTime: Date()),
                            startDay: quartz.startDay!,
                            endDay: quartz.endDay ?? "",
                            startTime: quartz.startTime!,
-                           endTime:  quartz.endTime ?? ""
+                           endTime:  quartz.endTime ?? Date()
         )
     }
     
@@ -91,13 +91,13 @@ extension QuartzPrms {
                    quartzType: "HOLD",
                    quartzTimes: "0",
                    quartzWay: "BOOL",
-                   quartzIcon: "pencil.and.outline",
+                   quartzIcon: SFSymbol.def.rawValue,
                    quartzColor: "gray",
                    dayTime: getStringForYYYYMMDD(dateTime: Date()),
                    startDay: getStringForYYYYMMDD(dateTime: Date()),
                    endDay:  "",
-                   startTime: getStringForYYYYMMDD(dateTime: Date()) + " " + "09:00",
-                   endTime:  ""
+                   startTime: Date(),
+                   endTime:  Date()
                   )
     ]
     

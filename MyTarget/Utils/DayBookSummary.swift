@@ -19,7 +19,11 @@ func getDayBookSummary(dayBooks: [DayBook] ,quartzType: String) -> String {
             sumCount += 1
         }
     }
-    return "\(completedCount) / \(sumCount)"
+    //补0，默认两位数
+    let completeCountStr = completedCount > 10 ? "\(completedCount)" : "0\(completedCount)"
+    let sumCountStr = sumCount > 10 ? "\(sumCount)" : "0\(sumCount)"
+
+    return "\(completeCountStr) / \(sumCountStr)"
 }
 
 func getDayBookPercent(dayBooks: [DayBook] ,quartzType: String) -> Double {

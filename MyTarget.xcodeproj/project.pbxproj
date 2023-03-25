@@ -15,13 +15,17 @@
 		F519225D29C0D1B600C90BCE /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F519225C29C0D1B600C90BCE /* Unit.swift */; };
 		F519225F29C0D1CD00C90BCE /* UserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = F519225E29C0D1CD00C90BCE /* UserDefaultsKey.swift */; };
 		F53A44CE29C2D555006BD5CB /* QuartzPrms.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53A44CD29C2D555006BD5CB /* QuartzPrms.swift */; };
+		F53C27C829CD703C0047F045 /* QuartzScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53C27C729CD703C0047F045 /* QuartzScreen.swift */; };
+		F53C27CA29CD7E5A0047F045 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53C27C929CD7E5A0047F045 /* Tab.swift */; };
+		F53C27F029CDE9CC0047F045 /* QuartzModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53C27EF29CDE9CC0047F045 /* QuartzModel.swift */; };
+		F53C27F229CDEAC90047F045 /* DayBookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53C27F129CDEAC90047F045 /* DayBookModel.swift */; };
 		F56DAF9E29C0CAE5003E9D04 /* QuartzSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56DAF9D29C0CAE5003E9D04 /* QuartzSheet.swift */; };
 		F57CC83C29C41FC600592E53 /* CustomIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57CC83B29C41FC600592E53 /* CustomIcon.swift */; };
 		F57CC84029C5A43400592E53 /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57CC83F29C5A43400592E53 /* CustomColor.swift */; };
 		F57CC84229C5A52100592E53 /* SYSColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57CC84129C5A52100592E53 /* SYSColor.swift */; };
+		F5A60F3629CDFF7B00A7AD9C /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A60F3529CDFF7B00A7AD9C /* Persistence.swift */; };
 		F5B7F45A29C2E8C100A7B86E /* SwiftMessages in Frameworks */ = {isa = PBXBuildFile; productRef = F5B7F45929C2E8C100A7B86E /* SwiftMessages */; };
 		F5B7F45C29C2EA3F00A7B86E /* CustomMessage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B7F45B29C2EA3F00A7B86E /* CustomMessage+.swift */; };
-		F5B7F45E29C2F63800A7B86E /* CoreDataModel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B7F45D29C2F63800A7B86E /* CoreDataModel+.swift */; };
 		F5BD969629C1B50B00F82B24 /* TextFieldWithFocus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD969529C1B50B00F82B24 /* TextFieldWithFocus.swift */; };
 		F5C816C329C1BE6600EF2B5A /* Animation+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C816C229C1BE6600EF2B5A /* Animation+.swift */; };
 		F5DF181529C6F36300F0E471 /* BounceStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DF181429C6F36300F0E471 /* BounceStruct.swift */; };
@@ -44,6 +48,12 @@
 		F5ED4EDE29C80AA300DDC5E6 /* FlipScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5ED4EDD29C80AA300DDC5E6 /* FlipScore.swift */; };
 		F5ED4EE029C82CD400DDC5E6 /* FlipIconByTimes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5ED4EDF29C82CD400DDC5E6 /* FlipIconByTimes.swift */; };
 		F5ED4EE229C8483600DDC5E6 /* Wave.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5ED4EE129C8483600DDC5E6 /* Wave.swift */; };
+		F5ED4EE629C88BAD00DDC5E6 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5ED4EE529C88BAD00DDC5E6 /* RootView.swift */; };
+		F5ED4EEB29C892E500DDC5E6 /* TimerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5ED4EEA29C892E500DDC5E6 /* TimerScreen.swift */; };
+		F5ED4EF129C98C7400DDC5E6 /* FlipText.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5ED4EF029C98C7400DDC5E6 /* FlipText.swift */; };
+		F5ED4EFA29CABC7C00DDC5E6 /* ColorGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5ED4EF929CABC7C00DDC5E6 /* ColorGrid.swift */; };
+		F5EF342229CB406F0005DF20 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EF342129CB406F0005DF20 /* CustomDatePicker.swift */; };
+		F5EF342429CB4B520005DF20 /* DateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EF342329CB4B520005DF20 /* DateValue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,12 +65,16 @@
 		F519225C29C0D1B600C90BCE /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		F519225E29C0D1CD00C90BCE /* UserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKey.swift; sourceTree = "<group>"; };
 		F53A44CD29C2D555006BD5CB /* QuartzPrms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuartzPrms.swift; sourceTree = "<group>"; };
+		F53C27C729CD703C0047F045 /* QuartzScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuartzScreen.swift; sourceTree = "<group>"; };
+		F53C27C929CD7E5A0047F045 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
+		F53C27EF29CDE9CC0047F045 /* QuartzModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuartzModel.swift; sourceTree = "<group>"; };
+		F53C27F129CDEAC90047F045 /* DayBookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayBookModel.swift; sourceTree = "<group>"; };
 		F56DAF9D29C0CAE5003E9D04 /* QuartzSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuartzSheet.swift; sourceTree = "<group>"; };
 		F57CC83B29C41FC600592E53 /* CustomIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomIcon.swift; sourceTree = "<group>"; };
 		F57CC83F29C5A43400592E53 /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
 		F57CC84129C5A52100592E53 /* SYSColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SYSColor.swift; sourceTree = "<group>"; };
+		F5A60F3529CDFF7B00A7AD9C /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		F5B7F45B29C2EA3F00A7B86E /* CustomMessage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomMessage+.swift"; sourceTree = "<group>"; };
-		F5B7F45D29C2F63800A7B86E /* CoreDataModel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataModel+.swift"; sourceTree = "<group>"; };
 		F5BD969529C1B50B00F82B24 /* TextFieldWithFocus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithFocus.swift; sourceTree = "<group>"; };
 		F5C816C229C1BE6600EF2B5A /* Animation+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation+.swift"; sourceTree = "<group>"; };
 		F5DF181429C6F36300F0E471 /* BounceStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BounceStruct.swift; sourceTree = "<group>"; };
@@ -85,6 +99,12 @@
 		F5ED4EDD29C80AA300DDC5E6 /* FlipScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipScore.swift; sourceTree = "<group>"; };
 		F5ED4EDF29C82CD400DDC5E6 /* FlipIconByTimes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipIconByTimes.swift; sourceTree = "<group>"; };
 		F5ED4EE129C8483600DDC5E6 /* Wave.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wave.swift; sourceTree = "<group>"; };
+		F5ED4EE529C88BAD00DDC5E6 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		F5ED4EEA29C892E500DDC5E6 /* TimerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerScreen.swift; sourceTree = "<group>"; };
+		F5ED4EF029C98C7400DDC5E6 /* FlipText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipText.swift; sourceTree = "<group>"; };
+		F5ED4EF929CABC7C00DDC5E6 /* ColorGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorGrid.swift; sourceTree = "<group>"; };
+		F5EF342129CB406F0005DF20 /* CustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePicker.swift; sourceTree = "<group>"; };
+		F5EF342329CB4B520005DF20 /* DateValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateValue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,7 +122,14 @@
 		F50C5CB429C3F8EE001D1B5D /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				F5DF181829C708B100F0E471 /* ProgressShape.swift */,
+				F5DF181A29C73E3100F0E471 /* FlipIcon.swift */,
+				F5ED4EF029C98C7400DDC5E6 /* FlipText.swift */,
+				F5ED4EDF29C82CD400DDC5E6 /* FlipIconByTimes.swift */,
+				F5ED4EDD29C80AA300DDC5E6 /* FlipScore.swift */,
 				F50C5CB529C3F90E001D1B5D /* TabButton.swift */,
+				F5ED4EE129C8483600DDC5E6 /* Wave.swift */,
+				F5ED4EE529C88BAD00DDC5E6 /* RootView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -164,6 +191,7 @@
 				F5DFD40C29BF402100211FE3 /* HomeScreen.swift */,
 				F5DFD41729BF431500211FE3 /* SettingsScreen.swift */,
 				F5DFD41929BF48CA00211FE3 /* Summary */,
+				F5ED4EE929C892CC00DDC5E6 /* Timer */,
 				F5DFD41C29BF4AF100211FE3 /* Manage */,
 				F50C5CB429C3F8EE001D1B5D /* Component */,
 			);
@@ -189,11 +217,6 @@
 				F5DF181429C6F36300F0E471 /* BounceStruct.swift */,
 				F5C816C229C1BE6600EF2B5A /* Animation+.swift */,
 				F5DF181629C6FE0800F0E471 /* LoveGeometryEffect.swift */,
-				F5DF181829C708B100F0E471 /* ProgressShape.swift */,
-				F5DF181A29C73E3100F0E471 /* FlipIcon.swift */,
-				F5ED4EDF29C82CD400DDC5E6 /* FlipIconByTimes.swift */,
-				F5ED4EDD29C80AA300DDC5E6 /* FlipScore.swift */,
-				F5ED4EE129C8483600DDC5E6 /* Wave.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -221,6 +244,7 @@
 			isa = PBXGroup;
 			children = (
 				F5DFD41D29BF4B1D00211FE3 /* ManageScreen.swift */,
+				F53C27C729CD703C0047F045 /* QuartzScreen.swift */,
 			);
 			path = Manage;
 			sourceTree = "<group>";
@@ -241,10 +265,32 @@
 		F5DFD42829BFFF6500211FE3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F5A60F3529CDFF7B00A7AD9C /* Persistence.swift */,
 				F53A44CD29C2D555006BD5CB /* QuartzPrms.swift */,
-				F5B7F45D29C2F63800A7B86E /* CoreDataModel+.swift */,
+				F5ED4EF929CABC7C00DDC5E6 /* ColorGrid.swift */,
+				F5EF342329CB4B520005DF20 /* DateValue.swift */,
+				F53C27C929CD7E5A0047F045 /* Tab.swift */,
+				F53C27EF29CDE9CC0047F045 /* QuartzModel.swift */,
+				F53C27F129CDEAC90047F045 /* DayBookModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		F5ED4EE929C892CC00DDC5E6 /* Timer */ = {
+			isa = PBXGroup;
+			children = (
+				F5ED4EEA29C892E500DDC5E6 /* TimerScreen.swift */,
+				F5ED4EF229C9D03100DDC5E6 /* View */,
+			);
+			path = Timer;
+			sourceTree = "<group>";
+		};
+		F5ED4EF229C9D03100DDC5E6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F5EF342129CB406F0005DF20 /* CustomDatePicker.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -327,14 +373,21 @@
 				F50C5CB629C3F90E001D1B5D /* TabButton.swift in Sources */,
 				F5C816C329C1BE6600EF2B5A /* Animation+.swift in Sources */,
 				F5DFD41029BF416200211FE3 /* SFSymbol.swift in Sources */,
+				F53C27F029CDE9CC0047F045 /* QuartzModel.swift in Sources */,
+				F5ED4EE629C88BAD00DDC5E6 /* RootView.swift in Sources */,
 				F5DFD41829BF431500211FE3 /* SettingsScreen.swift in Sources */,
 				F5DFD40D29BF402100211FE3 /* HomeScreen.swift in Sources */,
 				F5DF181529C6F36300F0E471 /* BounceStruct.swift in Sources */,
+				F5ED4EF129C98C7400DDC5E6 /* FlipText.swift in Sources */,
 				F5DF181B29C73E3100F0E471 /* FlipIcon.swift in Sources */,
 				F5BD969629C1B50B00F82B24 /* TextFieldWithFocus.swift in Sources */,
 				F519225D29C0D1B600C90BCE /* Unit.swift in Sources */,
 				F5DFD42729BF72ED00211FE3 /* ViewLayout+.swift in Sources */,
+				F53C27C829CD703C0047F045 /* QuartzScreen.swift in Sources */,
+				F5A60F3629CDFF7B00A7AD9C /* Persistence.swift in Sources */,
 				F519225929C0CD7E00C90BCE /* QuartzForm.swift in Sources */,
+				F53C27CA29CD7E5A0047F045 /* Tab.swift in Sources */,
+				F5ED4EEB29C892E500DDC5E6 /* TimerScreen.swift in Sources */,
 				F56DAF9E29C0CAE5003E9D04 /* QuartzSheet.swift in Sources */,
 				F5DFD41B29BF48E100211FE3 /* SummaryScreen.swift in Sources */,
 				F5B7F45C29C2EA3F00A7B86E /* CustomMessage+.swift in Sources */,
@@ -342,9 +395,10 @@
 				F57CC83C29C41FC600592E53 /* CustomIcon.swift in Sources */,
 				F5ED4EDE29C80AA300DDC5E6 /* FlipScore.swift in Sources */,
 				F53A44CE29C2D555006BD5CB /* QuartzPrms.swift in Sources */,
+				F5EF342429CB4B520005DF20 /* DateValue.swift in Sources */,
 				F5ED4EE029C82CD400DDC5E6 /* FlipIconByTimes.swift in Sources */,
 				F57CC84029C5A43400592E53 /* CustomColor.swift in Sources */,
-				F5B7F45E29C2F63800A7B86E /* CoreDataModel+.swift in Sources */,
+				F5EF342229CB406F0005DF20 /* CustomDatePicker.swift in Sources */,
 				F5ED4EE229C8483600DDC5E6 /* Wave.swift in Sources */,
 				F5DFD45229C01CA400211FE3 /* MyTarget.xcdatamodeld in Sources */,
 				F5DF181729C6FE0800F0E471 /* LoveGeometryEffect.swift in Sources */,
@@ -354,6 +408,8 @@
 				F519225B29C0D17D00C90BCE /* SuffixWrapper.swift in Sources */,
 				F5DFD41329BF425E00211FE3 /* AppStorage+.swift in Sources */,
 				F5DFD42329BF70DF00211FE3 /* ShapeStyle+.swift in Sources */,
+				F53C27F229CDEAC90047F045 /* DayBookModel.swift in Sources */,
+				F5ED4EFA29CABC7C00DDC5E6 /* ColorGrid.swift in Sources */,
 				F57CC84229C5A52100592E53 /* SYSColor.swift in Sources */,
 				F5DF181929C708B100F0E471 /* ProgressShape.swift in Sources */,
 				F519225F29C0D1CD00C90BCE /* UserDefaultsKey.swift in Sources */,

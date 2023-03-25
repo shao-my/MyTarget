@@ -9,17 +9,17 @@ import SwiftUI
 
 @main
 struct AppEntry: App {
-    //let persistenceController = PersistenceController.shared
-    
+    let persistenceController = PersistenceController.shared
+
     init() {
         applyTabBarBackground()
-        UITabBar.appearance().isHidden = true
+        UITabBar.appearance().isHidden = true 
     }
     
     var body: some Scene {
         WindowGroup {
             HomeScreen()
-                //.environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
     

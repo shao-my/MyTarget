@@ -14,7 +14,7 @@ extension SummaryScreen {
         @Environment(\.dismiss) var dismiss
         @State var quartzPrms: QuartzPrms
         
-        @State private var isEveryDay: Bool = false
+        @State private var isEveryDay: Bool = true
         @State private var isHourRange: Bool = false
         
         @State private var isEditCustom: Bool = false
@@ -47,9 +47,20 @@ extension SummaryScreen {
                         Spacer()
                         
                         Button {
+                            var shouldSave = true
                             if quartzPrms.quartzName == "" {
                                 popTipMessage(icon: "", title: "提示", body: "目标名称必填")
-                            }else{
+                                shouldSave = false
+                                return
+                            }
+                            
+                            if (quartzPrms.quartzWay == "TIMES" && quartzPrms.quartzTimes == "0") {
+                                popTipMessage(icon: "", title: "提示", body: "目标次数不能为0")
+                                shouldSave = false
+                                return
+                            }
+                            
+                            if shouldSave {
                                 dismiss()
                                 onSubmit(quartzPrms)
                             }
@@ -151,21 +162,19 @@ extension SummaryScreen {
                             }
                             .toggleStyle(.switch)
                             
-                            
-                            DatePicker(selection: Binding<Date>(
-                                get:{ getDateForYYYYMMDD(dateTime:  $quartzPrms.startDay.wrappedValue + " " + $quartzPrms.startTime.wrappedValue) },
+                            DatePicker(selection: $quartzPrms.startTime
+                               /* get:{ getDateForYYYYMMDDHHMM(dateTime: $quartzPrms.startDay.wrappedValue + " " + $quartzPrms.startTime.wrappedValue) },
                                 set: { date in
                                     $quartzPrms.startTime.wrappedValue = getStringForHHmm(dateTime: date)
-                                }), displayedComponents: DatePickerComponents.hourAndMinute) {
+                                }),*/
+                                 ,
+                                
+                                       displayedComponents: DatePickerComponents.hourAndMinute) {
                                 Label("开始时间", systemImage: .start)
                             }
                             
                             if isHourRange {
-                                DatePicker(selection: Binding<Date>(
-                                    get:{ getDateForYYYYMMDD(dateTime: $quartzPrms.startDay.wrappedValue + " " + $quartzPrms.endTime.wrappedValue) },
-                                    set: { date in
-                                        $quartzPrms.endTime.wrappedValue = getStringForHHmm(dateTime: date)
-                                    }), displayedComponents: DatePickerComponents.hourAndMinute) {
+                                DatePicker(selection: $quartzPrms.endTime, displayedComponents: DatePickerComponents.hourAndMinute) {
                                     Label("结束时间", systemImage: .end)
                                 }
                             }
@@ -185,7 +194,7 @@ extension SummaryScreen {
                                 Label("开始日期", systemImage: .start)
                             }
                             
-                            if isEveryDay {
+                            if !isEveryDay {
                                 DatePicker(selection: Binding<Date>(
                                     get:{ getDateForYYYYMMDD(dateTime: $quartzPrms.endDay.wrappedValue) },
                                     set: { date in
@@ -232,7 +241,6 @@ extension SummaryScreen {
                     .font(.body)
                     .padding()
                     .push(to: .trailing)
-                
                 
             }
         }

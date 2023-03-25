@@ -8,7 +8,7 @@
 import SwiftUI
  
 
-struct ContentView: View {
+struct WaveView: View {
     
     @State private var percent = 50.0
     

@@ -1,0 +1,227 @@
+//
+//  CustomDatePicker.swift
+//  MyTarget
+//
+//  Created by 邵明易 on 2023/3/22.
+//
+
+import SwiftUI
+
+struct CustomDatePicker: View {
+    @Binding var currentDate: Date
+    @State var currentMonth: Int = 0
+    @State var animationStatus: [Bool] = Array(repeating: false, count: 2)
+    
+    //@StateObject public var coreDataModel = CoreDataModel()
+    //@EnvironmentObject public var coreDataModel : CoreDataModel
+    
+    @StateObject var dayBookModel: DayBookModel = DayBookModel()
+
+    @Environment(\.self) var env
+    
+    @State var dayBookList: [DayBook]
+    @Binding var dayBookListForState: [DayBook]
+
+    var body: some View {
+        
+        VStack{
+            
+            let days: [String] = ["日","一","二","三","四","五","六"] 
+         
+                HStack(spacing: 20) {
+                    Button {
+                        withAnimation {
+                            currentMonth -= 1
+                        }
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.title3)
+                    }
+                    
+                    Text(extractDate()[0] + " " + extractDate()[1])
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                    
+                    Button {
+                        withAnimation {
+                            currentMonth += 1
+                        }
+                    } label: {
+                        Image(systemName: "chevron.right")
+                            .font(.title3)
+                    }
+                }
+            
+            .foregroundColor(.white)
+            .padding(.horizontal)
+            .opacity(animationStatus[0] ? 1 : 0)
+            
+            HStack(spacing: 10) {
+                ForEach(days, id: \.self){ day in
+                    Text(day)
+                        .font(.caption2)
+                        .frame(maxWidth: .infinity)
+                    
+                }
+            }
+            .padding(.top, 4)
+            .foregroundColor(.white)
+            .opacity(animationStatus[0] ? 1 : 0)
+            
+            Rectangle()
+                .fill(.white.opacity(0.4))
+                .frame(width: animationStatus[0] ? nil : 0,height: 1)
+                .padding(.vertical, 3)
+                .push(to: .leading)
+            
+            let columns = Array(repeating: GridItem(.flexible()), count: 7)
+            
+            if animationStatus[0] {
+                LazyVGrid(columns: columns,spacing: 20) {
+                    ForEach(extractDateValue().indices, id: \.self) {index in
+                        let value = extractDateValue()[index]
+                        PickerCardView(value: value, index: index, currentDate: $currentDate, isFinished: $animationStatus[1])
+                            .onTapGesture {
+                                currentDate = value.date
+                              //  dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
+                                    //dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+                                dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+                            }
+                    }
+                }
+            }
+            else {
+                LazyVGrid(columns: columns,spacing: 20) {
+                    ForEach(extractDateValue().indices, id: \.self) {index in
+                        let value = extractDateValue()[index]
+                        PickerCardView(value: value, index: index, currentDate: $currentDate,isFinished: $animationStatus[1])
+                            .onTapGesture {
+                                currentDate = value.date 
+                             //   dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
+                              //  dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+                                dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+                            }
+                    }
+                }
+                .opacity(0)
+            }
+        }
+        .padding()
+        .onChange(of: currentMonth) { newValue in
+              currentDate = getCurrentMonth()
+             //dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
+            //dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+            dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+        }
+        .onAppear {
+            currentDate = getCurrentMonth()
+            //dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
+          //  dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+            dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                withAnimation(.easeInOut(duration: 0.3)){
+                    animationStatus[0] = true
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    animationStatus[1] = true
+                }
+            }
+        }
+    }
+    
+    
+    
+    func extractDate() -> [String] {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "YYYY MMMM"
+        let date = formatter.string(from: currentDate)
+        return date.components(separatedBy: " ")
+    }
+    
+    func getCurrentMonth() -> Date {
+        let calendar = Calendar.current
+        guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonth, to: Date()) else { return Date() }
+        return currentMonth
+    }
+    
+    func extractDateValue() -> [DateValue] {
+        let calendar = Calendar.current
+        let currentMonth = getCurrentMonth()
+        
+        var days = currentMonth.getAllDates().compactMap { date -> DateValue in
+            let day = calendar.component(.day, from: date)
+            return DateValue(day: day, date: date)
+        }
+        
+        let firstWeekday = calendar.component(.weekday, from: days.first?.date ?? Date())
+        
+        for _ in 0..<firstWeekday - 1 {
+            days.insert(DateValue(day: -1, date: Date()), at: 0)
+        }
+        
+        return days
+    }
+}
+
+func isSameDay(date1: Date, date2: Date) -> Bool {
+    let calendar = Calendar.current
+    return calendar.isDate(date1, inSameDayAs: date2)
+}
+
+struct PickerCardView : View {
+    var value: DateValue
+    var index: Int
+    @Binding var currentDate: Date
+    @Binding var isFinished: Bool
+    @State var showView: Bool = false
+    
+    
+    var body: some View {
+        VStack {
+            if value.day != -1 {
+                Text("\(value.day)")
+                    .font(.callout)
+                    .fontWeight(.semibold)
+                    .foregroundColor(isSameDay(date1: value.date, date2: currentDate) ? .black : .white)
+                //.frame(width: .infinity)
+                //.frame(width: 35)
+                    .background {
+                        RoundedRectangle(cornerRadius: 5, style: .continuous)
+                            .fill(.white)
+                            .padding(.vertical, -5)
+                            .padding(.horizontal, -15)
+                            .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
+                    }
+            }
+        }
+        .opacity(showView ? 1 : 0)
+        .onAppear {
+            if isFinished { showView = true }
+            withAnimation(.spring().delay(Double(index) * 0.02)){
+                showView = true
+            }
+        }
+    }
+}
+
+extension Date{
+    func getAllDates() -> [Date] {
+        let calendar = Calendar.current
+        let startDate = calendar.date(from: Calendar.current.dateComponents([.year,.month], from: self))!
+        let range = calendar.range(of: .day, in: .month, for: startDate)!
+        
+        return range.compactMap{ day -> Date in
+            return calendar.date(byAdding: .day, value: day - 1, to: startDate)!
+        }
+    }
+}
+
+/*
+struct CustomDatePicker_Previews: PreviewProvider {
+    static var previews: some View {
+        CustomDatePicker(currentDate: .constant(Date()))
+    }
+}
+
+*/
