@@ -16,42 +16,46 @@ struct CustomDatePicker: View {
     //@EnvironmentObject public var coreDataModel : CoreDataModel
     
     @StateObject var dayBookModel: DayBookModel = DayBookModel()
-
+    
+    @FetchRequest(entity: DayBook.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \DayBook.id, ascending: false)], predicate: NSPredicate(format: "dayTime >= %@ and dayTime <= %@", getStringForYYYYMM(dateTime: Date())+"-01",getStringForYYYYMM(dateTime: Date())+"-31"), animation: .easeInOut)
+    var dayBookMonth: FetchedResults<DayBook>
+    
     @Environment(\.self) var env
     
     @State var dayBookList: [DayBook]
     @Binding var dayBookListForState: [DayBook]
-
+    
     var body: some View {
         
         VStack{
             
-            let days: [String] = ["日","一","二","三","四","五","六"] 
-         
-                HStack(spacing: 20) {
-                    Button {
-                        withAnimation {
-                            currentMonth -= 1
-                        }
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.title3)
-                    }
-                    
-                    Text(extractDate()[0] + " " + extractDate()[1])
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                    
-                    Button {
-                        withAnimation {
-                            currentMonth += 1
-                        }
-                    } label: {
-                        Image(systemName: "chevron.right")
-                            .font(.title3)
-                    }
-                }
+            let days: [String] = ["日","一","二","三","四","五","六"]
             
+            HStack(spacing: 20) {
+                Button {
+                    withAnimation {
+                        currentMonth -= 1
+                    }
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.callout)
+                        .fontWeight(.semibold)
+                }
+                
+                Text(extractDate()[0] + " " + extractDate()[1])
+                    .font(.callout)
+                    .fontWeight(.semibold)
+                
+                Button {
+                    withAnimation {
+                        currentMonth += 1
+                    }
+                } label: {
+                    Image(systemName: "chevron.right")
+                        .font(.callout)
+                        .fontWeight(.semibold)
+                }
+            }
             .foregroundColor(.white)
             .padding(.horizontal)
             .opacity(animationStatus[0] ? 1 : 0)
@@ -77,28 +81,28 @@ struct CustomDatePicker: View {
             let columns = Array(repeating: GridItem(.flexible()), count: 7)
             
             if animationStatus[0] {
-                LazyVGrid(columns: columns,spacing: 20) {
+                LazyVGrid(columns: columns,spacing: 10) {
                     ForEach(extractDateValue().indices, id: \.self) {index in
                         let value = extractDateValue()[index]
                         PickerCardView(value: value, index: index, currentDate: $currentDate, isFinished: $animationStatus[1])
                             .onTapGesture {
                                 currentDate = value.date
-                              //  dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
-                                    //dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+                                //  dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
+                                //dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
                                 dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
                             }
                     }
                 }
             }
             else {
-                LazyVGrid(columns: columns,spacing: 20) {
+                LazyVGrid(columns: columns,spacing: 10) {
                     ForEach(extractDateValue().indices, id: \.self) {index in
                         let value = extractDateValue()[index]
                         PickerCardView(value: value, index: index, currentDate: $currentDate,isFinished: $animationStatus[1])
                             .onTapGesture {
-                                currentDate = value.date 
-                             //   dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
-                              //  dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+                                currentDate = value.date
+                                //   dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
+                                //  dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
                                 dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
                             }
                     }
@@ -108,16 +112,16 @@ struct CustomDatePicker: View {
         }
         .padding()
         .onChange(of: currentMonth) { newValue in
-              currentDate = getCurrentMonth()
-             //dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
+            currentDate = getCurrentMonth()
+            //dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
             //dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
             dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
         }
         .onAppear {
             currentDate = getCurrentMonth()
             //dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
-          //  dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
-            dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+            //  dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+            // dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 withAnimation(.easeInOut(duration: 0.3)){
                     animationStatus[0] = true
@@ -129,8 +133,6 @@ struct CustomDatePicker: View {
             }
         }
     }
-    
-    
     
     func extractDate() -> [String] {
         let formatter = DateFormatter()
@@ -169,16 +171,29 @@ func isSameDay(date1: Date, date2: Date) -> Bool {
     return calendar.isDate(date1, inSameDayAs: date2)
 }
 
+func markDay(dayBookMonth: [DayBook],value: DateValue) -> Bool {
+    var isMark = false
+    dayBookMonth.forEach{ book in
+        if(isSameDay(date1: value.date, date2: getDateForYYYYMMDD(dateTime: book.dayTime!))){
+            isMark = true
+        }
+    }
+    return isMark
+}
+
 struct PickerCardView : View {
     var value: DateValue
     var index: Int
     @Binding var currentDate: Date
     @Binding var isFinished: Bool
     @State var showView: Bool = false
+    //@Binding var dayBookMonth: [DayBook]
     
+    @FetchRequest(entity: DayBook.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \DayBook.id, ascending: false)], predicate: NSPredicate(format: "dayTime >= %@ and dayTime <= %@", getStringForYYYYMM(dateTime: Date())+"-01",getStringForYYYYMM(dateTime: Date())+"-31"), animation: .easeInOut)
+    var dayBookMonth: FetchedResults<DayBook>
     
     var body: some View {
-        VStack {
+        VStack(spacing: 8) {
             if value.day != -1 {
                 Text("\(value.day)")
                     .font(.callout)
@@ -190,9 +205,16 @@ struct PickerCardView : View {
                         RoundedRectangle(cornerRadius: 5, style: .continuous)
                             .fill(.white)
                             .padding(.vertical, -5)
-                            .padding(.horizontal, -15)
+                            .padding(.horizontal, -5)
                             .opacity(isSameDay(date1: value.date, date2: currentDate) ? 1 : 0)
                     }
+                
+                // Spacer()
+                
+                Circle()
+                    .fill(markDay(dayBookMonth: dayBookMonth.reversed(), value: value) ? Color(.systemPink) : Color.clear)
+                    .frame(width: 8, height: 8)
+                
             }
         }
         .opacity(showView ? 1 : 0)
@@ -218,10 +240,10 @@ extension Date{
 }
 
 /*
-struct CustomDatePicker_Previews: PreviewProvider {
-    static var previews: some View {
-        CustomDatePicker(currentDate: .constant(Date()))
-    }
-}
-
-*/
+ struct CustomDatePicker_Previews: PreviewProvider {
+ static var previews: some View {
+ CustomDatePicker(currentDate: .constant(Date()))
+ }
+ }
+ 
+ */

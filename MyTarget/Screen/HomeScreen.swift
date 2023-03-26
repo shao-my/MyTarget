@@ -64,7 +64,7 @@ struct HomeScreen: View {
             }
             .preferredColorScheme(shouldUseDarkMod ? .dark : .light)  //只向上传递一层
             
-            HStack(spacing: 0) {
+          /*  HStack(spacing: 0) {
                 TabButton(title: "概要", image: .thumbsup, tag: .summary, selected: $tab)
                 Spacer(minLength: 0)
                 TabButton(title: "时间", image: .calender, tag: .timer,selected: $tab)
@@ -77,7 +77,7 @@ struct HomeScreen: View {
             .padding(.horizontal)
             .background(Color("TabBgColor"))
             .clipShape(Capsule())
-            .padding(.horizontal,25)
+            .padding(.horizontal,25)*/
         }
         
         //   }

@@ -40,3 +40,66 @@ func getDayBookPercent(dayBooks: [DayBook] ,quartzType: String) -> Double {
     }
     return Double(completedCount/sumCount)
 }
+
+
+func getDayBookSumCount(dayBooks: [DayBook] ,quartzType: String) -> Int {
+    var sumCount: Int = .zero
+    
+    for book in dayBooks {
+        if book.quartzType == quartzType {
+            if book.isCompleted == true {
+                sumCount += 1
+            }
+        }
+    }
+    return sumCount
+}
+
+func getDayBookCompletedCount(dayBooks: [DayBook] ,quartzType: String) -> Int {
+    var completedCount: Int = .zero
+    
+    for book in dayBooks {
+        if book.quartzType == quartzType {
+            if book.isCompleted == true {
+                completedCount += 1
+            }
+        }
+    }
+    return completedCount
+}
+
+func getDayBookCompletedTime(dayBooks: [DayBook] ,quartzType: String) -> String {
+    var completedSeconds: Int = .zero
+    
+    for book in dayBooks {
+        if book.quartzType == quartzType {
+            if book.isCompleted == true {
+                let calendar = Calendar.current
+                let dateComponents = calendar.dateComponents([Calendar.Component.second], from:  book.startTime!, to: book.finishedTime!)
+                completedSeconds += dateComponents.second!
+            }
+        }
+    }
+    
+    let hours = completedSeconds / 3600
+    let minutes = (completedSeconds - hours * 3600) / 60
+    return "\(hours) 小时 \(minutes) 分钟"
+}
+
+
+func getDayBookCountDays(dayBooks: [DayBook] ,quartzType: String) -> Int {
+    //var daysCount: Int = .zero
+    var daysList: [String] = []
+    
+    for book in dayBooks {
+        if book.quartzType == quartzType {
+            if book.isCompleted == true {
+                if(!daysList.contains(book.dayTime!)){
+                    daysList.append(book.dayTime!)
+                }
+            }
+        }
+    }
+    return daysList.count
+}
+

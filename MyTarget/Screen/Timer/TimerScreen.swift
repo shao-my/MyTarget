@@ -8,6 +8,11 @@
 import SwiftUI
 import CoreData
 
+enum TimeTab: String {
+    case time = "时间线"
+    case view = "统计图"
+}
+
 struct TimerScreen: View {
    // @StateObject public var coreDataModel = CoreDataModel()
    // @EnvironmentObject public var coreDataModel : CoreDataModel
@@ -19,100 +24,349 @@ struct TimerScreen: View {
     @State var currentDate: Date = Date()
      
     
-    @FetchRequest(entity: DayBook.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \DayBook.startTime, ascending: false)], predicate: NSPredicate(format: "dayTime = %@", getStringForYYYYMMDD(dateTime: Date())), animation: .easeInOut)  
-    private var dayBookList: FetchedResults<DayBook>
+    @FetchRequest(entity: DayBook.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \DayBook.id, ascending: false)], predicate: NSPredicate(format: "dayTime = %@", getStringForYYYYMMDD(dateTime: Date())), animation: .easeInOut)
+    var dayBookList: FetchedResults<DayBook>
    // @State var dayBookList: [DayBook] = []
-    @Environment(\.self) var env
-    @StateObject var dayBookModel: DayBookModel = DayBookModel()
+   // @Environment(\.self) var env
+   // @EnvironmentObject var dayBookModel: DayBookModel = DayBookModel()
     @State var dayBookListForState: [DayBook] = []
+    
+    @State var isFlod: Bool = true
+    
+    @State private var currentTab: TimeTab = .view
+    @State private var shakeValue: CGFloat = 0
+    
+    let themeColor: Color = Color(red: 49 / 255, green: 38 / 255, blue: 126 / 255)
+    
+     
+    @State var holdProgress: Double = 0.0
+    @State var quitProgress: Double = 0.0
     
     var body: some View {
         NavigationView {
-            VStack {
-                /* if !animationCalendar[1]{
-                 RoundedRectangle(cornerRadius: 0, style: .continuous)
-                 .fill(Color(.systemIndigo))
-                 .matchedGeometryEffect(id: "Calender", in: animation)
-                 //.frame(height: calendarHeight)
-                 .ignoresSafeArea()
-                 
-                 }*/
-                 
-                VStack(spacing: 0) {
-                    /*Button {
-                     
-                     } label: {
-                     SFSymbol.info
-                     .font(.title3)
-                     }
-                     .push(to: .trailing)
-                     .overlay {
-                     Text("时间")
-                     .font(.title3)
-                     .fontWeight(.semibold)
-                     }
-                     .padding(.bottom, 30)
-                     */
-                    GeometryReader { proxy in
-                        let maxY = proxy.frame(in: .global).maxY
-                        
-                        CustomDatePicker(currentDate: $currentDate,dayBookList: dayBookList.reversed(),dayBookListForState: $dayBookListForState)
-                            .background {
-                                RoundedRectangle(cornerRadius: 30, style: .continuous)
-                                    .fill(Color(red: 49 / 255, green: 38 / 255, blue: 126 / 255))
-                                //.matchedGeometryEffect(id: "Calender", in: animation)
-                            }
-                            .rotation3DEffect(.init(degrees: animationTopView ? 0 : -270), axis: (x: 1, y: 0, z: 0), anchor: .center)
-                            .offset(y: animationTopView ? 0 : -maxY)
+            ScrollView(.vertical ,showsIndicators: false) {
+                VStack(spacing: 20) {
+                    VStack(spacing: 0) {
+                        GeometryReader { proxy in
+                            let maxY = proxy.frame(in: .global).maxY
+                            
+                            CustomDatePicker(currentDate: $currentDate,dayBookList: dayBookList.reversed(),dayBookListForState: $dayBookListForState)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 30, style: .continuous)
+                                        .fill(Color(red: 49 / 255, green: 38 / 255, blue: 126 / 255))
+                                    //.matchedGeometryEffect(id: "Calender", in: animation)
+                                }
+                                .rotation3DEffect(.init(degrees: animationTopView ? 0 : -270), axis: (x: 1, y: 0, z: 0), anchor: .center)
+                                .offset(y: animationTopView ? 0 : -maxY)
+                        }
+                        .frame(height: 360)
                     }
-                    .frame(height: 60)
-                }.onAppear {
-                   // coreDataModel.fetchDayBook()
-                   // dayBookList = coreDataModel.dayBooks
-                   // print(coreDataModel.dayBooks)
-                    animateTopButton()
-                    dayBookListForState = dayBookList.reversed()
-                    print(dayBookListForState)
-                }
-                .onDisappear{
-                    animationTopView.toggle()
-                }
-                .padding([.horizontal,.top])
-                .frame(maxHeight: .infinity,alignment: .top)
-                
-                ScrollView(.vertical ,showsIndicators: false) {
-                    TimeLineView()
-                }
-                .padding(.horizontal)
-                .padding(.top, -40)
-                .onAppear(){
-                    startAnimation()
+                    .onAppear {
+                        animateTopButton()
+                        dayBookListForState = dayBookList.reversed()
+                    }
+                    .onDisappear{
+                        animationTopView.toggle()
+                    }
+                    .padding([.horizontal,.top])
+                    .frame(maxHeight: .infinity,alignment: .top)
+                    
+                    
+                    SegmentedControl()
+                   
+                    ZStack {
+                        if currentTab == .time {
+                            VStack{
+                                TimeLineView()
+                            }
+                            .padding([.horizontal,.top])
+                            .onAppear(){
+                                startAnimation()
+                            }
+                        }
+                        
+                        if currentTab == .view {
+                            //进度圈
+                            VStack {
+                                VStack {
+                                    GeometryReader { (geometry) in
+                                        makeCircle(geometry,holdProgress: holdProgress,quitProgress: quitProgress)
+                                    }
+                                }
+                                .padding()
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 5)
+                                .frame(maxWidth: .infinity,minHeight: 200)
+                                .padding()
+                                .onChange(of: dayBookListForState) { newValue in
+                                    holdProgress = getDayBookPercent(dayBooks: dayBookListForState, quartzType: "HOLD")
+                                    quitProgress = getDayBookPercent(dayBooks: dayBookListForState, quartzType: "QUIT")
+                                }
+                                .onAppear {
+                                    holdProgress = getDayBookPercent(dayBooks: dayBookListForState, quartzType: "HOLD")
+                                    quitProgress = getDayBookPercent(dayBooks: dayBookListForState, quartzType: "QUIT")
+                                }
+                                //hold汇总  quit汇总
+                                //hold连续
+                                HStack(spacing: 20){
+                                    VStack(spacing: 10) {
+                                        HStack(spacing: 20) {
+                                            Text("恒之")
+                                                .font(.title3.bold())
+                                                .padding(.bottom, 4)
+                                                .foregroundColor(Color.accentColor)
+                                                .push(to: .leading)
+                                            
+                                           
+                                            
+                                            HStack(spacing: 10) {
+                                                Text("完成率")
+                                                    .font(.callout.bold())
+                                                
+                                                Text("\(String(format: "%.2f", holdProgress * 100)) %")
+                                                    .font(.title3.bold())
+                                                    .foregroundColor(holdProgress >= 1 ? Color.green : Color.red)
+                                            }
+                                        }
+                                        
+                                        HStack (spacing: 20){
+                                            HStack(spacing: 10) {
+                                                Text("目标数量")
+                                                    .font(.callout.bold())
+                                                 
+                                                
+                                                Text("\(getDayBookSumCount(dayBooks: dayBookListForState, quartzType: "HOLD")) 个")
+                                                    .font(.callout.bold())
+                                            }
+                                            
+                                            Spacer()
+                                            
+                                        }
+                                        
+                                        HStack (spacing: 20){
+                                            
+                                            HStack(spacing: 10) {
+                                                Text("完成数量")
+                                                    .font(.callout.bold())
+                                                 
+                                                Text("\(getDayBookCompletedCount(dayBooks: dayBookListForState, quartzType: "HOLD")) 个")
+                                                    .font(.callout.bold())
+                                            }
+                                            
+                                            Spacer()
+                                        }
+                                        
+                                        
+                                        
+                                        HStack (spacing: 20){
+                                            HStack(spacing: 10) {
+                                                Text("耗时时长")
+                                                    .font(.callout.bold())
+                                                
+                                                Text("\(getDayBookCompletedTime(dayBooks: dayBookListForState, quartzType: "HOLD"))")
+                                                    .font(.callout.bold())
+                                                
+                                                Spacer()
+                                            }
+                                             
+                                            
+                                        }
+                                      
+                                    }
+                                    .padding()
+                                    .frame(maxWidth: .infinity).background {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(.bg2)
+                                    }
+                                  
+                                }
+                                .padding([.horizontal,.top])
+                                
+                                HStack(spacing: 20){
+                                    VStack(spacing: 10) {
+                                        HStack(spacing: 20) {
+                                            Text("誡之")
+                                                .font(.title3.bold())
+                                                .padding(.bottom, 4)
+                                                .foregroundColor(Color.red)
+                                                .push(to: .leading)
+                                            
+                                        
+                                            
+                                            HStack(spacing: 10) {
+                                                Text("完成率")
+                                                    .font(.callout.bold())
+                                                
+                                                Text("\(String(format: "%.2f", quitProgress * 100)) %")
+                                                    .font(.title3.bold())
+                                                    .foregroundColor(quitProgress >= 1 ? Color.green : Color.red)
+                                            }
+                                        }
+                                        
+                                        HStack (spacing: 20){
+                                            HStack(spacing: 10) {
+                                                Text("目标数量")
+                                                    .font(.callout.bold())
+                                                 
+                                                
+                                                Text("\(getDayBookSumCount(dayBooks: dayBookListForState, quartzType: "QUIT")) 个")
+                                                    .font(.callout.bold())
+                                            }
+                                            
+                                            Spacer()
+                                            
+                                        }
+                                        
+                                        HStack (spacing: 20){
+                                            
+                                            HStack(spacing: 10) {
+                                                Text("完成数量")
+                                                    .font(.callout.bold())
+                                                 
+                                                Text("\(getDayBookCompletedCount(dayBooks: dayBookListForState, quartzType: "QUIT")) 个")
+                                                    .font(.callout.bold())
+                                            }
+                                            
+                                            Spacer()
+                                        }
+                                        
+                                        
+                                        
+                                        HStack (spacing: 20){
+                                            HStack(spacing: 10) {
+                                                Text("耗时时长")
+                                                    .font(.callout.bold())
+                                                
+                                                Text("\(getDayBookCompletedTime(dayBooks: dayBookListForState, quartzType: "QUIT"))")
+                                                    .font(.callout.bold())
+                                                
+                                                Spacer()
+                                            }
+                                             
+                                            
+                                        }
+                                      
+                                    }
+                                    .padding()
+                                    .frame(maxWidth: .infinity).background {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(.bg2)
+                                    }
+                                  
+                                }
+                                .padding(.horizontal)
+                            }
+                            
+                        }
+                    }
                 }
             }
         }
     }
     
     @ViewBuilder
+    func SegmentedControl() -> some View {
+        HStack(spacing: 0) {
+            TapableText(.time)
+                .foregroundColor(themeColor)
+                .overlay {
+                    CustomCorner(corners: [.topLeft,.bottomLeft], radius: 50)
+                        .fill(themeColor)
+                        .overlay {
+                            TapableText(.view)
+                                .foregroundColor(currentTab == .view ? .white : .clear)
+                                .scaleEffect(x: -1)
+                        }
+                        .overlay {
+                            TapableText(.time)
+                                .foregroundColor(currentTab == .view ? .clear : .white)
+                        }
+                        .rotation3DEffect(.init(degrees: currentTab == .time ? 0 : 180), axis: (x: 0, y: 1, z: 0),anchor: .trailing, perspective: 0.45)
+                        
+                }
+                .zIndex(1)
+                .contentShape(Rectangle())
+            
+            TapableText(.view)
+                .foregroundColor(themeColor)
+                .zIndex(0)
+        }
+        .background {
+            ZStack {
+                Capsule()
+                    .fill(.white)
+                
+                Capsule()
+                    .stroke(themeColor, lineWidth: 1)
+            }
+        }
+        .rotation3DEffect(.init(degrees: shakeValue), axis: (x: 0, y: 1, z: 0))
+    }
+    
+   @ViewBuilder
+    func TapableText(_ tab: TimeTab) -> some View {
+        Text(tab.rawValue)
+            .font(.callout.bold())
+            .contentTransition(.interpolate)
+            .padding(.vertical, 12)
+            .padding(.horizontal, 40)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 1, blendDuration: 1)){
+                    currentTab = tab
+                }
+                
+                withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 0.5, blendDuration: 0.5)){
+                    shakeValue = (tab == .view ? 10 : -10)
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
+                    withAnimation(.interactiveSpring(response: 0.4, dampingFraction: 0.5, blendDuration: 0.5)){
+                        shakeValue = 0
+                    }
+                }
+            }
+             
+    }
+    
+    @ViewBuilder
     func TimeLineView() -> some View {
         ScrollViewReader{ proxy in
             let hours = getHoursInDay(date: currentDate)
-        
-            var midHour = hours[0]
+            //let midHour = hours[0]
             /*$dayBookList.wrappedValue.count
              let startTime = $dayBookList.wrappedValue.first?.startTime
              midHour = hours.firstIndex(of: 0)
              */
             //let midHour = hours[hours.count / 2]
-          
+            
             VStack {
+                /*Button {
+                    isFlod.toggle()
+                } label: {
+                    HStack(spacing: 10){
+                        Text("时间线")
+                            .font(.caption.bold()).fontWeight(.regular)
+                        if isFlod {
+                           Image(systemName: "chevron.forward")
+                                .font(.caption2)
+                        } else{
+                           Image(systemName: "chevron.down")
+                                .font(.caption2)
+                        }
+                    }
+                    .push(to: .leading)
+                }*/
+                
                 ForEach(hours, id: \.self){ hour in
-                    TimelineViewRow(date: hour,dayBookList: $dayBookListForState,index: hours.firstIndex(of: hour)!)
+                    TimelineViewRow(isFlod: $isFlod ,date: hour,dayBookList: $dayBookListForState,index: hours.firstIndex(of: hour)!)
                         .id(hour)
                 }
             }
-            .onAppear {
+           /* .onAppear {
+                currentDate = Date()
                 proxy.scrollTo(midHour)
-            }
+            }*/
         }
     }
     
@@ -146,25 +400,26 @@ struct TimerScreen: View {
 
 
 struct TimelineViewRow: View {
+    @Binding var isFlod: Bool
     @State var date: Date
     @Binding var dayBookList: [DayBook]
     @State var index: Int
     @State var showCardView: Bool = false
     var body: some View {
+        let calendar = Calendar.current
+        let finishedBook = dayBookList.filter {
+            if let hour = calendar.dateComponents([.hour], from: date).hour,
+               let bookHour = calendar.dateComponents([.hour], from:  $0.startTime!).hour,
+               hour == bookHour && calendar.isDate(getDateForYYYYMMDD(dateTime: $0.dayTime!), inSameDayAs: date){
+                return true
+            }
+            return false
+        }
+        
         HStack(alignment: .top) {
             Text(date.dateToString("h a"))
                 .font(.caption).fontWeight(.regular)
                 .frame(width: 45, alignment: .leading)
-            
-            let calendar = Calendar.current
-            let finishedBook = dayBookList.filter {
-                if let hour = calendar.dateComponents([.hour], from: date).hour,
-                   let bookHour = calendar.dateComponents([.hour], from:  $0.startTime!).hour,
-                   hour == bookHour && calendar.isDate(getDateForYYYYMMDD(dateTime: $0.dayTime!), inSameDayAs: date){
-                    return true
-                }
-                return false
-            }
             
             if finishedBook.isEmpty {
                 Rectangle()
@@ -180,7 +435,7 @@ struct TimelineViewRow: View {
             }
         }
         .push(to: .leading)
-        .padding(.vertical, 15)
+        .padding(.vertical, finishedBook.isEmpty && isFlod ? 0 : 15)
         .offset(y: showCardView ? 0 : 450)
         .onAppear {
             withAnimation(.easeInOut(duration: 0.5).delay(Double(index) * 0.1)) {
@@ -190,7 +445,6 @@ struct TimelineViewRow: View {
         .onDisappear {
             showCardView = false
         }
-        
     }
     
     @ViewBuilder
@@ -246,9 +500,7 @@ struct TimelineViewRow: View {
                         .frame(width: 28, height: 28)
                         .bold()
                         .foregroundColor(.white)
-                        .roundedRectBackground(radius: 100, fill: book.isCompleted ? Color(.systemGreen) : Color(.systemGray))
-                        
-                    
+                        .roundedRectBackground(radius: 100, fill: book.isCompleted ? Color(.systemGreen) : Color(.systemGray)) 
                 }
             }
             .padding(.horizontal, 4)

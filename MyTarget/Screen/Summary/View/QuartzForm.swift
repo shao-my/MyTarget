@@ -209,8 +209,6 @@ extension SummaryScreen {
                     .animation(.mySpring, value: quartzPrms.quartzWay)
                     .animation(.mySpring, value: isHourRange)
                     .animation(.mySpring, value: isEveryDay)
-                    
-                    
                 }
                 .background(.groupBg)
                 .multilineTextAlignment(.trailing)
