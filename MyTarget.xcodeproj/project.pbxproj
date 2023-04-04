@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F50B1DC729D0209600A7C4E1 /* QuartzCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50B1DC629D0209600A7C4E1 /* QuartzCard.swift */; };
+		F50B1DC929D1453F00A7C4E1 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50B1DC829D1453F00A7C4E1 /* CustomTabBar.swift */; };
 		F50C5CB129C3084F001D1B5D /* DayBookSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50C5CB029C3084F001D1B5D /* DayBookSummary.swift */; };
 		F50C5CB329C3493E001D1B5D /* CustomIconAndColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50C5CB229C3493E001D1B5D /* CustomIconAndColor.swift */; };
 		F50C5CB629C3F90E001D1B5D /* TabButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50C5CB529C3F90E001D1B5D /* TabButton.swift */; };
@@ -20,6 +22,7 @@
 		F53C27F029CDE9CC0047F045 /* QuartzModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53C27EF29CDE9CC0047F045 /* QuartzModel.swift */; };
 		F53C27F229CDEAC90047F045 /* DayBookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53C27F129CDEAC90047F045 /* DayBookModel.swift */; };
 		F56DAF9E29C0CAE5003E9D04 /* QuartzSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56DAF9D29C0CAE5003E9D04 /* QuartzSheet.swift */; };
+		F57BABFE29D71E5E0072A564 /* ShimeerEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57BABFD29D71E5E0072A564 /* ShimeerEffect.swift */; };
 		F57CC83C29C41FC600592E53 /* CustomIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57CC83B29C41FC600592E53 /* CustomIcon.swift */; };
 		F57CC84029C5A43400592E53 /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57CC83F29C5A43400592E53 /* CustomColor.swift */; };
 		F57CC84229C5A52100592E53 /* SYSColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57CC84129C5A52100592E53 /* SYSColor.swift */; };
@@ -57,6 +60,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F50B1DC629D0209600A7C4E1 /* QuartzCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuartzCard.swift; sourceTree = "<group>"; };
+		F50B1DC829D1453F00A7C4E1 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		F50C5CB029C3084F001D1B5D /* DayBookSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayBookSummary.swift; sourceTree = "<group>"; };
 		F50C5CB229C3493E001D1B5D /* CustomIconAndColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomIconAndColor.swift; sourceTree = "<group>"; };
 		F50C5CB529C3F90E001D1B5D /* TabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabButton.swift; sourceTree = "<group>"; };
@@ -70,6 +75,7 @@
 		F53C27EF29CDE9CC0047F045 /* QuartzModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuartzModel.swift; sourceTree = "<group>"; };
 		F53C27F129CDEAC90047F045 /* DayBookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayBookModel.swift; sourceTree = "<group>"; };
 		F56DAF9D29C0CAE5003E9D04 /* QuartzSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuartzSheet.swift; sourceTree = "<group>"; };
+		F57BABFD29D71E5E0072A564 /* ShimeerEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimeerEffect.swift; sourceTree = "<group>"; };
 		F57CC83B29C41FC600592E53 /* CustomIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomIcon.swift; sourceTree = "<group>"; };
 		F57CC83F29C5A43400592E53 /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
 		F57CC84129C5A52100592E53 /* SYSColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SYSColor.swift; sourceTree = "<group>"; };
@@ -130,6 +136,7 @@
 				F50C5CB529C3F90E001D1B5D /* TabButton.swift */,
 				F5ED4EE129C8483600DDC5E6 /* Wave.swift */,
 				F5ED4EE529C88BAD00DDC5E6 /* RootView.swift */,
+				F50B1DC829D1453F00A7C4E1 /* CustomTabBar.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -217,6 +224,7 @@
 				F5DF181429C6F36300F0E471 /* BounceStruct.swift */,
 				F5C816C229C1BE6600EF2B5A /* Animation+.swift */,
 				F5DF181629C6FE0800F0E471 /* LoveGeometryEffect.swift */,
+				F57BABFD29D71E5E0072A564 /* ShimeerEffect.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -272,6 +280,7 @@
 				F53C27C929CD7E5A0047F045 /* Tab.swift */,
 				F53C27EF29CDE9CC0047F045 /* QuartzModel.swift */,
 				F53C27F129CDEAC90047F045 /* DayBookModel.swift */,
+				F50B1DC629D0209600A7C4E1 /* QuartzCard.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -397,12 +406,14 @@
 				F53A44CE29C2D555006BD5CB /* QuartzPrms.swift in Sources */,
 				F5EF342429CB4B520005DF20 /* DateValue.swift in Sources */,
 				F5ED4EE029C82CD400DDC5E6 /* FlipIconByTimes.swift in Sources */,
+				F50B1DC929D1453F00A7C4E1 /* CustomTabBar.swift in Sources */,
 				F57CC84029C5A43400592E53 /* CustomColor.swift in Sources */,
 				F5EF342229CB406F0005DF20 /* CustomDatePicker.swift in Sources */,
 				F5ED4EE229C8483600DDC5E6 /* Wave.swift in Sources */,
 				F5DFD45229C01CA400211FE3 /* MyTarget.xcdatamodeld in Sources */,
 				F5DF181729C6FE0800F0E471 /* LoveGeometryEffect.swift in Sources */,
 				F5DFD42129BF707300211FE3 /* DateFormatTools.swift in Sources */,
+				F50B1DC729D0209600A7C4E1 /* QuartzCard.swift in Sources */,
 				F5DFD41E29BF4B1D00211FE3 /* ManageScreen.swift in Sources */,
 				F5DFD3F829BF310500211FE3 /* AppEntry.swift in Sources */,
 				F519225B29C0D17D00C90BCE /* SuffixWrapper.swift in Sources */,
@@ -413,6 +424,7 @@
 				F57CC84229C5A52100592E53 /* SYSColor.swift in Sources */,
 				F5DF181929C708B100F0E471 /* ProgressShape.swift in Sources */,
 				F519225F29C0D1CD00C90BCE /* UserDefaultsKey.swift in Sources */,
+				F57BABFE29D71E5E0072A564 /* ShimeerEffect.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

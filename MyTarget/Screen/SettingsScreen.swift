@@ -84,7 +84,7 @@ private enum Dialog: String{
         }
     }
     
-    func action()   {
+    func action() {
         switch self {
         case .resetSettings:
             let keys: [UserDefaults.Key] = [.shouldUseDarkMode, .startTab]

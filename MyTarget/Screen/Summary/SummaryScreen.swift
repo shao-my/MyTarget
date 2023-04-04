@@ -42,8 +42,9 @@ struct SummaryScreen: View {
     
     @Environment(\.self) var env
     
-    @FetchRequest(entity: DayBook.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \DayBook.startTime, ascending: false)], predicate: NSPredicate(format: "dayTime = %@", getStringForYYYYMMDD(dateTime: Date())), animation: .easeInOut)
-    private var dayBookList: FetchedResults<DayBook>
+    @FetchRequest(entity: DayBook.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \DayBook.id, ascending: false)], predicate: NSPredicate(format: "dayTime = %@", getStringForYYYYMMDD(dateTime: Date())), animation: .easeInOut)
+    var dayBookList: FetchedResults<DayBook>
+    //@State var dayBookList:[DayBook] = []
     
     @State var isShowHoldSheet: Bool = false
     @State var isShowQuitSheet: Bool = false
@@ -119,15 +120,6 @@ struct SummaryScreen: View {
                         }
                     }
                     .onAppear {
-                        /*holdSummaryStr = getDayBookSummary(dayBooks: coreDataModel.dayBooks, quartzType: "HOLD")
-                         quitSummaryStr = getDayBookSummary(dayBooks: coreDataModel.dayBooks, quartzType: "QUIT")
-                         holdProgress = getDayBookPercent(dayBooks: coreDataModel.dayBooks, quartzType: "HOLD")
-                         quitProgress = getDayBookPercent(dayBooks: coreDataModel.dayBooks, quartzType: "QUIT")
-                         holdTotalNumber = Int(holdSummaryStr.suffix(2))!
-                         quitTotalNumber = Int(quitSummaryStr.suffix(2))!
-                         holdScoreNumber = Int(holdSummaryStr.prefix(2))!
-                         quitScoreNumber = Int(quitSummaryStr.prefix(2))!*/
-                        
                         holdSummaryStr = getDayBookSummary(dayBooks: dayBookList.reversed(), quartzType: "HOLD")
                         quitSummaryStr = getDayBookSummary(dayBooks: dayBookList.reversed(), quartzType: "QUIT")
                         holdProgress = getDayBookPercent(dayBooks: dayBookList.reversed(), quartzType: "HOLD")
@@ -149,7 +141,6 @@ struct SummaryScreen: View {
                     VStack {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack {
-                                
                                 ForEach(dayBookList) { book in
                                     if book.quartzType == "HOLD" {
                                         if book.quartzWay == "TIMES" {
@@ -176,10 +167,6 @@ struct SummaryScreen: View {
                                                         }else{
                                                             book.finishedTime = nil
                                                         }
-                                                        /* holdSummaryStr = getDayBookSummary(dayBooks: coreDataModel.dayBooks, quartzType: "HOLD")
-                                                         holdProgress = getDayBookPercent(dayBooks: coreDataModel.dayBooks, quartzType: "HOLD")
-                                                         coreDataModel.saveDayBook()
-                                                         holdScoreNumber = Int(holdSummaryStr.prefix(2))!*/
                                                         holdSummaryStr = getDayBookSummary(dayBooks: dayBookList.reversed(), quartzType: "HOLD")
                                                         holdProgress = getDayBookPercent(dayBooks: dayBookList.reversed(), quartzType: "HOLD")
                                                         try?  env.managedObjectContext.save()
@@ -204,9 +191,6 @@ struct SummaryScreen: View {
                                                         flipHoldScore.toggle()
                                                         holdFrontDegrees = holdFrontDegrees + 180
                                                         holdScoreNumber = Int(holdSummaryStr.prefix(2))!
-                                                        //  coreDataModel.fetchDayBook(day: Date())
-                                                        
-                                                        
                                                     }
                                                 )
                                         }
@@ -218,15 +202,6 @@ struct SummaryScreen: View {
                                     .frame(width: bookSize, height: bookSize)
                                     .roundedRectBackground(radius: bookSize,fill: .bg2)
                                     .onTapGesture {
-                                        /*sheet = .newQuartzHold() {
-                                            //新增Quartz，同时插入DayBook
-                                            quartzModel.addQuartz(context: env.managedObjectContext, quartzPrms: $0)
-                                            holdSummaryStr = getDayBookSummary(dayBooks:  dayBookList.reversed(), quartzType: "HOLD")
-                                            holdProgress = getDayBookPercent(dayBooks:  dayBookList.reversed(), quartzType: "HOLD")
-                                            flipHoldScore.toggle()
-                                            holdFrontDegrees = holdFrontDegrees + 180
-                                            holdTotalNumber = Int(holdSummaryStr.suffix(2))!
-                                        }*/
                                         isShowHoldSheet.toggle()
                                     }
                             }
@@ -267,10 +242,6 @@ struct SummaryScreen: View {
                                                         }else{
                                                             book.finishedTime = nil
                                                         }
-                                                        /*    quitSummaryStr = getDayBookSummary(dayBooks: coreDataModel.dayBooks, quartzType: "QUIT")
-                                                         quitProgress = getDayBookPercent(dayBooks: coreDataModel.dayBooks, quartzType: "QUIT")
-                                                         coreDataModel.saveDayBook()
-                                                         quitScoreNumber = Int(quitSummaryStr.prefix(2))!*/
                                                         quitSummaryStr = getDayBookSummary(dayBooks: dayBookList.reversed(), quartzType: "QUIT")
                                                         quitProgress = getDayBookPercent(dayBooks: dayBookList.reversed(), quartzType: "QUIT")
                                                         try?  env.managedObjectContext.save()
@@ -288,12 +259,6 @@ struct SummaryScreen: View {
                                                         }else{
                                                             book.finishedTime = nil
                                                         }
-                                                        /*   coreDataModel.saveDayBook()
-                                                         quitSummaryStr = getDayBookSummary(dayBooks: coreDataModel.dayBooks, quartzType: "QUIT")
-                                                         quitProgress = getDayBookPercent(dayBooks: coreDataModel.dayBooks, quartzType: "QUIT")
-                                                         flipQuitScore.toggle()
-                                                         quitFrontDegrees = quitFrontDegrees + 180
-                                                         quitScoreNumber = Int(quitSummaryStr.prefix(2))!*/
                                                         try?  env.managedObjectContext.save()
                                                         quitSummaryStr = getDayBookSummary(dayBooks: dayBookList.reversed(), quartzType: "QUIT")
                                                         quitProgress = getDayBookPercent(dayBooks: dayBookList.reversed(), quartzType: "QUIT")
@@ -311,14 +276,6 @@ struct SummaryScreen: View {
                                     .frame(width: bookSize, height: bookSize)
                                     .roundedRectBackground(radius: bookSize,fill: .bg2)
                                     .onTapGesture {
-                                        /*sheet = .newQuartzQuit() {
-                                            quartzModel.addQuartz(context: env.managedObjectContext, quartzPrms: $0)
-                                            quitSummaryStr = getDayBookSummary(dayBooks: dayBookList.reversed(), quartzType: "QUIT")
-                                            quitProgress = getDayBookPercent(dayBooks: dayBookList.reversed(), quartzType: "QUIT")
-                                            flipQuitScore.toggle()
-                                            quitFrontDegrees = quitFrontDegrees + 180
-                                            quitTotalNumber = Int(quitSummaryStr.suffix(2))!
-                                        }*/
                                         isShowQuitSheet.toggle()
                                     }
                                 
@@ -344,13 +301,12 @@ struct SummaryScreen: View {
                     .foregroundColor(Color(.systemGray))
             )
         } 
-       // .sheet(item: $sheet){ $0 }
         .sheet(isPresented: $isShowHoldSheet) {
              QuartzForm(quartzPrms: QuartzPrms.newHold, onSubmit: addHoldQuartz )
         }
         .sheet(isPresented: $isShowQuitSheet) {
              QuartzForm(quartzPrms: QuartzPrms.newQuit, onSubmit: addQuitQuartz )
-        }
+        } 
     }
 }
 

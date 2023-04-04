@@ -20,7 +20,8 @@
         <attribute name="endDay" optional="YES" attributeType="String"/>
         <attribute name="endTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="isEvaryDay" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isEveryDay" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isHourRange" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="quartzColor" optional="YES" attributeType="String"/>
         <attribute name="quartzIcon" optional="YES" attributeType="String"/>
         <attribute name="quartzName" optional="YES" attributeType="String"/>
@@ -29,5 +30,6 @@
         <attribute name="quartzWay" optional="YES" attributeType="String"/>
         <attribute name="startDay" optional="YES" attributeType="String"/>
         <attribute name="startTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="status" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
 </model>

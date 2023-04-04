@@ -8,14 +8,13 @@
 
 import SwiftUI
 
-
-extension SummaryScreen {
+ 
     struct QuartzForm: View {
         @Environment(\.dismiss) var dismiss
         @State var quartzPrms: QuartzPrms
         
-        @State private var isEveryDay: Bool = true
-        @State private var isHourRange: Bool = false
+        //  @State private var isEveryDay: Bool = true
+        // @State private var isHourRange: Bool = false
         
         @State private var isEditCustom: Bool = false
         
@@ -113,13 +112,13 @@ extension SummaryScreen {
                                 .padding(8)
                                 .background(.secondary)
                                 .clipShape(Circle())
-                                /*.background(
-                                    Circle()
-                                        .stroke(Color.secondary, lineWidth: 2)
-                                )*/
+                            /*.background(
+                             Circle()
+                             .stroke(Color.secondary, lineWidth: 2)
+                             )*/
                                 .shadow(color: .white, radius: 8)
                         }.offset(x: 40, y: 40)
-                         
+                        
                     )
                     
                     Form {
@@ -156,32 +155,8 @@ extension SummaryScreen {
                             }
                         }
                         
-                        Section("每日时间") {
-                            Toggle(isOn: $isHourRange){
-                                Label("是否范围", systemImage: .loop)
-                            }
-                            .toggleStyle(.switch)
-                            
-                            DatePicker(selection: $quartzPrms.startTime
-                               /* get:{ getDateForYYYYMMDDHHMM(dateTime: $quartzPrms.startDay.wrappedValue + " " + $quartzPrms.startTime.wrappedValue) },
-                                set: { date in
-                                    $quartzPrms.startTime.wrappedValue = getStringForHHmm(dateTime: date)
-                                }),*/
-                                 ,
-                                
-                                       displayedComponents: DatePickerComponents.hourAndMinute) {
-                                Label("开始时间", systemImage: .start)
-                            }
-                            
-                            if isHourRange {
-                                DatePicker(selection: $quartzPrms.endTime, displayedComponents: DatePickerComponents.hourAndMinute) {
-                                    Label("结束时间", systemImage: .end)
-                                }
-                            }
-                        }
-                        
                         Section("目标日期") {
-                            Toggle(isOn: $isEveryDay){
+                            Toggle(isOn: $quartzPrms.isEveryDay){
                                 Label("是否每天", systemImage: .loop)
                             }
                             .toggleStyle(.switch)
@@ -191,24 +166,48 @@ extension SummaryScreen {
                                 set: { date in
                                     $quartzPrms.startDay.wrappedValue = getStringForYYYYMMDD(dateTime: date)
                                 }), displayedComponents: DatePickerComponents.date) {
-                                Label("开始日期", systemImage: .start)
-                            }
+                                    Label("开始日期", systemImage: .start)
+                                }
                             
-                            if !isEveryDay {
+                            if !quartzPrms.isEveryDay {
                                 DatePicker(selection: Binding<Date>(
                                     get:{ getDateForYYYYMMDD(dateTime: $quartzPrms.endDay.wrappedValue) },
                                     set: { date in
                                         $quartzPrms.endDay.wrappedValue = getStringForYYYYMMDD(dateTime: date)
                                     }), displayedComponents: DatePickerComponents.date) {
-                                    Label("结束日期", systemImage: .end)
+                                        Label("结束日期", systemImage: .end)
+                                    }
+                            }
+                        }
+                        
+                        Section("每日时间") {
+                            Toggle(isOn: $quartzPrms.isHourRange){
+                                Label("是否范围", systemImage: .loop)
+                            }
+                            .toggleStyle(.switch)
+                            
+                            DatePicker(selection: $quartzPrms.startTime
+                                       /* get:{ getDateForYYYYMMDDHHMM(dateTime: $quartzPrms.startDay.wrappedValue + " " + $quartzPrms.startTime.wrappedValue) },
+                                        set: { date in
+                                        $quartzPrms.startTime.wrappedValue = getStringForHHmm(dateTime: date)
+                                        }),*/
+                                       ,
+                                       
+                                       displayedComponents: DatePickerComponents.hourAndMinute) {
+                                Label("开始时间", systemImage: .start)
+                            }
+                            
+                            if quartzPrms.isHourRange {
+                                DatePicker(selection: $quartzPrms.endTime, displayedComponents: DatePickerComponents.hourAndMinute) {
+                                    Label("结束时间", systemImage: .end)
                                 }
                             }
                         }
                     }
                     .padding(.top,-20)
                     .animation(.mySpring, value: quartzPrms.quartzWay)
-                    .animation(.mySpring, value: isHourRange)
-                    .animation(.mySpring, value: isEveryDay)
+                    .animation(.mySpring, value: quartzPrms.isHourRange)
+                    .animation(.mySpring, value: quartzPrms.isEveryDay)
                 }
                 .background(.groupBg)
                 .multilineTextAlignment(.trailing)
@@ -253,7 +252,6 @@ extension SummaryScreen {
         
         
     }
-}
 
 private enum Dialog: String{
     case closeQuartzForm = "确定要关闭表单?"
@@ -285,12 +283,12 @@ extension Dialog: CaseIterable {
 extension Dialog: Identifiable {
     var id: String {
         self.rawValue
-    } 
+    }
 }
 
 
 struct QuartzForm_Previews: PreviewProvider {
     static var previews: some View {
-        SummaryScreen.QuartzForm(quartzPrms: QuartzPrms.new){ _ in }
+         QuartzForm(quartzPrms: QuartzPrms.new){ _ in }
     }
 }

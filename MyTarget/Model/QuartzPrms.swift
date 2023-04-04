@@ -21,6 +21,8 @@ struct QuartzPrms: Equatable, Identifiable {
     var endDay: String
     var startTime: Date
     var endTime: Date
+    var isEveryDay: Bool
+    var isHourRange: Bool
     
 }
 
@@ -36,7 +38,9 @@ extension QuartzPrms {
                            startDay: getStringForYYYYMMDD(dateTime: Date()),
                            endDay:  "",
                            startTime: Date(),
-                           endTime:  Date()
+                           endTime:  Date(),
+                           isEveryDay: true,
+                           isHourRange: false
         )
     }
     
@@ -51,7 +55,9 @@ extension QuartzPrms {
                            startDay: getStringForYYYYMMDD(dateTime: Date()),
                            endDay:  "",
                            startTime: Date(),
-                           endTime:  Date()
+                           endTime:  Date(),
+                           isEveryDay: true,
+                           isHourRange: false
         )
     }
     
@@ -66,7 +72,9 @@ extension QuartzPrms {
                            startDay: getStringForYYYYMMDD(dateTime: Date()),
                            endDay:  "",
                            startTime: Date(),
-                           endTime:  Date()
+                           endTime:  Date(),
+                           isEveryDay: true,
+                           isHourRange: false
         )
     }
     
@@ -82,7 +90,9 @@ extension QuartzPrms {
                            startDay: quartz.startDay!,
                            endDay: quartz.endDay ?? "",
                            startTime: quartz.startTime!,
-                           endTime:  quartz.endTime ?? Date()
+                           endTime:  quartz.endTime ?? Date(),
+                           isEveryDay: true,
+                           isHourRange: false
         )
     }
     
@@ -97,7 +107,9 @@ extension QuartzPrms {
                    startDay: getStringForYYYYMMDD(dateTime: Date()),
                    endDay:  "",
                    startTime: Date(),
-                   endTime:  Date()
+                   endTime:  Date(),
+                   isEveryDay: true,
+                   isHourRange: false
                   )
     ]
     

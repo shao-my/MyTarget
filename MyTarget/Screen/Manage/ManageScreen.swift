@@ -82,7 +82,8 @@ struct ManageScreen: View {
                     updateText(value: newValue)
                 }
             }
-            
+            Text(getStringForHHmm(dateTime: Date()))
+
             Button{
                 value = .random(in: 0 ... 99)
             }label: {
@@ -112,6 +113,8 @@ struct ManageScreen: View {
                     }
             }
             
+            Text(getStringForHHmm(dateTime: Date()))
+
             ZStack {
                 Circle()
                     .frame(width: 80, height: 80)

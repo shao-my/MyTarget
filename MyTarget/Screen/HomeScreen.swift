@@ -9,7 +9,10 @@ import SwiftUI
 
 extension HomeScreen {
     enum Tab:String, View, CaseIterable {
-        case summary,timer,manage,settings
+        case summary = "hand.thumbsup"
+        case timer =  "calendar"
+        case manage = "scope"
+        case settings = "gearshape"
         
         var body: some View {
             content.tabItem { tabLabel }
@@ -78,6 +81,10 @@ struct HomeScreen: View {
             .background(Color("TabBgColor"))
             .clipShape(Capsule())
             .padding(.horizontal,25)*/
+            
+            CustomTabBar(currentTab: $tab)
+                .zIndex(999)
+                .background(.bg2)
         }
         
         //   }

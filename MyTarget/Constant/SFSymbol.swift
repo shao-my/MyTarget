@@ -42,6 +42,7 @@ enum SFSymbol: String, CaseIterable {
     case chevronRight =  "chevron.right"
     //case medal = "medal.fill"
 
+    case edit = "square.and.pencil"
 }
 
 extension Label where Title == Text, Icon == Image  {

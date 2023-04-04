@@ -133,3 +133,15 @@ struct BiteCircle: Shape {
         return path
     }
 }
+
+
+struct BiteCard: Shape {
+    func path(in rect: CGRect) -> Path {
+        let offset = CGFloat(-25)
+        let crect = CGRect(origin: .zero, size: CGSize(width: 32, height: 32)).offsetBy(dx: offset, dy: offset)
+        
+        var path = Rectangle().path(in: rect)
+        path.addPath(Circle().path(in: crect))
+        return path
+    }
+}

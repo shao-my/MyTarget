@@ -53,6 +53,7 @@ struct PersistenceController {
         //查询有效Quartz
         var quartzs: [Quartz] = []
         let requestQuartz = NSFetchRequest<Quartz>(entityName: "Quartz")
+        requestQuartz.predicate =  NSPredicate(format: "status = %@", "1")
         do {
             quartzs = try viewContext.fetch(requestQuartz)
         } catch let error {

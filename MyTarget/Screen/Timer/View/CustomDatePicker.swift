@@ -7,165 +7,166 @@
 
 import SwiftUI
 
-struct CustomDatePicker: View {
-    @Binding var currentDate: Date
-    @State var currentMonth: Int = 0
-    @State var animationStatus: [Bool] = Array(repeating: false, count: 2)
-    
-    //@StateObject public var coreDataModel = CoreDataModel()
-    //@EnvironmentObject public var coreDataModel : CoreDataModel
-    
-    @StateObject var dayBookModel: DayBookModel = DayBookModel()
-    
-    @FetchRequest(entity: DayBook.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \DayBook.id, ascending: false)], predicate: NSPredicate(format: "dayTime >= %@ and dayTime <= %@", getStringForYYYYMM(dateTime: Date())+"-01",getStringForYYYYMM(dateTime: Date())+"-31"), animation: .easeInOut)
-    var dayBookMonth: FetchedResults<DayBook>
-    
-    @Environment(\.self) var env
-    
-    @State var dayBookList: [DayBook]
-    @Binding var dayBookListForState: [DayBook]
-    
-    var body: some View {
+extension TimerScreen {
+    struct CustomDatePicker: View {
+        @Binding var currentDate: Date
+        @State var currentMonth: Int = 0
+        @State var animationStatus: [Bool] = Array(repeating: false, count: 2)
         
-        VStack{
+        //@StateObject public var coreDataModel = CoreDataModel()
+        //@EnvironmentObject public var coreDataModel : CoreDataModel
+        
+        @StateObject var dayBookModel: DayBookModel = DayBookModel()
+        
+        @FetchRequest(entity: DayBook.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \DayBook.id, ascending: false)], predicate: NSPredicate(format: "dayTime >= %@ and dayTime <= %@", getStringForYYYYMM(dateTime: Date())+"-01",getStringForYYYYMM(dateTime: Date())+"-31"), animation: .easeInOut)
+        var dayBookMonth: FetchedResults<DayBook>
+        
+        @Environment(\.self) var env
+        
+        @State var dayBookList: [DayBook]
+        @Binding var dayBookListForState: [DayBook]
+        
+        var body: some View {
             
-            let days: [String] = ["日","一","二","三","四","五","六"]
-            
-            HStack(spacing: 20) {
-                Button {
-                    withAnimation {
-                        currentMonth -= 1
-                    }
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.callout)
-                        .fontWeight(.semibold)
-                }
+            VStack{
                 
-                Text(extractDate()[0] + " " + extractDate()[1])
-                    .font(.callout)
-                    .fontWeight(.semibold)
+                let days: [String] = ["日","一","二","三","四","五","六"]
                 
-                Button {
-                    withAnimation {
-                        currentMonth += 1
+                HStack(spacing: 20) {
+                    Button {
+                        withAnimation {
+                            currentMonth -= 1
+                        }
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.callout)
+                            .fontWeight(.semibold)
                     }
-                } label: {
-                    Image(systemName: "chevron.right")
-                        .font(.callout)
-                        .fontWeight(.semibold)
-                }
-            }
-            .foregroundColor(.white)
-            .padding(.horizontal)
-            .opacity(animationStatus[0] ? 1 : 0)
-            
-            HStack(spacing: 10) {
-                ForEach(days, id: \.self){ day in
-                    Text(day)
-                        .font(.caption2)
-                        .frame(maxWidth: .infinity)
                     
-                }
-            }
-            .padding(.top, 4)
-            .foregroundColor(.white)
-            .opacity(animationStatus[0] ? 1 : 0)
-            
-            Rectangle()
-                .fill(.white.opacity(0.4))
-                .frame(width: animationStatus[0] ? nil : 0,height: 1)
-                .padding(.vertical, 3)
-                .push(to: .leading)
-            
-            let columns = Array(repeating: GridItem(.flexible()), count: 7)
-            
-            if animationStatus[0] {
-                LazyVGrid(columns: columns,spacing: 10) {
-                    ForEach(extractDateValue().indices, id: \.self) {index in
-                        let value = extractDateValue()[index]
-                        PickerCardView(value: value, index: index, currentDate: $currentDate, isFinished: $animationStatus[1])
-                            .onTapGesture {
-                                currentDate = value.date
-                                //  dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
-                                //dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
-                                dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
-                            }
+                    Text(extractDate()[0] + " " + extractDate()[1])
+                        .font(.callout)
+                        .fontWeight(.semibold)
+                    
+                    Button {
+                        withAnimation {
+                            currentMonth += 1
+                        }
+                    } label: {
+                        Image(systemName: "chevron.right")
+                            .font(.callout)
+                            .fontWeight(.semibold)
                     }
                 }
-            }
-            else {
-                LazyVGrid(columns: columns,spacing: 10) {
-                    ForEach(extractDateValue().indices, id: \.self) {index in
-                        let value = extractDateValue()[index]
-                        PickerCardView(value: value, index: index, currentDate: $currentDate,isFinished: $animationStatus[1])
-                            .onTapGesture {
-                                currentDate = value.date
-                                //   dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
-                                //  dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
-                                dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
-                            }
-                    }
-                }
-                .opacity(0)
-            }
-        }
-        .padding()
-        .onChange(of: currentMonth) { newValue in
-            currentDate = getCurrentMonth()
-            //dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
-            //dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
-            dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
-        }
-        .onAppear {
-            currentDate = getCurrentMonth()
-            //dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
-            //  dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
-            // dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                withAnimation(.easeInOut(duration: 0.3)){
-                    animationStatus[0] = true
-                }
+                .foregroundColor(.white)
+                .padding(.horizontal)
+                .opacity(animationStatus[0] ? 1 : 0)
                 
+                HStack(spacing: 10) {
+                    ForEach(days, id: \.self){ day in
+                        Text(day)
+                            .font(.caption2)
+                            .frame(maxWidth: .infinity)
+                        
+                    }
+                }
+                .padding(.top, 4)
+                .foregroundColor(.white)
+                .opacity(animationStatus[0] ? 1 : 0)
+                
+                Rectangle()
+                    .fill(.white.opacity(0.4))
+                    .frame(width: animationStatus[0] ? nil : 0,height: 1)
+                    .padding(.vertical, 3)
+                    .push(to: .leading)
+                
+                let columns = Array(repeating: GridItem(.flexible()), count: 7)
+                
+                if animationStatus[0] {
+                    LazyVGrid(columns: columns,spacing: 10) {
+                        ForEach(extractDateValue().indices, id: \.self) {index in
+                            let value = extractDateValue()[index]
+                            PickerCardView(value: value, index: index, currentDate: $currentDate, isFinished: $animationStatus[1])
+                                .onTapGesture {
+                                    currentDate = value.date
+                                    //  dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
+                                    //dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+                                    dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+                                }
+                        }
+                    }
+                }
+                else {
+                    LazyVGrid(columns: columns,spacing: 10) {
+                        ForEach(extractDateValue().indices, id: \.self) {index in
+                            let value = extractDateValue()[index]
+                            PickerCardView(value: value, index: index, currentDate: $currentDate,isFinished: $animationStatus[1])
+                                .onTapGesture {
+                                    currentDate = value.date
+                                    //   dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
+                                    //  dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+                                    dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+                                }
+                        }
+                    }
+                    .opacity(0)
+                }
+            }
+            .padding()
+            .onChange(of: currentMonth) { newValue in
+                currentDate = getCurrentMonth()
+                //dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
+                //dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+                dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+            }
+            .onAppear {
+                currentDate = getCurrentMonth()
+                //dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
+                //  dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
+                // dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    animationStatus[1] = true
+                    withAnimation(.easeInOut(duration: 0.3)){
+                        animationStatus[0] = true
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        animationStatus[1] = true
+                    }
                 }
             }
         }
-    }
-    
-    func extractDate() -> [String] {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "YYYY MMMM"
-        let date = formatter.string(from: currentDate)
-        return date.components(separatedBy: " ")
-    }
-    
-    func getCurrentMonth() -> Date {
-        let calendar = Calendar.current
-        guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonth, to: Date()) else { return Date() }
-        return currentMonth
-    }
-    
-    func extractDateValue() -> [DateValue] {
-        let calendar = Calendar.current
-        let currentMonth = getCurrentMonth()
         
-        var days = currentMonth.getAllDates().compactMap { date -> DateValue in
-            let day = calendar.component(.day, from: date)
-            return DateValue(day: day, date: date)
+        func extractDate() -> [String] {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "YYYY MMMM"
+            let date = formatter.string(from: currentDate)
+            return date.components(separatedBy: " ")
         }
         
-        let firstWeekday = calendar.component(.weekday, from: days.first?.date ?? Date())
-        
-        for _ in 0..<firstWeekday - 1 {
-            days.insert(DateValue(day: -1, date: Date()), at: 0)
+        func getCurrentMonth() -> Date {
+            let calendar = Calendar.current
+            guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonth, to: Date()) else { return Date() }
+            return currentMonth
         }
         
-        return days
+        func extractDateValue() -> [DateValue] {
+            let calendar = Calendar.current
+            let currentMonth = getCurrentMonth()
+            
+            var days = currentMonth.getAllDates().compactMap { date -> DateValue in
+                let day = calendar.component(.day, from: date)
+                return DateValue(day: day, date: date)
+            }
+            
+            let firstWeekday = calendar.component(.weekday, from: days.first?.date ?? Date())
+            
+            for _ in 0..<firstWeekday - 1 {
+                days.insert(DateValue(day: -1, date: Date()), at: 0)
+            }
+            
+            return days
+        }
     }
 }
-
 func isSameDay(date1: Date, date2: Date) -> Bool {
     let calendar = Calendar.current
     return calendar.isDate(date1, inSameDayAs: date2)

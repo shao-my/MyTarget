@@ -14,8 +14,6 @@ enum TimeTab: String {
 }
 
 struct TimerScreen: View {
-   // @StateObject public var coreDataModel = CoreDataModel()
-   // @EnvironmentObject public var coreDataModel : CoreDataModel
     @State var animationCalendar: [Bool] = Array(repeating: false, count: 2)
     @State var calendarHeight: CGFloat = 0
     @Namespace var animation
@@ -33,7 +31,7 @@ struct TimerScreen: View {
     
     @State var isFlod: Bool = true
     
-    @State private var currentTab: TimeTab = .view
+    @State private var currentTab: TimeTab = .time
     @State private var shakeValue: CGFloat = 0
     
     let themeColor: Color = Color(red: 49 / 255, green: 38 / 255, blue: 126 / 255)
@@ -341,23 +339,7 @@ struct TimerScreen: View {
             //let midHour = hours[hours.count / 2]
             
             VStack {
-                /*Button {
-                    isFlod.toggle()
-                } label: {
-                    HStack(spacing: 10){
-                        Text("时间线")
-                            .font(.caption.bold()).fontWeight(.regular)
-                        if isFlod {
-                           Image(systemName: "chevron.forward")
-                                .font(.caption2)
-                        } else{
-                           Image(systemName: "chevron.down")
-                                .font(.caption2)
-                        }
-                    }
-                    .push(to: .leading)
-                }*/
-                
+               
                 ForEach(hours, id: \.self){ hour in
                     TimelineViewRow(isFlod: $isFlod ,date: hour,dayBookList: $dayBookListForState,index: hours.firstIndex(of: hour)!)
                         .id(hour)

@@ -20,7 +20,7 @@ struct CustomIconAndColor: View {
     @Binding var customItem: QuartzPrms
     @State var taps: Int = 0 
     @State var loveCount: Int = 0
-     
+    @Namespace var tabAnimation
     
     var body: some View {
         
@@ -66,9 +66,58 @@ struct CustomIconAndColor: View {
             }
             .bounce(animCount: taps)
             .animation(.interactiveSpring(response: 0.5, dampingFraction: 1, blendDuration: 1), value: customItem.quartzColor)
+            
+            
+            HStack {
+                Text("图标设置")
+                    .fontWeight(.bold)
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 25)
+                    .background (
+                        ZStack {
+                            if tab == "iconView" {
+                                Color.white
+                                    .cornerRadius(10)
+                                    .matchedGeometryEffect(id: "TABANIMATION", in: tabAnimation)
+                            }
+                        }
+                    )
+                    .foregroundColor( tab == "iconView" ? .black : .white)
+                    .onTapGesture {
+                        withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.6, blendDuration: 0.6)){
+                            tab = "iconView"
+                        }
+                    }
+                
+                Text("颜色设置")
+                    .fontWeight(.bold)
+                    .padding(.vertical, 12)
+                    .padding(.horizontal, 25)
+                    .background (
+                        ZStack {
+                            if tab == "colorView" {
+                                Color.white
+                                    .cornerRadius(10)                                    .matchedGeometryEffect(id: "TABANIMATION", in: tabAnimation)
+
+                            }
+                        }
+                    )
+                    .foregroundColor( tab == "colorView" ? .black : .white)
+                    .onTapGesture {
+                        withAnimation(.interactiveSpring(response: 0.5, dampingFraction: 0.6, blendDuration: 0.6)){
+                            tab = "colorView"
+                        }
+                    }
+
+            }
+            .padding(.vertical, 7)
+            .padding(.horizontal, 10)
+            .background(shouldUseDarkMode ? Color.gray.opacity(0.15) : Color.gray.opacity(0.25))
+            .cornerRadius(10)
+            .padding(.bottom)
                
             
-            HStack (spacing: 20){
+           /* HStack (spacing: 20){
                 ZStack{
                     Text("")
                         .frame(height: 40)
@@ -116,6 +165,7 @@ struct CustomIconAndColor: View {
             .padding(.vertical)
             .padding(.horizontal,40)
             .animation(.mySpring, value: tab)
+            */
             
             TabView(selection: $tab) {
                 CustomIcon(customItem: $customItem,taps: $taps).tag("iconView").tabItem {}
