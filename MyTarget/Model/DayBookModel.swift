@@ -24,6 +24,8 @@ class DayBookModel: ObservableObject {
     @Published var endTime: Date = Date()
     @Published var finishedTime: Date  = Date()
     
+    @Published var dayBookList:  [DayBook] = []
+    
     func fetchDayBookForDay(context: NSManagedObjectContext,date: Date = Date()) -> [DayBook] {
         //查询当天的DayBook
         var dayBooks: [DayBook] = []

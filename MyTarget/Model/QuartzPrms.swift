@@ -24,6 +24,12 @@ struct QuartzPrms: Equatable, Identifiable {
     var isEveryDay: Bool
     var isHourRange: Bool
     
+    //add
+    var weekDays: [String] = []
+    var isRemainderOn: Bool = false
+    var remainderText: String = ""
+    var notificationIDs: [String] = []
+    
 }
 
 extension QuartzPrms {
@@ -40,7 +46,11 @@ extension QuartzPrms {
                            startTime: Date(),
                            endTime:  Date(),
                            isEveryDay: true,
-                           isHourRange: false
+                           isHourRange: false,
+                           weekDays: [],
+                           isRemainderOn: false,
+                           remainderText:"",
+                           notificationIDs: []
         )
     }
     
@@ -57,7 +67,11 @@ extension QuartzPrms {
                            startTime: Date(),
                            endTime:  Date(),
                            isEveryDay: true,
-                           isHourRange: false
+                           isHourRange: false,
+                           weekDays: [],
+                           isRemainderOn: false,
+                           remainderText:"",
+                           notificationIDs: []
         )
     }
     
@@ -74,7 +88,11 @@ extension QuartzPrms {
                            startTime: Date(),
                            endTime:  Date(),
                            isEveryDay: true,
-                           isHourRange: false
+                           isHourRange: false,
+                           weekDays: [],
+                           isRemainderOn: false,
+                           remainderText:"",
+                           notificationIDs: []
         )
     }
     
@@ -91,8 +109,12 @@ extension QuartzPrms {
                            endDay: quartz.endDay ?? "",
                            startTime: quartz.startTime!,
                            endTime:  quartz.endTime ?? Date(),
-                           isEveryDay: true,
-                           isHourRange: false
+                           isEveryDay: quartz.isEveryDay,
+                           isHourRange: quartz.isHourRange,
+                           weekDays: (quartz.weekDays != nil) ? quartz.weekDays!.components(separatedBy: ","): [],
+                           isRemainderOn: quartz.isRemainderOn,
+                           remainderText: quartz.remainderText ?? "",
+                           notificationIDs: (quartz.notificationIDs != nil) ? quartz.notificationIDs!.components(separatedBy: ",") : []
         )
     }
     
@@ -109,7 +131,11 @@ extension QuartzPrms {
                    startTime: Date(),
                    endTime:  Date(),
                    isEveryDay: true,
-                   isHourRange: false
+                   isHourRange: false,
+                   weekDays: [],
+                   isRemainderOn: false,
+                   remainderText:"",
+                   notificationIDs: []
                   )
     ]
     

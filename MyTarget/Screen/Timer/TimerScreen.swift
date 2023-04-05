@@ -20,13 +20,13 @@ struct TimerScreen: View {
     
     @State var animationTopView: Bool = false
     @State var currentDate: Date = Date()
-     
+    
     
     @FetchRequest(entity: DayBook.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \DayBook.id, ascending: false)], predicate: NSPredicate(format: "dayTime = %@", getStringForYYYYMMDD(dateTime: Date())), animation: .easeInOut)
     var dayBookList: FetchedResults<DayBook>
-   // @State var dayBookList: [DayBook] = []
-   // @Environment(\.self) var env
-   // @EnvironmentObject var dayBookModel: DayBookModel = DayBookModel()
+    // @State var dayBookList: [DayBook] = []
+    @StateObject var dayBookModel: DayBookModel = DayBookModel()
+    // @EnvironmentObject var dayBookModel: DayBookModel = DayBookModel()
     @State var dayBookListForState: [DayBook] = []
     
     @State var isFlod: Bool = true
@@ -36,7 +36,7 @@ struct TimerScreen: View {
     
     let themeColor: Color = Color(red: 49 / 255, green: 38 / 255, blue: 126 / 255)
     
-     
+    
     @State var holdProgress: Double = 0.0
     @State var quitProgress: Double = 0.0
     
@@ -48,7 +48,7 @@ struct TimerScreen: View {
                         GeometryReader { proxy in
                             let maxY = proxy.frame(in: .global).maxY
                             
-                            CustomDatePicker(currentDate: $currentDate,dayBookList: dayBookList.reversed(),dayBookListForState: $dayBookListForState)
+                            CustomDatePicker(currentDate: $currentDate,dayBookListForState: $dayBookListForState)
                                 .background {
                                     RoundedRectangle(cornerRadius: 30, style: .continuous)
                                         .fill(Color(red: 49 / 255, green: 38 / 255, blue: 126 / 255))
@@ -71,7 +71,7 @@ struct TimerScreen: View {
                     
                     
                     SegmentedControl()
-                   
+                    
                     ZStack {
                         if currentTab == .time {
                             VStack{
@@ -115,7 +115,7 @@ struct TimerScreen: View {
                                                 .foregroundColor(Color.accentColor)
                                                 .push(to: .leading)
                                             
-                                           
+                                            
                                             
                                             HStack(spacing: 10) {
                                                 Text("完成率")
@@ -131,7 +131,7 @@ struct TimerScreen: View {
                                             HStack(spacing: 10) {
                                                 Text("目标数量")
                                                     .font(.callout.bold())
-                                                 
+                                                
                                                 
                                                 Text("\(getDayBookSumCount(dayBooks: dayBookListForState, quartzType: "HOLD")) 个")
                                                     .font(.callout.bold())
@@ -146,7 +146,7 @@ struct TimerScreen: View {
                                             HStack(spacing: 10) {
                                                 Text("完成数量")
                                                     .font(.callout.bold())
-                                                 
+                                                
                                                 Text("\(getDayBookCompletedCount(dayBooks: dayBookListForState, quartzType: "HOLD")) 个")
                                                     .font(.callout.bold())
                                             }
@@ -166,17 +166,17 @@ struct TimerScreen: View {
                                                 
                                                 Spacer()
                                             }
-                                             
+                                            
                                             
                                         }
-                                      
+                                        
                                     }
                                     .padding()
                                     .frame(maxWidth: .infinity).background {
                                         RoundedRectangle(cornerRadius: 10)
                                             .fill(.bg2)
                                     }
-                                  
+                                    
                                 }
                                 .padding([.horizontal,.top])
                                 
@@ -189,7 +189,7 @@ struct TimerScreen: View {
                                                 .foregroundColor(Color.red)
                                                 .push(to: .leading)
                                             
-                                        
+                                            
                                             
                                             HStack(spacing: 10) {
                                                 Text("完成率")
@@ -205,7 +205,7 @@ struct TimerScreen: View {
                                             HStack(spacing: 10) {
                                                 Text("目标数量")
                                                     .font(.callout.bold())
-                                                 
+                                                
                                                 
                                                 Text("\(getDayBookSumCount(dayBooks: dayBookListForState, quartzType: "QUIT")) 个")
                                                     .font(.callout.bold())
@@ -220,7 +220,7 @@ struct TimerScreen: View {
                                             HStack(spacing: 10) {
                                                 Text("完成数量")
                                                     .font(.callout.bold())
-                                                 
+                                                
                                                 Text("\(getDayBookCompletedCount(dayBooks: dayBookListForState, quartzType: "QUIT")) 个")
                                                     .font(.callout.bold())
                                             }
@@ -240,17 +240,17 @@ struct TimerScreen: View {
                                                 
                                                 Spacer()
                                             }
-                                             
+                                            
                                             
                                         }
-                                      
+                                        
                                     }
                                     .padding()
                                     .frame(maxWidth: .infinity).background {
                                         RoundedRectangle(cornerRadius: 10)
                                             .fill(.bg2)
                                     }
-                                  
+                                    
                                 }
                                 .padding(.horizontal)
                             }
@@ -280,7 +280,7 @@ struct TimerScreen: View {
                                 .foregroundColor(currentTab == .view ? .clear : .white)
                         }
                         .rotation3DEffect(.init(degrees: currentTab == .time ? 0 : 180), axis: (x: 0, y: 1, z: 0),anchor: .trailing, perspective: 0.45)
-                        
+                    
                 }
                 .zIndex(1)
                 .contentShape(Rectangle())
@@ -301,7 +301,7 @@ struct TimerScreen: View {
         .rotation3DEffect(.init(degrees: shakeValue), axis: (x: 0, y: 1, z: 0))
     }
     
-   @ViewBuilder
+    @ViewBuilder
     func TapableText(_ tab: TimeTab) -> some View {
         Text(tab.rawValue)
             .font(.callout.bold())
@@ -324,7 +324,7 @@ struct TimerScreen: View {
                     }
                 }
             }
-             
+        
     }
     
     @ViewBuilder
@@ -339,16 +339,15 @@ struct TimerScreen: View {
             //let midHour = hours[hours.count / 2]
             
             VStack {
-               
                 ForEach(hours, id: \.self){ hour in
-                    TimelineViewRow(isFlod: $isFlod ,date: hour,dayBookList: $dayBookListForState,index: hours.firstIndex(of: hour)!)
+                    TimelineViewRow(isFlod: $isFlod ,date: hour, index: hours.firstIndex(of: hour)!)
                         .id(hour)
                 }
             }
-           /* .onAppear {
-                currentDate = Date()
-                proxy.scrollTo(midHour)
-            }*/
+            /* .onAppear {
+             currentDate = Date()
+             proxy.scrollTo(midHour)
+             }*/
         }
     }
     
@@ -384,12 +383,20 @@ struct TimerScreen: View {
 struct TimelineViewRow: View {
     @Binding var isFlod: Bool
     @State var date: Date
-    @Binding var dayBookList: [DayBook]
+    //@Binding var dayBookList: [DayBook]
     @State var index: Int
     @State var showCardView: Bool = false
+    @Environment(\.self) var env
+    @StateObject var dayBookModel: DayBookModel = DayBookModel()
+    
+    /*@FetchRequest(entity: DayBook.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \DayBook.id, ascending: false)], predicate: NSPredicate(format: "dayTime = %@", getStringForYYYYMMDD(dateTime: Date())), animation: .easeInOut)
+    var dayBookList: FetchedResults<DayBook>*/
+    
+    @State  var dayBookList: [DayBook] = []
+    
     var body: some View {
         let calendar = Calendar.current
-        let finishedBook = dayBookList.filter {
+        let finishedBook =  dayBookModel.dayBookList.filter {
             if let hour = calendar.dateComponents([.hour], from: date).hour,
                let bookHour = calendar.dateComponents([.hour], from:  $0.startTime!).hour,
                hour == bookHour && calendar.isDate(getDateForYYYYMMDD(dateTime: $0.dayTime!), inSameDayAs: date){
@@ -410,7 +417,7 @@ struct TimelineViewRow: View {
                     .offset(y: 10)
             }else{
                 VStack(spacing: 10) {
-                    ForEach(finishedBook){ book in
+                    ForEach(finishedBook, id: \.self){ book in
                         BookRow(book)
                     }
                 }
@@ -420,6 +427,7 @@ struct TimelineViewRow: View {
         .padding(.vertical, finishedBook.isEmpty && isFlod ? 0 : 15)
         .offset(y: showCardView ? 0 : 450)
         .onAppear {
+            dayBookModel.dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date: date)
             withAnimation(.easeInOut(duration: 0.5).delay(Double(index) * 0.1)) {
                 showCardView = true
             }
@@ -457,32 +465,57 @@ struct TimelineViewRow: View {
                 
                 Spacer(minLength: 0)
                 
-                if (book.quartzWay == "TIMES" && book.isCompleted == false) {
-                    HStack {
-                        let scoreValue =  book.quartzTimes < 10 ? "0\(book.completedTimes)" : "\(book.completedTimes)"
-                        
-                        Text(scoreValue)
-                            .font(.system(size: 16))
-                            .foregroundColor(.white)
-                            .frame(width: 28, height: 28)
-                            .roundedRectBackground(radius: 8, fill: book.quartzType == "HOLD" ? Color.accentColor.opacity(0.6) : Color.red.opacity(0.6))
-                        
-                        let totalValue =  book.quartzTimes < 10 ? "0\(book.quartzTimes)" : "\(book.quartzTimes)"
-                        
-                        Text(totalValue)
-                            .font(.system(size: 16))
-                            .fontWeight(.regular)
-                            .foregroundColor(.white)
-                            .frame(width: 28, height: 28)
-                            .roundedRectBackground(radius: 8, fill: .secondary)
-                    }
-                }else{
-                    Image(systemName: book.isCompleted ? "checkmark" : "xmark")
-                        .padding()
-                        .frame(width: 28, height: 28)
-                        .bold()
+              
+                HStack {
+                    let scoreValue =  book.quartzTimes < 10 ? "0\(book.completedTimes)" : "\(book.completedTimes)"
+                    
+                    Text(scoreValue)
+                        .font(.system(size: 16))
                         .foregroundColor(.white)
-                        .roundedRectBackground(radius: 100, fill: book.isCompleted ? Color(.systemGreen) : Color(.systemGray)) 
+                        .frame(width: 28, height: 28)
+                        .roundedRectBackground(radius: 8, fill: book.quartzType == "HOLD" ? Color.accentColor.opacity(0.6) : Color.red.opacity(0.6))
+                    
+                    let totalValue =  book.quartzTimes < 10 ? "0\(book.quartzTimes)" : "\(book.quartzTimes)"
+                    
+                    Text(totalValue)
+                        .font(.system(size: 16))
+                        .fontWeight(.regular)
+                        .foregroundColor(.white)
+                        .frame(width: 28, height: 28)
+                        .roundedRectBackground(radius: 8, fill: .secondary)
+                }
+                .opacity(book.quartzWay == "TIMES" && book.isCompleted == false ? 1 : 0)
+              
+                Image(systemName: book.isCompleted ? "checkmark" : "xmark")
+                    .padding()
+                    .frame(width: 28, height: 28)
+                    .bold()
+                    .foregroundColor(.white)
+                    .roundedRectBackground(radius: 100, fill: book.isCompleted ? Color(.systemGreen) : Color(.systemGray))
+                    .opacity(book.quartzWay == "TIMES" && book.isCompleted == false ? 0 : 1)
+               
+                
+                if (book.isCompleted == false && !isSameDay(date1: date, date2: Date())){
+                    Button {
+                        book.isCompleted.toggle()
+                        if book.isCompleted {
+                            book.finishedTime = Date()
+                        }else{
+                            book.finishedTime = nil
+                        }
+                        if book.quartzWay == "TIMES" {
+                            book.completedTimes = book.quartzTimes
+                        }
+                        //打卡，更新状态
+                        try? env.managedObjectContext.save()
+                        dayBookModel.dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date: date)
+                    } label: {
+                        Text("补卡")
+                            .font(.callout.bold())
+                            .foregroundColor(.white)
+                    }
+                    .frame(width: 40, height: 28)
+                    .roundedRectBackground(radius: 10, fill: Color.accentColor)
                 }
             }
             .padding(.horizontal, 4)
@@ -498,7 +531,6 @@ struct TimelineViewRow: View {
                         .font(.system(size: 14))
                         .fontWeight(.regular)
                 }
-                
                 .padding(.horizontal, 4)
             }
             
@@ -516,7 +548,6 @@ struct TimelineViewRow: View {
                     .frame(width: 4)
             }
         }
-        
     }
 }
 

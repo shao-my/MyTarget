@@ -22,8 +22,7 @@ extension TimerScreen {
         var dayBookMonth: FetchedResults<DayBook>
         
         @Environment(\.self) var env
-        
-        @State var dayBookList: [DayBook]
+         
         @Binding var dayBookListForState: [DayBook]
         
         var body: some View {
@@ -88,8 +87,6 @@ extension TimerScreen {
                             PickerCardView(value: value, index: index, currentDate: $currentDate, isFinished: $animationStatus[1])
                                 .onTapGesture {
                                     currentDate = value.date
-                                    //  dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
-                                    //dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
                                     dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
                                 }
                         }
@@ -102,8 +99,6 @@ extension TimerScreen {
                             PickerCardView(value: value, index: index, currentDate: $currentDate,isFinished: $animationStatus[1])
                                 .onTapGesture {
                                     currentDate = value.date
-                                    //   dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
-                                    //  dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
                                     dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
                                 }
                         }
@@ -114,15 +109,9 @@ extension TimerScreen {
             .padding()
             .onChange(of: currentMonth) { newValue in
                 currentDate = getCurrentMonth()
-                //dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
-                //dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
-                dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
             }
             .onAppear {
                 currentDate = getCurrentMonth()
-                //dayBookList = coreDataModel.queryDayBookForDay(day: currentDate)
-                //  dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
-                // dayBookListForState = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext,date:  currentDate)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     withAnimation(.easeInOut(duration: 0.3)){
                         animationStatus[0] = true

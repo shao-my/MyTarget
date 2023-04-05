@@ -43,6 +43,12 @@ enum SFSymbol: String, CaseIterable {
     //case medal = "medal.fill"
 
     case edit = "square.and.pencil"
+    case clock = "clock"
+    case watch = "stopwatch"
+    case bell = "bell.circle"
+    case speak = "speaker.circle"
+    case trash = "trash.circle"
+    case ellipsis = "ellipsis.circle"
 }
 
 extension Label where Title == Text, Icon == Image  {

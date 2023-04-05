@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import UserNotifications
 
 class QuartzModel: ObservableObject {
     @Published var quartzName: String =  ""
@@ -23,6 +24,17 @@ class QuartzModel: ObservableObject {
     @Published var status: Bool = true
     @Published var isEveryDay: Bool = true
     @Published var isHourRange: Bool = false
+    
+    //add
+    @Published var weekDays: String = ""
+    @Published var isRemainderOn: Bool = false
+    @Published var remainderText: String = ""
+    
+    @Published var notificationAccess: Bool = false
+    
+    init(){
+        requestNotificationAccess()
+    }
     
     func addQuartz(context: NSManagedObjectContext,quartzPrms: QuartzPrms) {
         let quartz = Quartz(context: context)
@@ -41,6 +53,13 @@ class QuartzModel: ObservableObject {
         quartz.status = true
         quartz.isEveryDay = quartzPrms.isEveryDay
         quartz.isHourRange = quartzPrms.isHourRange
+        
+        //add
+        quartz.weekDays = quartzPrms.weekDays.joined(separator: ",")
+        quartz.isRemainderOn = quartzPrms.isRemainderOn
+        quartz.remainderText = quartzPrms.remainderText
+        quartz.notificationIDs = quartzPrms.notificationIDs.joined(separator: ", ")
+        
         try? context.save()
         
         //新增Quartz时自动插入一条DayBook信息,避免当天维护任务无法刷新页面
@@ -90,6 +109,12 @@ class QuartzModel: ObservableObject {
             // quartz.status = quartzPrms.status
             quartz.isEveryDay = quartzPrms.isEveryDay
             quartz.isHourRange = quartzPrms.isHourRange
+            
+            //add
+            quartz.weekDays = quartzPrms.weekDays.joined(separator: ",")
+            quartz.isRemainderOn = quartzPrms.isRemainderOn
+            quartz.remainderText = quartzPrms.remainderText
+            quartz.notificationIDs = quartzPrms.notificationIDs.joined(separator: ",")
             try? context.save()
         }
         
@@ -164,6 +189,47 @@ class QuartzModel: ObservableObject {
             print(error.localizedDescription)
         }
         return quartzList
+    }
+    
+    
+    func scheduleNotification(prms: QuartzPrms)async throws -> [String] {
+        let content = UNMutableNotificationContent()
+        content.title = prms.quartzName
+        content.subtitle = prms.remainderText
+        content.sound = UNNotificationSound.default
+        
+        //IDs
+        var notificationIds:[String] = []
+        let calendar = Calendar.current
+        let weekdaySymbols:[String] = calendar.weekdaySymbols
+        
+        for weekDay in prms.weekDays {
+            let id = UUID().uuidString
+            let hour = calendar.component(.hour, from: prms.startTime)
+            let min = calendar.component(.minute, from: prms.startTime)
+            let day = weekdaySymbols.firstIndex { currentDay in
+                return currentDay == weekDay
+            } ?? -1
+            if day != -1 {
+                var components = DateComponents()
+                components.weekday = day + 1
+                components.hour = hour
+                components.minute = min
+                let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+                let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+                try await UNUserNotificationCenter.current().add(request)
+                notificationIds.append(id)
+            }
+        }
+        return notificationIds
+    }
+    
+    func requestNotificationAccess(){
+        UNUserNotificationCenter.current().requestAuthorization(options: [.sound,.alert]) { status, _ in
+            DispatchQueue.main.sync {
+                self.notificationAccess = status
+            }
+        }
     }
 }
 

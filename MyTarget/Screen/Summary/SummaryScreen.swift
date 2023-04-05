@@ -48,7 +48,9 @@ struct SummaryScreen: View {
     
     @State var isShowHoldSheet: Bool = false
     @State var isShowQuitSheet: Bool = false
-
+    
+    @State var holdText: [TextAnimation] = []
+    @State var quitText: [TextAnimation] = []
     
     func addHoldQuartz(prms: QuartzPrms) -> Void {
         quartzModel.addQuartz(context: env.managedObjectContext, quartzPrms: prms)
@@ -68,6 +70,18 @@ struct SummaryScreen: View {
         quitTotalNumber = Int(quitSummaryStr.suffix(2))!
     }
     
+    func getSpilitedText(text: String,textArray:Binding<[TextAnimation]>) {
+        textArray.wrappedValue = []
+        for (index,character) in text.enumerated(){
+            textArray.wrappedValue.append(TextAnimation(text: String(character)))
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 0.03){
+                withAnimation(.easeInOut(duration: 0.5)){
+                    textArray.wrappedValue[index].offset = 0
+                }
+            }
+        }
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -79,30 +93,62 @@ struct SummaryScreen: View {
                     HStack {
                         VStack(spacing: 8){
                             VStack (spacing: 16){
-                                Text("心以舟施,恒也。")
-                                    .font(.subheadline)
+                                //  Text("心以舟施,恒也。")
+                                HStack(spacing: 0){
+                                    ForEach(holdText){text in
+                                        Text(text.text)
+                                            .offset(y: text.offset)
+                                            .font(.subheadline)
+                                    }
+                                }
                                 
-                                FlipScore(frontStr: $holdSummaryStr, backStr: $holdSummaryStr, flipped: $flipHoldScore, frontDegrees: $holdFrontDegrees, backDegrees: $holdBackDegrees, scoreColor: Color.accentColor,scoreValue: $holdScoreNumber ,totalValue: $holdTotalNumber)
-                                    .push(to: .center)
+                                ZStack{
+                                    Text("")
+                                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                        .background(.bg2)
+                                    
+                                    FlipScore(frontStr: $holdSummaryStr, backStr: $holdSummaryStr, flipped: $flipHoldScore, frontDegrees: $holdFrontDegrees, backDegrees: $holdBackDegrees, scoreColor: Color.accentColor,scoreValue: $holdScoreNumber ,totalValue: $holdTotalNumber)
+                                        .push(to: .center)
+                                }
+                                .zIndex(999)
                             }
                             .padding()
                             .frame(maxWidth: .infinity).background {
                                 RoundedRectangle(cornerRadius: 10)
                                     .fill(.bg2)
                             }
-                            
+                            .onAppear {
+                                getSpilitedText(text: "心以舟施,恒也。",textArray: $holdText)
+                            }
                             
                             VStack (spacing: 16){
-                                Text("戒，警也。")
-                                    .font(.subheadline)
+                                //Text("戒，警也。")
+                                //     .font(.subheadline)
+                                HStack(spacing: 0){
+                                    ForEach(holdText){text in
+                                        Text(text.text)
+                                            .offset(y: text.offset)
+                                            .font(.subheadline)
+                                    }
+                                }
                                 
-                                FlipScore(frontStr: $quitSummaryStr, backStr: $quitSummaryStr, flipped: $flipQuitScore, frontDegrees: $quitFrontDegrees, backDegrees: $quitBackDegrees, scoreColor: Color.red,scoreValue: $quitScoreNumber , totalValue: $quitTotalNumber)
-                                    .push(to: .center)
+                                ZStack{
+                                    Text("")
+                                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                        .background(.bg2)
+                                    FlipScore(frontStr: $quitSummaryStr, backStr: $quitSummaryStr, flipped: $flipQuitScore, frontDegrees: $quitFrontDegrees, backDegrees: $quitBackDegrees, scoreColor: Color.red,scoreValue: $quitScoreNumber , totalValue: $quitTotalNumber)
+                                        .push(to: .center)
+                                    
+                                }
+                                .zIndex(999)
                             }
                             .padding()
                             .frame(maxWidth: .infinity).background {
                                 RoundedRectangle(cornerRadius: 10)
                                     .fill(.bg2)
+                            }
+                            .onAppear {
+                                getSpilitedText(text: "戒，警也。",textArray: $holdText)
                             }
                         }
                         
@@ -300,13 +346,13 @@ struct SummaryScreen: View {
                     .font(.subheadline.bold())
                     .foregroundColor(Color(.systemGray))
             )
-        } 
+        }
         .sheet(isPresented: $isShowHoldSheet) {
-             QuartzForm(quartzPrms: QuartzPrms.newHold, onSubmit: addHoldQuartz )
+            QuartzForm(quartzPrms: QuartzPrms.newHold, onSubmit: addHoldQuartz )
         }
         .sheet(isPresented: $isShowQuitSheet) {
-             QuartzForm(quartzPrms: QuartzPrms.newQuit, onSubmit: addQuitQuartz )
-        } 
+            QuartzForm(quartzPrms: QuartzPrms.newQuit, onSubmit: addQuitQuartz )
+        }
     }
 }
 

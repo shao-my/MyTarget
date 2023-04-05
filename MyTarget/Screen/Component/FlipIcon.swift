@@ -35,7 +35,7 @@ struct FlipIcon: View {
                     .bold()
                     .foregroundColor(.white)
                     .zIndex(99)
-            }
+            } 
             
             Image(systemName: "checkmark")
                 .padding()

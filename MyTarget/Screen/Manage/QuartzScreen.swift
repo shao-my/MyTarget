@@ -126,7 +126,7 @@ extension QuartzScreen {
                                 self.isShowAddForm.toggle()
                             } label: {
                                 Image(systemName: "plus.circle")
-                                    .font(.title2.bold()).foregroundColor(Color.accentColor) 
+                                    .font(.title2.bold()).foregroundColor(Color.accentColor)
                                     .padding(.trailing,20)
                             }
                             .push(to: .trailing)
@@ -322,8 +322,8 @@ extension QuartzScreen {
                             self.selectedQuartz = quartz
                             self.isShowEditForm.toggle()
                         } label: {
-                            Image(systemName: "ellipsis.circle")
-                                .font(.title2.bold()).foregroundColor(Color.accentColor).opacity(0.8)
+                            SFSymbol.ellipsis
+                                .font(.title2.bold()).foregroundColor(Color.white)
                             // .padding(.trailing,40)
                         }
                         .buttonStyle(.plain)
@@ -331,8 +331,8 @@ extension QuartzScreen {
                         Button {
                             confirmationDialog = DelDialog.delQuartz
                         } label: {
-                            Image(systemName: "xmark.circle")
-                                .font(.title2.bold()).foregroundColor(Color.red).opacity(0.8)
+                            SFSymbol.trash
+                                .font(.title2.bold()).foregroundColor(Color.white)
                                 .padding(.trailing,20)
                         }
                         .buttonStyle(.plain)

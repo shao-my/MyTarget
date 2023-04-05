@@ -26,6 +26,7 @@
 		F57CC83C29C41FC600592E53 /* CustomIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57CC83B29C41FC600592E53 /* CustomIcon.swift */; };
 		F57CC84029C5A43400592E53 /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57CC83F29C5A43400592E53 /* CustomColor.swift */; };
 		F57CC84229C5A52100592E53 /* SYSColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57CC84129C5A52100592E53 /* SYSColor.swift */; };
+		F589D0F229DC6780000CBB64 /* TextAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F589D0F129DC6780000CBB64 /* TextAnimation.swift */; };
 		F5A60F3629CDFF7B00A7AD9C /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A60F3529CDFF7B00A7AD9C /* Persistence.swift */; };
 		F5B7F45A29C2E8C100A7B86E /* SwiftMessages in Frameworks */ = {isa = PBXBuildFile; productRef = F5B7F45929C2E8C100A7B86E /* SwiftMessages */; };
 		F5B7F45C29C2EA3F00A7B86E /* CustomMessage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B7F45B29C2EA3F00A7B86E /* CustomMessage+.swift */; };
@@ -79,6 +80,7 @@
 		F57CC83B29C41FC600592E53 /* CustomIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomIcon.swift; sourceTree = "<group>"; };
 		F57CC83F29C5A43400592E53 /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
 		F57CC84129C5A52100592E53 /* SYSColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SYSColor.swift; sourceTree = "<group>"; };
+		F589D0F129DC6780000CBB64 /* TextAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAnimation.swift; sourceTree = "<group>"; };
 		F5A60F3529CDFF7B00A7AD9C /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		F5B7F45B29C2EA3F00A7B86E /* CustomMessage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomMessage+.swift"; sourceTree = "<group>"; };
 		F5BD969529C1B50B00F82B24 /* TextFieldWithFocus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithFocus.swift; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 				F53C27EF29CDE9CC0047F045 /* QuartzModel.swift */,
 				F53C27F129CDEAC90047F045 /* DayBookModel.swift */,
 				F50B1DC629D0209600A7C4E1 /* QuartzCard.swift */,
+				F589D0F129DC6780000CBB64 /* TextAnimation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -397,6 +400,7 @@
 				F519225929C0CD7E00C90BCE /* QuartzForm.swift in Sources */,
 				F53C27CA29CD7E5A0047F045 /* Tab.swift in Sources */,
 				F5ED4EEB29C892E500DDC5E6 /* TimerScreen.swift in Sources */,
+				F589D0F229DC6780000CBB64 /* TextAnimation.swift in Sources */,
 				F56DAF9E29C0CAE5003E9D04 /* QuartzSheet.swift in Sources */,
 				F5DFD41B29BF48E100211FE3 /* SummaryScreen.swift in Sources */,
 				F5B7F45C29C2EA3F00A7B86E /* CustomMessage+.swift in Sources */,

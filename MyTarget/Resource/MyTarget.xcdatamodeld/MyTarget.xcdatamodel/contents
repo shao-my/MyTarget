@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22D68" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22D68" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
     <entity name="DayBook" representedClassName="DayBook" syncable="YES" codeGenerationType="class">
         <attribute name="completedTimes" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="dayTime" optional="YES" attributeType="String"/>
@@ -22,14 +22,18 @@
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="isEveryDay" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isHourRange" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isRemainderOn" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="notificationIDs" optional="YES" attributeType="String"/>
         <attribute name="quartzColor" optional="YES" attributeType="String"/>
         <attribute name="quartzIcon" optional="YES" attributeType="String"/>
         <attribute name="quartzName" optional="YES" attributeType="String"/>
         <attribute name="quartzTimes" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="quartzType" optional="YES" attributeType="String"/>
         <attribute name="quartzWay" optional="YES" attributeType="String"/>
+        <attribute name="remainderText" optional="YES" attributeType="String"/>
         <attribute name="startDay" optional="YES" attributeType="String"/>
         <attribute name="startTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="status" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="weekDays" optional="YES" attributeType="String"/>
     </entity>
 </model>
