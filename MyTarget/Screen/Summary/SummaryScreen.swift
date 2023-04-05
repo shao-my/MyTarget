@@ -330,10 +330,11 @@ struct SummaryScreen: View {
                         }
                     }
                     
-                    Text("勉之")
+                   /* Text("勉之")
                         .font(.title3.bold())
                         .padding(.top)
                         .push(to: .leading)
+                    */
                 }
                 .padding()
                 

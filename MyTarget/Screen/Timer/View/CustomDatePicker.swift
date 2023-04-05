@@ -31,34 +31,51 @@ extension TimerScreen {
                 
                 let days: [String] = ["日","一","二","三","四","五","六"]
                 
-                HStack(spacing: 20) {
+                ZStack {
+                    HStack(spacing: 20) {
+                        Button {
+                            withAnimation {
+                                currentMonth -= 1
+                            }
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.callout)
+                                .fontWeight(.semibold)
+                        }
+                        
+                        Text(extractDate()[0] + " " + extractDate()[1])
+                            .font(.callout)
+                            .fontWeight(.semibold)
+                        
+                        Button {
+                            withAnimation {
+                                currentMonth += 1
+                            }
+                        } label: {
+                            Image(systemName: "chevron.right")
+                                .font(.callout)
+                                .fontWeight(.semibold)
+                        }
+                       
+                    }
+                    .foregroundColor(.white)
+                    .padding(.horizontal)
+                    .opacity(animationStatus[0] ? 1 : 0)
+                    
                     Button {
                         withAnimation {
-                            currentMonth -= 1
+                            currentMonth = 0
+                            currentDate = getCurrentMonth()
                         }
                     } label: {
-                        Image(systemName: "chevron.left")
+                        Image(systemName: "arrowshape.turn.up.backward.circle")
                             .font(.callout)
                             .fontWeight(.semibold)
                     }
-                    
-                    Text(extractDate()[0] + " " + extractDate()[1])
-                        .font(.callout)
-                        .fontWeight(.semibold)
-                    
-                    Button {
-                        withAnimation {
-                            currentMonth += 1
-                        }
-                    } label: {
-                        Image(systemName: "chevron.right")
-                            .font(.callout)
-                            .fontWeight(.semibold)
-                    }
+                    .padding(.trailing, 10)
+                    .push(to: .trailing)
+                    .opacity(currentMonth == 0 ? 0 : 1)
                 }
-                .foregroundColor(.white)
-                .padding(.horizontal)
-                .opacity(animationStatus[0] ? 1 : 0)
                 
                 HStack(spacing: 10) {
                     ForEach(days, id: \.self){ day in
@@ -156,6 +173,7 @@ extension TimerScreen {
         }
     }
 }
+
 func isSameDay(date1: Date, date2: Date) -> Bool {
     let calendar = Calendar.current
     return calendar.isDate(date1, inSameDayAs: date2)
@@ -182,7 +200,7 @@ struct PickerCardView : View {
     @FetchRequest(entity: DayBook.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \DayBook.id, ascending: false)], predicate: NSPredicate(format: "dayTime >= %@ and dayTime <= %@", getStringForYYYYMM(dateTime: Date())+"-01",getStringForYYYYMM(dateTime: Date())+"-31"), animation: .easeInOut)
     var dayBookMonth: FetchedResults<DayBook>
     
-    var body: some View {
+    var body: some View {  
         VStack(spacing: 8) {
             if value.day != -1 {
                 Text("\(value.day)")
@@ -203,8 +221,7 @@ struct PickerCardView : View {
                 
                 Circle()
                     .fill(markDay(dayBookMonth: dayBookMonth.reversed(), value: value) ? Color(.systemPink) : Color.clear)
-                    .frame(width: 8, height: 8)
-                
+                    .frame(width: 8, height: 8) 
             }
         }
         .opacity(showView ? 1 : 0)

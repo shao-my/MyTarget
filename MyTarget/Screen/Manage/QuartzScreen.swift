@@ -29,7 +29,12 @@ struct QuartzScreen: View {
     @State var selectedQuartz: Quartz = Quartz.init()
     
     @StateObject var quartzModel: QuartzModel = QuartzModel()
+    @StateObject var dayBookModel: DayBookModel = DayBookModel()
+
     @Environment(\.self) var env
+    @AppStorage(.shouldUseDarkMode) private var shouldUseDarkMode: Bool = false
+    
+    @State var currentIndex: Int = 0
     
     /*@FetchRequest(entity: Quartz.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Quartz.id, ascending: false)], predicate: NSPredicate(format: "status = %@", "1"), animation: .easeInOut)
      private var quartzList: FetchedResults<Quartz>*/
@@ -43,25 +48,165 @@ struct QuartzScreen: View {
         setUpCards()
     }
     
+    @State var currentDate: Date = Date()
+    @State var currentMonth: Int = 0
+    @State var months: [String] = []
+    @State var dayBooksForYear: [DayBook] = []
+    
     var body: some View {
         NavigationView {
             VStack {
-                Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+                let days: [String] = ["日","一","二","三","四","五","六"]
+                ScrollView(showsIndicators: false){
+                    HStack(spacing: 10){
+                        VStack(spacing: 10){
+                            Text("")
+                                .font(.caption2)
+                                .frame(width: 11, height: 11)
+                            
+                            ForEach(days.reversed(), id: \.self){ day in
+                                Text(day)
+                                    .font(.caption2)
+                                    .frame(width: 11, height: 11)
+                            }
+                        }
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            let columns = Array(repeating: GridItem(.flexible()), count: 8)
+                            if quartzCards.count > 0 {
+                                LazyHGrid(rows: columns,  spacing: 10) {
+                                    ForEach(extractDateValue().indices, id: \.self) {index in
+                                        let value = extractDateValue()[index]
+                                        // Color(.systemGray).opacity(0.3)
+                                        if (index % 7 == 0 ){
+                                            if (index == 0 ||  getMonthString(date: value.date) != getMonthString(date:  extractDateValue()[index - 7].date) ) {
+                                                Text(getMonthString(date: value.date).prefix(3))
+                                                    .font(.caption2)
+                                                    .fixedSize(horizontal: true, vertical: false)
+                                                    .frame(width: 11, height: 11, alignment: .leading)
+                                            }else{
+                                                Text("")
+                                                    .font(.caption2)
+                                                    .frame(width: 11, height: 11)
+                                            }
+                                        }
+                                     
+                                        Text("")
+                                            .frame(width: 11, height: 11)
+                                            .roundedRectBackground(radius: 1, fill: markDay(dayBookMonth: dayBooksForYear, value: value) > 0  ? Color.accentColor.opacity(markDay(dayBookMonth: dayBooksForYear, value: value) ) : Color(.systemGray).opacity(0.3))
+                                            .opacity(value.day < 0 ? 0 : 1)
+                                        }
+                                }
+                                //.shimmer(.init(tint: Color(.systemGray), highlight: .white,blur: 2))
+                            }else{
+                                LazyHGrid(rows: columns,  spacing: 10) {
+                                    ForEach(extractDateValue().indices, id: \.self) {index in
+                                        let value = extractDateValue()[index]
+                                        // Color(.systemGray).opacity(0.3)
+                                        if (index % 7 == 0 ){
+                                            if (index == 0 ||  getMonthString(date: value.date) != getMonthString(date:  extractDateValue()[index - 7].date) ) {
+                                                Text(getMonthString(date: value.date).prefix(3))
+                                                    .font(.caption2)
+                                                    .fixedSize(horizontal: true, vertical: false)
+                                                    .frame(width: 11, height: 11, alignment: .leading)
+                                            }else{
+                                                Text("")
+                                                    .font(.caption2)
+                                                    .frame(width: 11, height: 11)
+                                            }
+                                        }
+                                     
+                                        Text("")
+                                            .frame(width: 11, height: 11)
+                                            .roundedRectBackground(radius: 1, fill: Color(.systemGray).opacity(0.3))
+                                            .opacity(value.day < 0 ? 0 : 1)
+                                        }
+                                }
+                                .shimmer(.init(tint: Color(.systemGray), highlight: .white,blur: 2))
+                            }
+                        }
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity).background {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(.bg2)
+                    }
+                    
+                    HStack {
+                        Text("Less")
+                            .font(.caption2)
+                       
+                        Text("")
+                            .frame(width: 11, height: 11)
+                            .roundedRectBackground(radius: 1, fill:  Color(.systemGray).opacity(0.25))
+                        
+                    
+                        Text("")
+                            .frame(width: 11, height: 11)
+                            .roundedRectBackground(radius: 1, fill:   Color.accentColor.opacity(0.5))
+                        
+                        Text("")
+                            .frame(width: 11, height: 11)
+                            .roundedRectBackground(radius: 1, fill:   Color.accentColor.opacity(0.75))
+                        
                 
-                Spacer()
+                        Text("")
+                           .frame(width: 11, height: 11)
+                           .roundedRectBackground(radius: 1, fill:   Color.accentColor.opacity(1))
+                         
+                        Text("More")
+                            .font(.caption2)
                 
-                BoomerangCard(isBlurEnable: isBlurEnable, isRotationEnabled: isRotationEnabled, quartzCards: $quartzCards,selectedQuartz: $selectedQuartz,isShowEditForm: $isShowEditForm,isShowAddForm: $isShowAddForm)
+                    }
+                    .push(to: .trailing)
+                    
+                    HStack (spacing: 16){
+                        HStack (spacing: 16){
+                            VStack (spacing: 16){
+                                Text("近一年记录天数")
+                                    .font(.subheadline)
+                                
+                                Text("\(dayBooksForYear.count) 天")
+                                    .font(.subheadline)
+                            }
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity).background {
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(.bg2)
+                        }
+                        
+                        HStack (spacing: 16){
+                            VStack (spacing: 16){
+                                Text("近一年完成天数")
+                                    .font(.subheadline)
+                                let complitedCount = dayBooksForYear.filter { $0.isCompleted  }
+                                Text("\(complitedCount.count) 天")
+                                    .font(.subheadline)
+                            }
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity).background {
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(.bg2)
+                        }
+                    }
+                    .padding(.top)
+                } 
+                
+                BoomerangCard(isBlurEnable: isBlurEnable, isRotationEnabled: isRotationEnabled, quartzCards: $quartzCards,selectedQuartz: $selectedQuartz,isShowEditForm: $isShowEditForm,isShowAddForm: $isShowAddForm,currentIndex: $currentIndex)
                     .frame(height: 180)
                     .padding(.horizontal, 15)
                     .padding(.bottom, 100)
                     .environment(\.setUpCards, setUpCards)
+
             }
             .padding()
             .onAppear() {
                 setUpCards()
             }
             .onChange(of: selectedQuartz, perform: { newValue in
-                //print(QuartzPrms.newPrmsByQuartz(quartz: selectedQuartz))
+                dayBooksForYear = dayBookModel.fetchDayBookForYear(context: env.managedObjectContext, quartzId: selectedQuartz.id!)
             })
             .sheet(isPresented: $isShowEditForm) {
                 QuartzForm(quartzPrms: QuartzPrms.newPrmsByQuartz(quartz: selectedQuartz), onSubmit: editQuartz )
@@ -69,16 +214,69 @@ struct QuartzScreen: View {
             .sheet(isPresented: $isShowAddForm) {
                 QuartzForm(quartzPrms: QuartzPrms.newHold, onSubmit: addHoldQuartz)
             }
+            .navigationBarTitle(Text("汇总"), displayMode: .automatic)
         }
     }
     
+    func markDay(dayBookMonth: [DayBook],value: DateValue) -> Double {
+        var isMark = 0.0
+        dayBookMonth.forEach{ book in
+          
+            if(isSameDay(date1: value.date, date2: getDateForYYYYMMDD(dateTime: book.dayTime!))){
+                if (book.isCompleted){
+                    isMark = 1.0
+                }else{
+                    if(book.quartzWay == "TIMES"){
+                        isMark = (Double(book.completedTimes) / Double(book.quartzTimes) * 0.8) + 0.2
+                    }else{
+                        isMark = 0.2
+                    }
+                }
+            }
+        }
+       
+        return isMark
+    }
     
+    func getMonthString(date: Date = Date()) -> String {
+        _ = Calendar.current
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM"
+        return  formatter.string(from: date)
+    }
+    
+    func extractDateValue() -> [DateValue] {
+        var res: [DateValue] = []
+        let calendar = Calendar.current
+        for index in 0...12 {
+            let currentMonth = calendar.date(byAdding: .month, value: -index, to: Date())
+            var days = currentMonth!.getAllDates().compactMap { date -> DateValue in
+                let day = calendar.component(.day, from: date)
+                return DateValue(day: day, date: date)
+            }
+            days = days.filter { $0.date <= Date() && $0.date > calendar.date(byAdding: .year, value: -1, to: Date())! }.reversed()
+            days.forEach { day in
+                res.append(day)
+            }
+        }
+        
+        let firstWeekday = calendar.component(.weekday, from: res.first?.date ?? Date())
+        for _ in 0..<firstWeekday - 1 {
+            res.insert(DateValue(day: -1, date: Date()), at: 0)
+        }
+        
+        return res
+    }
     
     func setUpCards(){
         quartzCards = []
         let  list = quartzModel.fetchQuartzList(context:  env.managedObjectContext)
         for quartz in list {
             quartzCards.append(QuartzCard.init(quartz: quartz))
+        }
+        if quartzCards.count > 0 {
+            selectedQuartz = quartzCards.first!.quartz
+            dayBooksForYear = dayBookModel.fetchDayBookForYear(context: env.managedObjectContext, quartzId: selectedQuartz.id!) 
         }
         if quartzCards.count > 1 {
             if var first = quartzCards.first{
@@ -98,9 +296,9 @@ extension QuartzScreen {
         @Binding var selectedQuartz: Quartz
         @Binding var isShowEditForm: Bool
         @Binding var isShowAddForm: Bool
+        @Binding var currentIndex: Int
         
         @State var offset: CGFloat = 0
-        @State var currentIndex: Int = 0
         @State var animation = 0.0
         
         @AppStorage(.shouldUseDarkMode) var shouldUseDarkMod = false
@@ -245,6 +443,8 @@ extension QuartzScreen {
                             currentIndex = 0
                         }
                     }
+                    
+                    selectedQuartz = quartzCards[currentIndex].quartz
                 }
             } else {
                 offset = .zero
@@ -399,7 +599,7 @@ extension QuartzScreen {
                     }
                     
                 }
-                .padding(.leading, 50)
+                .padding(.leading, 60)
                 .push(to: .leading)
                 .frame(width: size.width,height: size.height)
                 .background(Color(SYSColor(rawValue:  quartz.quartzColor ?? "gray")!.create))

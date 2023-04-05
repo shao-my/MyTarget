@@ -22,7 +22,6 @@ struct PersistenceController {
 
     init(inMemory: Bool = false) {
         container = NSPersistentCloudKitContainer(name: "MyTarget")
-        print(inMemory)
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
@@ -69,8 +68,7 @@ struct PersistenceController {
         } catch let error {
             print(error.localizedDescription)
         }
-       
-        print("here >>")
+        
         quartzs.forEach { quartz in
             //判断符合时间
             if  (quartz.startDay! <= getStringForYYYYMMDD() && (quartz.endDay ?? "2999-12-31" >= getStringForYYYYMMDD() || quartz.endDay == ""))

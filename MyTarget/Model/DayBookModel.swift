@@ -38,6 +38,19 @@ class DayBookModel: ObservableObject {
         }
         return dayBooks
     }
+    
+    func fetchDayBookForYear(context: NSManagedObjectContext,quartzId: UUID,date: Date = Date()) -> [DayBook] {
+        var dayBooks: [DayBook] = []
+        let requestDayBook = NSFetchRequest<DayBook>(entityName: "DayBook")
+        let lastYearDay = Calendar.current.date(byAdding: .year, value: -1, to: Date())
+        requestDayBook.predicate =   NSPredicate(format: "dayTime >= %@ and dayTime <= %@ and quartzId = %@", getStringForYYYYMM(dateTime: lastYearDay!),getStringForYYYYMMDD(dateTime: Date()), quartzId as CVarArg)
+        do {
+            dayBooks = try context.fetch(requestDayBook)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+        return dayBooks
+    }
 }
 
         

@@ -69,10 +69,9 @@ struct TimerScreen: View {
                     .padding([.horizontal,.top])
                     .frame(maxHeight: .infinity,alignment: .top)
                     
-                    
                     SegmentedControl()
                     
-                    ZStack {
+                    VStack {
                         if currentTab == .time {
                             VStack{
                                 TimeLineView()
@@ -258,6 +257,7 @@ struct TimerScreen: View {
                         }
                     }
                 }
+                .padding(.bottom, 80)
             }
         }
     }
