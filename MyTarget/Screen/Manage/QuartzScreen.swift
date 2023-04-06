@@ -53,6 +53,16 @@ struct QuartzScreen: View {
     @State var months: [String] = []
     @State var dayBooksForYear: [DayBook] = []
     
+    @State var daysOfYear:  [DateValue] = []
+    
+    @State var recordAnimationRange: [Int] = [0,0]
+    @State var recordCount: Int = 0
+    
+    @State var complitedAnimationRange: [Int] = [0,0]
+    @State var complitedCount: Int = 0
+    
+    @State var themeColor: Color = Color(SYSColor(rawValue: "gray")!.create)
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -64,7 +74,7 @@ struct QuartzScreen: View {
                                 .font(.caption2)
                                 .frame(width: 11, height: 11)
                             
-                            ForEach(days.reversed(), id: \.self){ day in
+                            ForEach(days, id: \.self){ day in
                                 Text(day)
                                     .font(.caption2)
                                     .frame(width: 11, height: 11)
@@ -75,11 +85,11 @@ struct QuartzScreen: View {
                             let columns = Array(repeating: GridItem(.flexible()), count: 8)
                             if quartzCards.count > 0 {
                                 LazyHGrid(rows: columns,  spacing: 10) {
-                                    ForEach(extractDateValue().indices, id: \.self) {index in
-                                        let value = extractDateValue()[index]
+                                    ForEach(daysOfYear.indices, id: \.self) {index in
+                                        let value = daysOfYear[index]
                                         // Color(.systemGray).opacity(0.3)
                                         if (index % 7 == 0 ){
-                                            if (index == 0 ||  getMonthString(date: value.date) != getMonthString(date:  extractDateValue()[index - 7].date) ) {
+                                            if (index == 0 ||  getMonthString(date: value.date) != getMonthString(date:  daysOfYear[index - 7].date) ) {
                                                 Text(getMonthString(date: value.date).prefix(3))
                                                     .font(.caption2)
                                                     .fixedSize(horizontal: true, vertical: false)
@@ -93,18 +103,17 @@ struct QuartzScreen: View {
                                      
                                         Text("")
                                             .frame(width: 11, height: 11)
-                                            .roundedRectBackground(radius: 1, fill: markDay(dayBookMonth: dayBooksForYear, value: value) > 0  ? Color.accentColor.opacity(markDay(dayBookMonth: dayBooksForYear, value: value) ) : Color(.systemGray).opacity(0.3))
+                                            .roundedRectBackground(radius: 1, fill: markDay(dayBookMonth: dayBooksForYear, value: value) > 0  ? themeColor.opacity(markDay(dayBookMonth: dayBooksForYear, value: value) ) : Color(.systemGray).opacity(0.3))
                                             .opacity(value.day < 0 ? 0 : 1)
                                         }
                                 }
-                                //.shimmer(.init(tint: Color(.systemGray), highlight: .white,blur: 2))
                             }else{
                                 LazyHGrid(rows: columns,  spacing: 10) {
-                                    ForEach(extractDateValue().indices, id: \.self) {index in
-                                        let value = extractDateValue()[index]
+                                    ForEach(daysOfYear.indices, id: \.self) {index in
+                                        let value = daysOfYear[index]
                                         // Color(.systemGray).opacity(0.3)
                                         if (index % 7 == 0 ){
-                                            if (index == 0 ||  getMonthString(date: value.date) != getMonthString(date:  extractDateValue()[index - 7].date) ) {
+                                            if (index == 0 ||  getMonthString(date: value.date) != getMonthString(date:  daysOfYear[index - 7].date) ) {
                                                 Text(getMonthString(date: value.date).prefix(3))
                                                     .font(.caption2)
                                                     .fixedSize(horizontal: true, vertical: false)
@@ -138,21 +147,21 @@ struct QuartzScreen: View {
                        
                         Text("")
                             .frame(width: 11, height: 11)
-                            .roundedRectBackground(radius: 1, fill:  Color(.systemGray).opacity(0.25))
+                            .roundedRectBackground(radius: 1, fill: themeColor.opacity(0.25))
                         
                     
                         Text("")
                             .frame(width: 11, height: 11)
-                            .roundedRectBackground(radius: 1, fill:   Color.accentColor.opacity(0.5))
+                            .roundedRectBackground(radius: 1, fill:  themeColor.opacity(0.5))
                         
                         Text("")
                             .frame(width: 11, height: 11)
-                            .roundedRectBackground(radius: 1, fill:   Color.accentColor.opacity(0.75))
+                            .roundedRectBackground(radius: 1, fill: themeColor.opacity(0.75))
                         
                 
                         Text("")
                            .frame(width: 11, height: 11)
-                           .roundedRectBackground(radius: 1, fill:   Color.accentColor.opacity(1))
+                           .roundedRectBackground(radius: 1, fill: themeColor.opacity(1))
                          
                         Text("More")
                             .font(.caption2)
@@ -165,9 +174,61 @@ struct QuartzScreen: View {
                             VStack (spacing: 16){
                                 Text("近一年记录天数")
                                     .font(.subheadline)
+                                 
                                 
-                                Text("\(dayBooksForYear.count) 天")
-                                    .font(.subheadline)
+                                /*Text("\(dayBooksForYear.count) 天")
+                                    .font(.subheadline)*/
+                                
+                                HStack(spacing: 0) {
+                                    ForEach(0..<recordAnimationRange.count, id: \.self){ index in
+                                        Text("8")
+                                            .font(.title2.bold())
+                                            .opacity(0)
+                                            .overlay {
+                                                GeometryReader{ proxy in
+                                                    let size = proxy.size
+                                                    VStack(spacing: 0) {
+                                                        ForEach(0...9, id: \.self){ number in
+                                                            Text("\(number)")
+                                                                .font(.title2.bold())
+                                                                .frame(width: size.width, height: size.height, alignment: .center)
+                                                        }
+                                                    }  .offset(y: -CGFloat(recordAnimationRange[index]) * size.height)
+                                                }
+                                                .clipped()
+                                            }
+                                    }
+                                    .foregroundColor(themeColor)
+                                    
+                                    Text(" 天")
+                                        .font(.subheadline.bold())
+                                       
+                                }
+                                .onAppear {
+                                    recordAnimationRange = Array(repeating: 0, count: (recordCount < 10 ? "0\(recordCount)" : "\(recordCount)").count)
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.06){
+                                        updateRecordText(value: recordCount)
+                                    }
+                                }
+                                .onChange(of: recordCount) { newValue in
+                                    let extra = (recordCount < 10 ? "0\(recordCount)" : "\(recordCount)").count - recordAnimationRange.count
+                                    if extra > 0 {
+                                        for _ in 0..<extra {
+                                            withAnimation(.easeIn(duration: 0.1)){
+                                                recordAnimationRange.append(0)
+                                            }
+                                        }
+                                    }else {
+                                        for _ in 0..<(-extra) {
+                                            withAnimation(.easeIn(duration: 0.1)){
+                                                recordAnimationRange.removeLast()
+                                            }
+                                        }
+                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05){
+                                        updateRecordText(value: newValue)
+                                    }
+                                }
                             }
                         }
                         .padding()
@@ -180,9 +241,60 @@ struct QuartzScreen: View {
                             VStack (spacing: 16){
                                 Text("近一年完成天数")
                                     .font(.subheadline)
-                                let complitedCount = dayBooksForYear.filter { $0.isCompleted  }
-                                Text("\(complitedCount.count) 天")
-                                    .font(.subheadline)
+                               // let complitedCount = dayBooksForYear.filter { $0.isCompleted  }
+                               /* Text("\(complitedCount.count) 天")
+                                    .font(.subheadline)*/
+                                
+                                HStack(spacing: 0) {
+                                    ForEach(0..<complitedAnimationRange.count, id: \.self){ index in
+                                        Text("8")
+                                            .font(.title2.bold())
+                                            .opacity(0)
+                                            .overlay {
+                                                GeometryReader{ proxy in
+                                                    let size = proxy.size
+                                                    VStack(spacing: 0) {
+                                                        ForEach(0...9, id: \.self){ number in
+                                                            Text("\(number)")
+                                                                .font(.title2.bold())
+                                                                .frame(width: size.width, height: size.height, alignment: .center)
+                                                        }
+                                                    }  .offset(y: -CGFloat(complitedAnimationRange[index]) * size.height)
+                                                }
+                                                .clipped()
+                                            }
+                                    }
+                                    .foregroundColor(themeColor)
+                                    
+                                    Text(" 天")
+                                        .font(.subheadline.bold())
+                                       
+                                }
+                                .onAppear {
+                                    complitedAnimationRange = Array(repeating: 0, count: (complitedCount < 10 ? "0\(complitedCount)" : "\(complitedCount)").count)
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.06){
+                                        updateComplitedText(value: complitedCount)
+                                    }
+                                }
+                                .onChange(of: complitedCount) { newValue in
+                                    let extra = (complitedCount < 10 ? "0\(complitedCount)" : "\(complitedCount)").count - complitedAnimationRange.count
+                                    if extra > 0 {
+                                        for _ in 0..<extra {
+                                            withAnimation(.easeIn(duration: 0.1)){
+                                                complitedAnimationRange.append(0)
+                                            }
+                                        }
+                                    }else {
+                                        for _ in 0..<(-extra) {
+                                            withAnimation(.easeIn(duration: 0.1)){
+                                                complitedAnimationRange.removeLast()
+                                            }
+                                        }
+                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05){
+                                        updateComplitedText(value: newValue)
+                                    }
+                                }
                             }
                         }
                         .padding()
@@ -191,7 +303,7 @@ struct QuartzScreen: View {
                                 .fill(.bg2)
                         }
                     }
-                    .padding(.top)
+                    //.padding(.top)
                 } 
                 
                 BoomerangCard(isBlurEnable: isBlurEnable, isRotationEnabled: isRotationEnabled, quartzCards: $quartzCards,selectedQuartz: $selectedQuartz,isShowEditForm: $isShowEditForm,isShowAddForm: $isShowAddForm,currentIndex: $currentIndex)
@@ -204,9 +316,14 @@ struct QuartzScreen: View {
             .padding()
             .onAppear() {
                 setUpCards()
+                daysOfYear = extractDateValue()
             }
             .onChange(of: selectedQuartz, perform: { newValue in
                 dayBooksForYear = dayBookModel.fetchDayBookForYear(context: env.managedObjectContext, quartzId: selectedQuartz.id!)
+                recordCount = dayBooksForYear.count
+                complitedCount = dayBooksForYear.filter { $0.isCompleted  }.count
+                themeColor = Color(SYSColor(rawValue:selectedQuartz.quartzColor!)!.create)
+               
             })
             .sheet(isPresented: $isShowEditForm) {
                 QuartzForm(quartzPrms: QuartzPrms.newPrmsByQuartz(quartz: selectedQuartz), onSubmit: editQuartz )
@@ -218,10 +335,32 @@ struct QuartzScreen: View {
         }
     }
     
+    func updateRecordText(value: Int) {
+        let StringValue =  (recordCount < 10 ? "0\(recordCount)" : "\(recordCount)")
+        for(index,value) in zip(0..<StringValue.count, StringValue){
+            var fraction = Double(index) * 0.15
+            fraction = (fraction > 0.5 ? 0.5 : fraction)
+            withAnimation(.interactiveSpring(response: 0.8, dampingFraction: 1 + fraction,blendDuration: 1 + fraction)){
+                recordAnimationRange[index] = (String(value) as NSString).integerValue
+            }
+        }
+    }
+    
+    func updateComplitedText(value: Int) {
+        let StringValue =  (complitedCount < 10 ? "0\(complitedCount)" : "\(complitedCount)")
+        for(index,value) in zip(0..<StringValue.count, StringValue){
+            var fraction = Double(index) * 0.15
+            fraction = (fraction > 0.5 ? 0.5 : fraction)
+            withAnimation(.interactiveSpring(response: 0.8, dampingFraction: 1 + fraction,blendDuration: 1 + fraction)){
+                complitedAnimationRange[index] = (String(value) as NSString).integerValue
+            }
+        }
+    }
+    
+    
     func markDay(dayBookMonth: [DayBook],value: DateValue) -> Double {
         var isMark = 0.0
         dayBookMonth.forEach{ book in
-          
             if(isSameDay(date1: value.date, date2: getDateForYYYYMMDD(dateTime: book.dayTime!))){
                 if (book.isCompleted){
                     isMark = 1.0
@@ -260,6 +399,11 @@ struct QuartzScreen: View {
             }
         }
         
+        /*res = Date().getYearAllDates().compactMap { date -> DateValue in
+            let day = calendar.component(.day, from: date)
+            return DateValue(day: day, date: date)
+        }*/
+        
         let firstWeekday = calendar.component(.weekday, from: res.first?.date ?? Date())
         for _ in 0..<firstWeekday - 1 {
             res.insert(DateValue(day: -1, date: Date()), at: 0)
@@ -276,7 +420,9 @@ struct QuartzScreen: View {
         }
         if quartzCards.count > 0 {
             selectedQuartz = quartzCards.first!.quartz
-            dayBooksForYear = dayBookModel.fetchDayBookForYear(context: env.managedObjectContext, quartzId: selectedQuartz.id!) 
+            dayBooksForYear = dayBookModel.fetchDayBookForYear(context: env.managedObjectContext, quartzId: selectedQuartz.id!)
+            recordCount = dayBooksForYear.count
+            complitedCount = dayBooksForYear.filter { $0.isCompleted  }.count
         }
         if quartzCards.count > 1 {
             if var first = quartzCards.first{

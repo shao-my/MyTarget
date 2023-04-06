@@ -246,6 +246,18 @@ extension Date{
     }
 }
 
+extension Date{
+    func getYearAllDates() -> [Date] {
+        let calendar = Calendar.current
+        let startDate = calendar.date(from: Calendar.current.dateComponents([.year,.month], from: self))!
+        let range = calendar.range(of: .day, in: .year, for: startDate)!
+        
+        return range.compactMap{ day -> Date in
+            return calendar.date(byAdding: .day, value: day - 1, to: startDate)!
+        }
+    }
+}
+
 /*
  struct CustomDatePicker_Previews: PreviewProvider {
  static var previews: some View {
