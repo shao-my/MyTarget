@@ -47,7 +47,8 @@ struct PersistenceController {
             }
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
-        
+        container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+
         
         //查询有效Quartz
         var quartzs: [Quartz] = []

@@ -49,6 +49,15 @@ enum SFSymbol: String, CaseIterable {
     case speak = "speaker.circle"
     case trash = "trash.circle"
     case ellipsis = "ellipsis.circle"
+    case heart = "heart.fill"
+    case box = "shippingbox.fill"
+    case person = "person.crop.circle.fill"
+    case mail = "envelope.circle"
+    case openMail = "envelope.open"
+    case smile = "face.smiling.inverse"
+    case icloud = "icloud.fill"
+    case faceid = "faceid"
+    case lock = "lock.fill"
 }
 
 extension Label where Title == Text, Icon == Image  {

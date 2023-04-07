@@ -14,5 +14,6 @@ extension UserDefaults {
         case foodList
         case preferredWeightUnit
         case preferredEnergyUnit
+        case isOpenFaceIdLock
     }
 }
