@@ -58,6 +58,8 @@
 		F5ED4EFA29CABC7C00DDC5E6 /* ColorGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5ED4EF929CABC7C00DDC5E6 /* ColorGrid.swift */; };
 		F5EF342229CB406F0005DF20 /* CustomDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EF342129CB406F0005DF20 /* CustomDatePicker.swift */; };
 		F5EF342429CB4B520005DF20 /* DateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5EF342329CB4B520005DF20 /* DateValue.swift */; };
+		F5FA60A429E18753003ACB73 /* FaceIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FA60A329E18753003ACB73 /* FaceIDView.swift */; };
+		F5FA60A629E18A81003ACB73 /* FaceIDModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FA60A529E18A81003ACB73 /* FaceIDModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,6 +115,8 @@
 		F5ED4EF929CABC7C00DDC5E6 /* ColorGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorGrid.swift; sourceTree = "<group>"; };
 		F5EF342129CB406F0005DF20 /* CustomDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDatePicker.swift; sourceTree = "<group>"; };
 		F5EF342329CB4B520005DF20 /* DateValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateValue.swift; sourceTree = "<group>"; };
+		F5FA60A329E18753003ACB73 /* FaceIDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceIDView.swift; sourceTree = "<group>"; };
+		F5FA60A529E18A81003ACB73 /* FaceIDModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceIDModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +143,7 @@
 				F5ED4EE129C8483600DDC5E6 /* Wave.swift */,
 				F5ED4EE529C88BAD00DDC5E6 /* RootView.swift */,
 				F50B1DC829D1453F00A7C4E1 /* CustomTabBar.swift */,
+				F5FA60A329E18753003ACB73 /* FaceIDView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -284,6 +289,7 @@
 				F53C27F129CDEAC90047F045 /* DayBookModel.swift */,
 				F50B1DC629D0209600A7C4E1 /* QuartzCard.swift */,
 				F589D0F129DC6780000CBB64 /* TextAnimation.swift */,
+				F5FA60A529E18A81003ACB73 /* FaceIDModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -413,8 +419,10 @@
 				F50B1DC929D1453F00A7C4E1 /* CustomTabBar.swift in Sources */,
 				F57CC84029C5A43400592E53 /* CustomColor.swift in Sources */,
 				F5EF342229CB406F0005DF20 /* CustomDatePicker.swift in Sources */,
+				F5FA60A429E18753003ACB73 /* FaceIDView.swift in Sources */,
 				F5ED4EE229C8483600DDC5E6 /* Wave.swift in Sources */,
 				F5DFD45229C01CA400211FE3 /* MyTarget.xcdatamodeld in Sources */,
+				F5FA60A629E18A81003ACB73 /* FaceIDModel.swift in Sources */,
 				F5DF181729C6FE0800F0E471 /* LoveGeometryEffect.swift in Sources */,
 				F5DFD42129BF707300211FE3 /* DateFormatTools.swift in Sources */,
 				F50B1DC729D0209600A7C4E1 /* QuartzCard.swift in Sources */,
@@ -560,6 +568,7 @@
 				DEVELOPMENT_TEAM = MWN3Q594JJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "This app uses Face ID to confirm your identity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -589,6 +598,7 @@
 				DEVELOPMENT_TEAM = MWN3Q594JJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "This app uses Face ID to confirm your identity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

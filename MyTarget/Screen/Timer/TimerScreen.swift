@@ -486,13 +486,14 @@ struct TimelineViewRow: View {
                 }
                 .opacity(book.quartzWay == "TIMES" && book.isCompleted == false ? 1 : 0)
               
-                Image(systemName: book.isCompleted ? "checkmark" : "xmark")
-                    .padding()
-                    .frame(width: 28, height: 28)
-                    .bold()
-                    .foregroundColor(.white)
-                    .roundedRectBackground(radius: 100, fill: book.isCompleted ? Color(.systemGreen) : Color(.systemGray))
-                    .opacity(book.quartzWay == "TIMES" && book.isCompleted == false ? 0 : 1)
+                if ( book.quartzWay !=  "TIMES" || book.isCompleted == true){
+                    Image(systemName: book.isCompleted ? "checkmark" : "xmark")
+                        .padding()
+                        .frame(width: 28, height: 28)
+                        .bold()
+                        .foregroundColor(.white)
+                        .roundedRectBackground(radius: 100, fill: book.isCompleted ? Color(.systemGreen) : Color(.systemGray))
+                }
                
                 
                 if (book.isCompleted == false && !isSameDay(date1: date, date2: Date())){
@@ -522,12 +523,12 @@ struct TimelineViewRow: View {
             
             if (book.isCompleted) {
                 VStack(alignment: .leading,spacing: 10){
-                    Text("完成时间: \(book.finishedTime!.dateToString("h a"))")
+                    Text("完成时间: \(book.finishedTime!.dateToString("HH:mm"))")
                         .font(.system(size: 14))
                         .fontWeight(.regular)
                     
                     
-                    Text("耗时时长: \(getTimeDifference(time1:  book.startTime!, time2:  book.finishedTime!))")
+                    Text("耗时时长: \(getToDayTimeDifference(time1:  book.startTime!, time2:  book.finishedTime!))")
                         .font(.system(size: 14))
                         .fontWeight(.regular)
                 }

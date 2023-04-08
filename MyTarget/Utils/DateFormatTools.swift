@@ -184,8 +184,27 @@ func getTimeDifference(time1: Date, time2: Date) -> String {
     let seconds = dateComponents.second
     let hours = seconds! / 3600
     let minutes = (seconds! - hours * 3600) / 60
+    return "\(hours) 小时 \(minutes) 分钟"
+}
+
+func getToDayTimeDifference(time1: Date, time2: Date) -> String {
+   /* let formatter = DateComponentsFormatter()
+    formatter.allowedUnits = [.hour, .minute]
+    return formatter.string(from: time1, to: time2)!*/
     
-        return "\(hours) 小时 \(minutes) 分钟"
+    let calendar = Calendar.current
+        let dateComponents = calendar.dateComponents([Calendar.Component.second], from: getTodaySameHHMM(date: time1), to: time2)
+    var seconds = dateComponents.second
+    var hours = seconds! / 3600
+    var minutes = (seconds! - hours * 3600) / 60
+    var str = "\(hours) 小时 \(minutes) 分钟"
+    if seconds! < 0 {
+        seconds = 0 - seconds!
+          hours = seconds! / 3600
+          minutes = (seconds! - hours * 3600) / 60
+        str = "提前 \(hours) 小时 \(minutes) 分钟"
+    }
+    return str
 }
 
 func getTodaySameHHMM(date: Date) -> Date {

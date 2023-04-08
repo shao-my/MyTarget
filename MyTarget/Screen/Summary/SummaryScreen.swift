@@ -175,6 +175,7 @@ struct SummaryScreen: View {
                         holdScoreNumber = Int(holdSummaryStr.prefix(2))!
                         quitScoreNumber = Int(quitSummaryStr.prefix(2))!
                     }
+                  
                     
                     
                     ZStack {
@@ -354,6 +355,7 @@ struct SummaryScreen: View {
         .sheet(isPresented: $isShowQuitSheet) {
             QuartzForm(quartzPrms: QuartzPrms.newQuit, onSubmit: addQuitQuartz )
         }
+       
     }
 }
 

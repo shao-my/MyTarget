@@ -501,7 +501,7 @@ extension QuartzScreen {
                             
                             Spacer()
                         }
-                        .preferredColorScheme(.dark)
+                        //.preferredColorScheme(.dark)
                         // .padding(.leading, 50)
                         .push(to: .trailing)
                         .frame(width: size.width,height: size.height)

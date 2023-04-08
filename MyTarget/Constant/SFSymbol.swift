@@ -58,6 +58,8 @@ enum SFSymbol: String, CaseIterable {
     case icloud = "icloud.fill"
     case faceid = "faceid"
     case lock = "lock.fill"
+    case gift = "gift.fill"
+    case dollar = "dollarsign.circle"
 }
 
 extension Label where Title == Text, Icon == Image  {
@@ -69,6 +71,7 @@ extension Label where Title == Text, Icon == Image  {
 extension Image {
     init(systemName: SFSymbol){
         self.init(systemName: systemName.rawValue)
+           
     }
 }
 
@@ -79,6 +82,7 @@ extension SFSymbol: View {
     
     func resizable () -> Image {
         return self.body.resizable()
+            
     }
 }
 

@@ -119,6 +119,9 @@ struct FlipIconByTimes: View {
                 times = 0
             }
         }
+        .onChange(of: dayBook) { newValue in
+            
+        }
     }
 }
 

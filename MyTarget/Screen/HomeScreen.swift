@@ -46,6 +46,14 @@ extension HomeScreen {
 
 struct HomeScreen: View {
     @AppStorage(.shouldUseDarkMode) var shouldUseDarkMod = false
+    
+    
+    @AppStorage(.isOpenFaceIdLock) private var isOpenFaceIdLock: Bool = false
+    @AppStorage(.isUnlocked) private var isLocked: Bool = false
+    @StateObject var faceIDModel : FaceIDModel = FaceIDModel()
+    @Environment(\.scenePhase) var scenePhase
+    
+    
     @State var tab: Tab = {
         let rawValue = UserDefaults.standard.string(forKey: UserDefaults.Key.startTab.rawValue) ?? ""
         return Tab(rawValue: rawValue) ?? .summary
@@ -62,6 +70,10 @@ struct HomeScreen: View {
         // NavigationStack{
         
         ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom)) {
+            if isLocked {
+                FaceIDView()
+            }
+            
             TabView(selection: $tab) {
                 ForEach(Tab.allCases, id: \.self){ $0 }
             }
@@ -86,7 +98,25 @@ struct HomeScreen: View {
                 .zIndex(999)
                 .background(.bg2)
         }
-        
+        .onAppear {
+            if isOpenFaceIdLock {
+                isLocked = true
+                faceIDModel.authenticate()
+            }
+        }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                
+            } else if newPhase == .inactive {
+                if isOpenFaceIdLock {
+                    isLocked = true
+                }
+            } else if newPhase == .background {
+                if isOpenFaceIdLock {
+                    isLocked = true
+                }
+            }
+        }
         //   }
     }
 }
