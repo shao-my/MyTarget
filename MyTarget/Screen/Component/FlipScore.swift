@@ -26,8 +26,7 @@ struct FlipScore: View {
     
     var body: some View {
         
-        VStack {
-            
+        VStack { 
             ZStack() {
                 HStack {
                     ZStack{

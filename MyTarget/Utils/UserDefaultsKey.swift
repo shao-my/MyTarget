@@ -15,6 +15,7 @@ extension UserDefaults {
         case preferredWeightUnit
         case preferredEnergyUnit
         case isOpenFaceIdLock
+        case isShowIsland
         case isUnlocked
     }
 }

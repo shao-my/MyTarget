@@ -225,7 +225,7 @@ class QuartzModel: ObservableObject {
     }
     
     func requestNotificationAccess(){
-        UNUserNotificationCenter.current().requestAuthorization(options: [.sound,.alert]) { status, _ in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.sound,.badge,.alert]) { status, _ in
             DispatchQueue.main.sync {
                 self.notificationAccess = status
             }

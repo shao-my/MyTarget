@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct ParentFunctionKey: EnvironmentKey {
     static let defaultValue: (() -> Void)? = nil
@@ -46,6 +47,7 @@ struct QuartzScreen: View {
     func addHoldQuartz(prms: QuartzPrms) -> Void {
         quartzModel.addQuartz(context: env.managedObjectContext, quartzPrms: prms)
         setUpCards()
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     @State var currentDate: Date = Date()
@@ -316,7 +318,7 @@ struct QuartzScreen: View {
             .padding()
             .onAppear() {
                 setUpCards()
-                daysOfYear = extractDateValue()
+                daysOfYear = extractDateValue()  
             }
             .onChange(of: selectedQuartz, perform: { newValue in
                 dayBooksForYear = dayBookModel.fetchDayBookForYear(context: env.managedObjectContext, quartzId: selectedQuartz.id!)
@@ -764,7 +766,11 @@ extension QuartzScreen {
             .confirmationDialog(confirmationDialog.rawValue,
                                 isPresented: shouldShowDialog,
                                 titleVisibility: .visible) {
-                Button("确定", role: .destructive, action:  { quartzModel.delQuartz(context:  env.managedObjectContext, quartz: quartz);  self.setUpCards!() })
+                Button("确定", role: .destructive, action:  {
+                    quartzModel.delQuartz(context:  env.managedObjectContext, quartz: quartz);
+                    self.setUpCards!();
+                    WidgetCenter.shared.reloadAllTimelines();
+                })
                 Button("取消", role: .cancel){}
             } message: {
                 Text(confirmationDialog.message)

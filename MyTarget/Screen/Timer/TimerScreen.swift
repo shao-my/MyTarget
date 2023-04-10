@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import WidgetKit
 
 enum TimeTab: String {
     case time = "时间线"

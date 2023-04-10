@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData 
+import WidgetKit
 
 struct SummaryScreen: View {
     // @StateObject public var coreDataModel = CoreDataModel()
@@ -42,7 +43,7 @@ struct SummaryScreen: View {
     
     @Environment(\.self) var env
     
-    @FetchRequest(entity: DayBook.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \DayBook.id, ascending: false)], predicate: NSPredicate(format: "dayTime = %@", getStringForYYYYMMDD(dateTime: Date())), animation: .easeInOut)
+    @FetchRequest(entity: DayBook.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \DayBook.id, ascending: false)], predicate: NSPredicate(format: "dayTime = %@", getStringForYYYYMMDD(dateTime: Date())), animation: nil)
     var dayBookList: FetchedResults<DayBook>
     //@State var dayBookList:[DayBook] = []
     
@@ -59,6 +60,7 @@ struct SummaryScreen: View {
         flipHoldScore.toggle()
         holdFrontDegrees = holdFrontDegrees + 180
         holdTotalNumber = Int(holdSummaryStr.suffix(2))!
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     func addQuitQuartz(prms: QuartzPrms) -> Void {
@@ -68,6 +70,7 @@ struct SummaryScreen: View {
         flipQuitScore.toggle()
         quitFrontDegrees = quitFrontDegrees + 180
         quitTotalNumber = Int(quitSummaryStr.suffix(2))!
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     func getSpilitedText(text: String,textArray:Binding<[TextAnimation]>) {
@@ -136,7 +139,7 @@ struct SummaryScreen: View {
                                     Text("")
                                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                                         .background(.bg2)
-                                    FlipScore(frontStr: $quitSummaryStr, backStr: $quitSummaryStr, flipped: $flipQuitScore, frontDegrees: $quitFrontDegrees, backDegrees: $quitBackDegrees, scoreColor: Color.red,scoreValue: $quitScoreNumber , totalValue: $quitTotalNumber)
+                                    FlipScore(frontStr: $quitSummaryStr, backStr: $quitSummaryStr, flipped: $flipQuitScore, frontDegrees: $quitFrontDegrees, backDegrees: $quitBackDegrees, scoreColor: Color.red.opacity(0.6),scoreValue: $quitScoreNumber , totalValue: $quitTotalNumber)
                                         .push(to: .center)
                                     
                                 }
@@ -218,6 +221,7 @@ struct SummaryScreen: View {
                                                         holdProgress = getDayBookPercent(dayBooks: dayBookList.reversed(), quartzType: "HOLD")
                                                         try?  env.managedObjectContext.save()
                                                         holdScoreNumber = Int(holdSummaryStr.prefix(2))!
+                                                        WidgetCenter.shared.reloadAllTimelines()
                                                     }
                                                 )
                                         }
@@ -238,6 +242,7 @@ struct SummaryScreen: View {
                                                         flipHoldScore.toggle()
                                                         holdFrontDegrees = holdFrontDegrees + 180
                                                         holdScoreNumber = Int(holdSummaryStr.prefix(2))!
+                                                        WidgetCenter.shared.reloadAllTimelines()
                                                     }
                                                 )
                                         }
@@ -293,6 +298,7 @@ struct SummaryScreen: View {
                                                         quitProgress = getDayBookPercent(dayBooks: dayBookList.reversed(), quartzType: "QUIT")
                                                         try?  env.managedObjectContext.save()
                                                         quitScoreNumber = Int(quitSummaryStr.prefix(2))!
+                                                        WidgetCenter.shared.reloadAllTimelines()
                                                     }
                                                 )
                                             
@@ -312,6 +318,7 @@ struct SummaryScreen: View {
                                                         flipQuitScore.toggle()
                                                         quitFrontDegrees = quitFrontDegrees + 180
                                                         quitScoreNumber = Int(quitSummaryStr.prefix(2))!
+                                                        WidgetCenter.shared.reloadAllTimelines()
                                                     }
                                                 )
                                         }
@@ -355,7 +362,6 @@ struct SummaryScreen: View {
         .sheet(isPresented: $isShowQuitSheet) {
             QuartzForm(quartzPrms: QuartzPrms.newQuit, onSubmit: addQuitQuartz )
         }
-       
     }
 }
 

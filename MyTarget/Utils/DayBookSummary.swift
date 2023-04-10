@@ -47,9 +47,7 @@ func getDayBookSumCount(dayBooks: [DayBook] ,quartzType: String) -> Int {
     
     for book in dayBooks {
         if book.quartzType == quartzType {
-            if book.isCompleted == true {
                 sumCount += 1
-            }
         }
     }
     return sumCount

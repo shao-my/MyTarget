@@ -64,7 +64,6 @@ struct QuartzForm: View {
                                         quartzPrms.notificationIDs = ids
                                     }
                                 }
-                                
                                 dismiss()
                                 onSubmit(quartzPrms)
                             }
@@ -73,7 +72,6 @@ struct QuartzForm: View {
                         Text("保存").font(.body.bold())
                     }
                     .buttonStyle(.bordered)
-                    
                 }
                 .overlay {
                     Text("编辑任务信息")

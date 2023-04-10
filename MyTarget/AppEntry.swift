@@ -10,6 +10,8 @@ import SwiftUI
 @main
 struct AppEntry: App {
     let persistenceController = PersistenceController.shared
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     init() {
         applyTabBarBackground()
@@ -17,7 +19,7 @@ struct AppEntry: App {
     }
     
     var body: some Scene {
-        WindowGroup {
+        WindowGroup {   
             HomeScreen()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
@@ -29,5 +31,32 @@ struct AppEntry: App {
         tabBarAppearance.backgroundColor = .secondarySystemBackground.withAlphaComponent(0.3)
         tabBarAppearance.backgroundEffect = UIBlurEffect(style: .systemChromeMaterial)
         UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+    }
+}
+
+
+
+class AppDelegate: NSObject,UIApplicationDelegate,UNUserNotificationCenterDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        UNUserNotificationCenter.current().delegate = self
+        return true
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
+        if UIApplication.shared.haveDynamicIsland {
+            return [.sound]
+        } else {
+            return [.sound,.banner]
+        }
+    }
+}
+
+extension UIApplication {
+    var haveDynamicIsland: Bool {
+        return deviceName == "iPhone 14 Pro" || deviceName == "iPhone 14 Pro Max"
+    }
+    
+    var deviceName: String {
+        return UIDevice.current.name
     }
 }

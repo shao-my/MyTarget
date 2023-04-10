@@ -46,7 +46,8 @@ extension HomeScreen {
 
 struct HomeScreen: View {
     @AppStorage(.shouldUseDarkMode) var shouldUseDarkMod = false
-    
+    @StateObject var dayBookModel: DayBookModel = DayBookModel()
+    @Environment(\.self) var env
     
     @AppStorage(.isOpenFaceIdLock) private var isOpenFaceIdLock: Bool = false
     @AppStorage(.isUnlocked) private var isLocked: Bool = false
@@ -57,18 +58,11 @@ struct HomeScreen: View {
     @State var tab: Tab = {
         let rawValue = UserDefaults.standard.string(forKey: UserDefaults.Key.startTab.rawValue) ?? ""
         return Tab(rawValue: rawValue) ?? .summary
-        
-        //只是取一次出来，返回
-        //@AppStorage(.startTab) var tab = HomeScreen.Tab.settings
-        //return tab
     }()
-     
+    
     @State var currentTab = "概要"
     
     var body: some View {
-        //包一层NavigationStack或者NavigationView就正常了
-        // NavigationStack{
-        
         ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom)) {
             if isLocked {
                 FaceIDView()
@@ -79,21 +73,6 @@ struct HomeScreen: View {
             }
             .preferredColorScheme(shouldUseDarkMod ? .dark : .light)  //只向上传递一层
             
-          /*  HStack(spacing: 0) {
-                TabButton(title: "概要", image: .thumbsup, tag: .summary, selected: $tab)
-                Spacer(minLength: 0)
-                TabButton(title: "时间", image: .calender, tag: .timer,selected: $tab)
-                Spacer(minLength: 0)
-                TabButton(title: "目标", image: .target, tag: .manage,selected: $tab)
-                Spacer(minLength: 0)
-                TabButton(title: "设置", image: .gear, tag: .settings,selected: $tab)
-            }
-            .padding(.vertical,12)
-            .padding(.horizontal)
-            .background(Color("TabBgColor"))
-            .clipShape(Capsule())
-            .padding(.horizontal,25)*/
-            
             CustomTabBar(currentTab: $tab)
                 .zIndex(999)
                 .background(.bg2)
@@ -102,11 +81,11 @@ struct HomeScreen: View {
             if isOpenFaceIdLock {
                 isLocked = true
                 faceIDModel.authenticate()
-            }
+            } 
         }
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
-                
+                dayBookModel.initDayBooks(context: env.managedObjectContext)
             } else if newPhase == .inactive {
                 if isOpenFaceIdLock {
                     isLocked = true
@@ -117,7 +96,6 @@ struct HomeScreen: View {
                 }
             }
         }
-        //   }
     }
 }
 
