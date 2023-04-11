@@ -111,6 +111,12 @@ func getYYYYMM (dateTime: Date = Date()) -> String {
     return formatter.string(from: dateTime)
 }
 
+func getYYYYMMDD (dateTime: Date = Date()) -> String {
+    let formatter = DateFormatter()
+           formatter.dateFormat = "yyyy年MM月dd日"
+    return formatter.string(from: dateTime)
+}
+
 func getStringForYYYYMM (dateTime: Date = Date()) -> String {
     let formatter = DateFormatter()
            formatter.dateFormat = "yyyy-MM"
@@ -214,6 +220,12 @@ func getTodaySameHHMM(date: Date) -> Date {
     let hours = calendar.component(.hour, from: date)
     let now = Calendar.current.date(byAdding: .minute, value: hours * 60 + minutes, to: startOfDay)!
     return now
+}
+
+func addSomeDays(date: Date,add: Int) -> Date {
+    let calendar = Calendar.current
+    let newDay = Calendar.current.date(byAdding: .day, value: add, to: date)!
+    return newDay
 }
 
 extension Date {

@@ -32,7 +32,7 @@ enum SFSymbol: String, CaseIterable {
     case loop = "clock.arrow.2.circlepath"
     
     // MARK: sheme-icon
-    case def = "medal.fill"
+    case def = "camera.macro.circle"
     case arrowRight = "arrow.right"
     case arrowLeft = "arrow.left"
     case thumbsup = "hand.thumbsup.circle"

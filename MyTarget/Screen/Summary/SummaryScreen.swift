@@ -362,7 +362,7 @@ struct SummaryScreen: View {
         .sheet(isPresented: $isShowQuitSheet) {
             QuartzForm(quartzPrms: QuartzPrms.newQuit, onSubmit: addQuitQuartz )
         }
-    }
+    } 
 }
 
 extension SummaryScreen{

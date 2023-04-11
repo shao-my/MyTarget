@@ -168,10 +168,10 @@ struct TargetWidgetEntryView : View {
             let width = min(geometry.size.width,geometry.size.height)
             
             Circle()
-                .stroke(Color.accentColor.opacity(0.1),lineWidth: 30)
+                .stroke(Color.accentColor.opacity(0.3),lineWidth: 30)
             
             RingInnerShape(progress: 1, thickness: 25)
-                .fill(Color(.red).opacity(0.1))
+                .fill(Color(.red).opacity(0.3))
             
             /*   SFSymbol.arrowRight
              .font(.body.bold())

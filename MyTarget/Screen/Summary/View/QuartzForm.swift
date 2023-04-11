@@ -11,6 +11,8 @@ import SwiftUI
 struct QuartzForm: View {
     @Environment(\.dismiss) var dismiss
     @State var quartzPrms: QuartzPrms
+    @AppStorage(.shouldUseDarkMode) private var shouldUseDarkMode: Bool = false
+    @AppStorage(.myLocale) private var myLocale: String = "zh_cn"
     
     //  @State private var isEveryDay: Bool = true
     // @State private var isHourRange: Bool = false
@@ -23,6 +25,16 @@ struct QuartzForm: View {
     
     @State private var confirmationDialog: Dialog = .inactive
     
+    @State private var isAllDay: Bool = false
+    @State private var isShowBeginDay: Bool = false
+    @State private var isShowBeginTime: Bool = false
+    @State private var startDay: Date = Date()
+    @State private var isShowEndDay: Bool = false
+    @State private var isShowEndTime: Bool = false
+    @State private var endDay: Date = Date()
+    @State private var errTime: Bool = false
+    
+    
     private var shouldShowDialog: Binding<Bool> {
         Binding (
             get: { confirmationDialog != .inactive },
@@ -31,7 +43,7 @@ struct QuartzForm: View {
     }
     
     var body: some View {
-        NavigationStack {
+        VStack {
             VStack {
                 HStack {
                     Button {
@@ -159,7 +171,164 @@ struct QuartzForm: View {
                         }
                     }
                     
-                    Section("目标日期") {
+                    Section("目标时间") {
+                        Toggle(isOn: $isAllDay){
+                            Label("全天", systemImage: .loop)
+                        }
+                        .toggleStyle(.switch)
+                        
+                        HStack {
+                            Label("开始", systemImage: .start)
+                            Spacer()
+                            Text(getYYYYMMDD(dateTime: getDateForYYYYMMDD(dateTime: $quartzPrms.startDay.wrappedValue)))
+                                .foregroundColor(isShowBeginDay ? Color.red : Color.accentColor)
+                                .padding(7)
+                                .roundedRectBackground(radius: 8,fill: Color.gray.opacity(0.2))
+                                .onTapGesture {
+                                    withAnimation(){
+                                        isShowBeginDay.toggle()
+                                        isShowBeginTime = false
+                                        isShowEndDay = false
+                                        isShowEndTime = false
+                                    }
+                                }
+                            
+                            if !isAllDay {
+                                Text(getStringForHHmm(dateTime: quartzPrms.startTime))
+                                    .foregroundColor(isShowBeginTime ? Color.red : Color.accentColor)
+                                    .padding(7)
+                                    .roundedRectBackground(radius: 8,fill: Color.gray.opacity(0.2))
+                                    .onTapGesture {
+                                        withAnimation(){
+                                            isShowBeginTime.toggle()
+                                            isShowBeginDay = false
+                                            isShowEndDay = false
+                                            isShowEndTime = false
+                                        }
+                                    }
+                            }
+                        }
+                        
+                        
+                        if isShowBeginDay {
+                            DatePicker.init("", selection: $startDay,in: Date.now...Date.distantFuture, displayedComponents: [.date]  )
+                                .labelsHidden()
+                                .environment(\.locale,Locale.init(identifier: myLocale))
+                                .datePickerStyle(.graphical)
+                        }
+                        
+                        if isShowBeginTime {
+                            DatePicker.init("", selection: $quartzPrms.startTime, displayedComponents: [.hourAndMinute]  )
+                                .environment(\.locale,Locale.init(identifier: myLocale))
+                                .datePickerStyle(.wheel)
+                        }
+                        
+                        
+                        HStack {
+                            Label("结束", systemImage: .end)
+                            Spacer()
+                            Text(getYYYYMMDD(dateTime: getDateForYYYYMMDD(dateTime: $quartzPrms.endDay.wrappedValue)))
+                                .strikethrough(errTime,color: isShowEndDay ? Color.red : Color.accentColor)
+                                .foregroundColor(isShowEndDay ? Color.red : Color.accentColor)
+                                .padding(7)
+                                .roundedRectBackground(radius: 8,fill: Color.gray.opacity(0.2))
+                                .onTapGesture {
+                                    withAnimation(){
+                                        isShowEndDay.toggle()
+                                        isShowEndTime = false
+                                        isShowBeginDay = false
+                                        isShowBeginTime = false
+                                    }
+                                }
+                            
+                            if !isAllDay {
+                                Text(getStringForHHmm(dateTime: quartzPrms.endTime))
+                                    .foregroundColor(isShowEndTime ? Color.red : Color.accentColor)
+                                    .padding(7)
+                                    .roundedRectBackground(radius: 8,fill: Color.gray.opacity(0.2))
+                                    .onTapGesture {
+                                        withAnimation(){
+                                            isShowEndTime.toggle()
+                                            isShowEndDay = false
+                                            isShowBeginDay = false
+                                            isShowBeginTime = false
+                                        }
+                                    }
+                            }
+                        }
+                        
+                        
+                        if isShowEndDay {
+                            DatePicker.init("", selection: $endDay, in: startDay...Date.distantFuture, displayedComponents: [.date]  )
+                                .labelsHidden()
+                                .environment(\.locale,Locale.init(identifier: myLocale))
+                                .datePickerStyle(.graphical)
+                        }
+                        
+                        if isShowEndTime {
+                            DatePicker.init("", selection: $quartzPrms.endTime, displayedComponents: [.hourAndMinute]  )
+                                .environment(\.locale,Locale.init(identifier: myLocale))
+                                .datePickerStyle(.wheel)
+                        }
+                        
+                        Toggle(isOn: $quartzPrms.isRemainderOn){
+                            Label("是否提醒", systemImage: .bell)
+                        }
+                        .toggleStyle(.switch)
+                        
+                        if quartzPrms.isRemainderOn {
+                            let weekDays = Calendar.current.weekdaySymbols
+                            HStack(spacing: 10) {
+                                ForEach(weekDays, id: \.self){day in
+                                    
+                                    let index = quartzPrms.weekDays.firstIndex {value in
+                                        return value == day
+                                    } ?? -1
+                                    
+                                    Text(day.prefix(2))
+                                        .fontWeight(.semibold)
+                                        .frame(maxWidth: .infinity)
+                                        .padding(.vertical, 12)
+                                        .roundedRectBackground(radius: 10, fill: index != -1 ? Color(SYSColor(rawValue: quartzPrms.quartzColor)!.create) : .bg2)
+                                        .onTapGesture {
+                                            withAnimation {
+                                                if index != -1 {
+                                                    quartzPrms.weekDays.remove(at: index)
+                                                } else {
+                                                    quartzPrms.weekDays.append(day)
+                                                }
+                                            }
+                                        }
+                                }
+                            }
+                            
+                            LabeledContent {
+                                TextField("选填",text: $quartzPrms.remainderText)
+                            } label: {
+                                Label("提醒文本", systemImage: .speak)
+                            }
+                            
+                            Text("提示: 每日提醒需要手机设置允许消息提醒权限")
+                                .font(.caption)
+                                .push(to: .center)
+                        }
+                    }
+                    .onChange(of: startDay) { value in
+                        $quartzPrms.startDay.wrappedValue = getStringForYYYYMMDD(dateTime: startDay)
+                        if (endDay < startDay) {
+                            endDay = addSomeDays(date: startDay, add: 1)
+                        }
+                    }
+                    .onChange(of: endDay) { value in
+                        $quartzPrms.endDay.wrappedValue = getStringForYYYYMMDD(dateTime: endDay)
+                        if (endDay < startDay) {
+                            errTime = true
+                        } else {
+                            errTime = false
+                        }
+                    }
+                    
+                  /*  Section("目标日期") {
                         Toggle(isOn: $quartzPrms.isEveryDay){
                             Label("是否每天", systemImage: .loop)
                         }
@@ -248,7 +417,7 @@ struct QuartzForm: View {
                                 .font(.caption)
                                 .push(to: .center)
                         }
-                    }
+                    }*/
                     
                 }
                 .padding(.top,-20)
@@ -265,6 +434,10 @@ struct QuartzForm: View {
             .scrollDismissesKeyboard(.interactively)
             //键盘工具栏
             .toolbar(content: buildKeyboardTools)
+            .interactiveDismissDisabled(disable, attempToDismiss: $attempToDismiss)
+        }
+        .onChange(of: attempToDismiss) { _ in
+            confirmationDialog = .closeQuartzForm
         }
         .confirmationDialog(confirmationDialog.rawValue,
                             isPresented: shouldShowDialog,
@@ -278,6 +451,9 @@ struct QuartzForm: View {
             CustomIconAndColor(customItem: $quartzPrms )
         }
     }
+    
+    @State var disable = true
+    @State var attempToDismiss = UUID()
     
     
     func buildKeyboardTools()  -> some ToolbarContent {

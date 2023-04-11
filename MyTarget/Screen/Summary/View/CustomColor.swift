@@ -20,15 +20,17 @@ struct CustomColor: View {
             
             LazyVGrid(columns: gridItemLayout, spacing: 20) {
                 ForEach(SYSColor.allCases, id: \.self){ color in
-                    Text("")
-                    //Color(SYSColor(rawValue: color.rawValue)!.create)
-                        .frame(width: 30, height: 30)
-                        .padding()
-                        .roundedRectBackground(radius: 100, fill: Color(SYSColor(rawValue: color.rawValue)!.create))
-                        .onTapGesture {
-                            customItem.quartzColor = color.rawValue
-                           // loveCount = loveCount + 20
-                        }
+                    if color != .gray {
+                        Text("")
+                        //Color(SYSColor(rawValue: color.rawValue)!.create)
+                            .frame(width: 30, height: 30)
+                            .padding()
+                            .roundedRectBackground(radius: 100, fill: Color(SYSColor(rawValue: color.rawValue)!.create))
+                            .onTapGesture {
+                                customItem.quartzColor = color.rawValue
+                               // loveCount = loveCount + 20
+                            }
+                    }
                 }
             }
             .padding(.horizontal)

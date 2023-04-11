@@ -140,6 +140,24 @@ class QuartzModel: ObservableObject {
                 book.endTime = quartzPrms.endTime
                 try? context.save()
             }
+        }else{
+            //新增Quartz时自动插入一条DayBook信息,避免当天维护任务无法刷新页面
+            let dayBook = DayBook(context: context)
+            dayBook.id = UUID()
+            dayBook.quartzId = quartzPrms.id
+            dayBook.quartzName = quartzPrms.quartzName
+            dayBook.dayTime =  quartzPrms.startDay
+            dayBook.isCompleted = false
+            dayBook.quartzType = quartzPrms.quartzType
+            dayBook.quartzIcon = quartzPrms.quartzIcon
+            dayBook.quartzColor = quartzPrms.quartzColor
+            dayBook.quartzTimes =  Int16((quartzPrms.quartzTimes as NSString).intValue)
+            dayBook.completedTimes = .zero
+            dayBook.quartzWay = quartzPrms.quartzWay
+            dayBook.startTime = quartzPrms.startTime
+            dayBook.endTime = quartzPrms.endTime
+            
+            try? context.save()
         }
     }
     

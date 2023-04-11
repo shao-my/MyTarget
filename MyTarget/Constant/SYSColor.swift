@@ -12,7 +12,7 @@ enum SYSColor: String, CaseIterable {
     case blue = "blue"
     case red = "red"
     case cyan = "cyan"
-    case fill = "fill"
+    //case fill = "fill"
     case mint = "mint"
     case pink = "pink"
     case teal = "teal"
@@ -34,8 +34,8 @@ enum SYSColor: String, CaseIterable {
                 return UIColor.systemRed
            case .cyan:
                 return UIColor.systemCyan
-           case .fill:
-                return UIColor.systemFill
+          // case .fill:
+          //      return UIColor.systemFill
            case .mint:
                 return UIColor.systemMint
            case .pink:
