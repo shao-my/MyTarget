@@ -12,6 +12,8 @@ extension TimerScreen {
         @Binding var currentDate: Date
         @State var currentMonth: Int = 0
         @State var animationStatus: [Bool] = Array(repeating: false, count: 2)
+        @AppStorage(.myLocale) private var myLocale: String = "zh_cn"
+
         
         //@StateObject public var coreDataModel = CoreDataModel()
         //@EnvironmentObject public var coreDataModel : CoreDataModel
@@ -29,7 +31,7 @@ extension TimerScreen {
             
             VStack{
                 
-                let days: [String] = ["日","一","二","三","四","五","六"]
+                let days: [String] = myLocale == "zh_cn" ? ["日","一","二","三","四","五","六"] :  ["Sun","Mon","Tues","Wed","Thur","Fri","Sat"]
                 
                 ZStack {
                     HStack(spacing: 20) {
@@ -143,6 +145,7 @@ extension TimerScreen {
         
         func extractDate() -> [String] {
             let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: myLocale)
             formatter.dateFormat = "YYYY MMMM"
             let date = formatter.string(from: currentDate)
             return date.components(separatedBy: " ")

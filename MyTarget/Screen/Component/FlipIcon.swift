@@ -49,7 +49,12 @@ struct FlipIcon: View {
         .animation(.easeInOut(duration: 0.8), value: flipped)
         .onTapGesture { self.flipped.toggle() }
         .onChange(of: dayBook) { newValue in
-            
+         
+        }
+        .onAppear {
+            if(dayBook.isCompleted){
+                flipped = true
+            }
         }
     }
 }

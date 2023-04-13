@@ -87,6 +87,7 @@ struct QuartzForm: View {
                 }
                 .overlay {
                     Text("编辑任务信息")
+                        .foregroundColor(Color.accentColor)
                         .font(.title3.bold())
                         .overlay(
                             Rectangle().frame(height: 2).offset(y: 4)
@@ -425,8 +426,7 @@ struct QuartzForm: View {
                 .animation(.mySpring, value: quartzPrms.isHourRange)
                 .animation(.mySpring, value: quartzPrms.isEveryDay)
                 .animation(.mySpring, value: quartzPrms.isRemainderOn)
-                
-                
+                .animation(.mySpring, value: isAllDay)
             }
             .background(.groupBg)
             .multilineTextAlignment(.trailing)

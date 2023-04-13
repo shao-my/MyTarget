@@ -7,11 +7,15 @@
 
 import ActivityKit
 
-struct WidgetDemoAttributes: ActivityAttributes {
+struct WidgetQuartzAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
         // Dynamic stateful properties about your activity go here!
-        var value: Int
-        var name: String
+        var quartzName: String = ""
+        var quartzIcon: String = "def"
+        var quartzColor: String = ""
+        var remainderText: String = ""
+        var totalSeconds: Int = 0 
+        var timerStringValue: String = "00:00" 
     }
 
     // Fixed non-changing properties about your activity go here!

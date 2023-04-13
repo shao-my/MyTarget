@@ -28,9 +28,10 @@ struct PersistenceController {
         }else {
             let storeURL = containerURL.appendingPathComponent("MyTarget.sqlite")
             container.persistentStoreDescriptions.first!.url = storeURL
+            print("storeURL:%@", storeURL);
         }
         let  path1 = NSHomeDirectory();
-        print("path1:%@", path1);
+        print("path1:%@", path1); 
         print("CoreData init success")
        // let viewContext = container.viewContext 
         

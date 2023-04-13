@@ -34,7 +34,8 @@ struct QuartzScreen: View {
 
     @Environment(\.self) var env
     @AppStorage(.shouldUseDarkMode) private var shouldUseDarkMode: Bool = false
-    
+    @AppStorage(.myLocale) private var myLocale: String = "zh_cn"
+
     @State var currentIndex: Int = 0
     
     /*@FetchRequest(entity: Quartz.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Quartz.id, ascending: false)], predicate: NSPredicate(format: "status = %@", "1"), animation: .easeInOut)
@@ -65,10 +66,11 @@ struct QuartzScreen: View {
     
     @State var themeColor: Color = Color(SYSColor(rawValue: "gray")!.create)
     
+    
     var body: some View {
         NavigationView {
             VStack {
-                let days: [String] = ["日","一","二","三","四","五","六"]
+                let days: [String] = myLocale == "zh_cn" ? ["日","一","二","三","四","五","六"] :  ["Sun","Mon","Tues","Wed","Thur","Fri","Sat"]
                 ScrollView(showsIndicators: false){
                     HStack(spacing: 10){
                         VStack(spacing: 10){
@@ -79,7 +81,7 @@ struct QuartzScreen: View {
                             ForEach(days, id: \.self){ day in
                                 Text(day)
                                     .font(.caption2)
-                                    .frame(width: 11, height: 11)
+                                    .frame( height: 11)
                             }
                         }
                         
@@ -380,8 +382,8 @@ struct QuartzScreen: View {
     }
     
     func getMonthString(date: Date = Date()) -> String {
-        _ = Calendar.current
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: myLocale)
         formatter.dateFormat = "MMMM"
         return  formatter.string(from: date)
     }

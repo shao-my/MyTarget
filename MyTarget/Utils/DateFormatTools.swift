@@ -187,10 +187,42 @@ func getTimeDifference(time1: Date, time2: Date) -> String {
     
     let calendar = Calendar.current
         let dateComponents = calendar.dateComponents([Calendar.Component.second], from: time1, to: time2)
-    let seconds = dateComponents.second
+    var seconds = dateComponents.second
+    if seconds! > 0 {
+        seconds! += 1
+    }
+   
     let hours = seconds! / 3600
     let minutes = (seconds! - hours * 3600) / 60
-    return "\(hours) 小时 \(minutes) 分钟"
+    let second = (seconds! - hours * 3600 - minutes * 60)
+    //处理日期格式，没有的不显示
+    var str = ""
+    if hours > 0 {
+        str += "\(hours) 小时"
+    }
+    if minutes > 0 {
+        str += " \(minutes) 分钟"
+    }
+    if second > 0 {
+        str += " \(second) 秒"
+    }
+    return str
+}
+
+func getHMSTimeDifference(time1: Date, time2: Date) -> [Int] { 
+    let calendar = Calendar.current
+        let dateComponents = calendar.dateComponents([Calendar.Component.second], from: time1, to: time2)
+    var seconds = dateComponents.second
+    if seconds! > 0 {
+        seconds! += 1
+    }
+   
+    let hours = seconds! / 3600
+    let minutes = (seconds! - hours * 3600) / 60
+    let second = (seconds! - hours * 3600 - minutes * 60)
+
+    var hms = [hours,minutes,second]
+    return hms
 }
 
 func getToDayTimeDifference(time1: Date, time2: Date) -> String {
@@ -201,14 +233,29 @@ func getToDayTimeDifference(time1: Date, time2: Date) -> String {
     let calendar = Calendar.current
         let dateComponents = calendar.dateComponents([Calendar.Component.second], from: getTodaySameHHMM(date: time1), to: time2)
     var seconds = dateComponents.second
-    var hours = seconds! / 3600
-    var minutes = (seconds! - hours * 3600) / 60
-    var str = "\(hours) 小时 \(minutes) 分钟"
+   
+    var str = ""
     if seconds! < 0 {
         seconds = 0 - seconds!
-          hours = seconds! / 3600
-          minutes = (seconds! - hours * 3600) / 60
-        str = "提前 \(hours) 小时 \(minutes) 分钟"
+        str  = "提前 " + str
+    }
+    /*if seconds! > 0 {
+        seconds! += 1
+    }*/
+    
+    let hours = seconds! / 3600
+    let minutes = (seconds! - hours * 3600) / 60
+    let second = (seconds! - hours * 3600 - minutes * 60)
+    
+    //处理日期格式，没有的不显示
+    if hours > 0 {
+        str += "\(hours) 小时"
+    }
+    if minutes > 0 {
+        str += " \(minutes) 分钟"
+    }
+    if second > 0 {
+        str += " \(second) 秒"
     }
     return str
 }
@@ -222,8 +269,17 @@ func getTodaySameHHMM(date: Date) -> Date {
     return now
 }
 
-func addSomeDays(date: Date,add: Int) -> Date {
+func getDateSubSs(_ date: Date) -> Date {
     let calendar = Calendar.current
+    let startOfDay = calendar.startOfDay(for: date)
+    let minutes = calendar.component(.minute, from: date)
+    let hours = calendar.component(.hour, from: date)
+    let now = Calendar.current.date(byAdding: .minute, value: hours * 60 + minutes, to: startOfDay)!
+    return now
+}
+
+func addSomeDays(date: Date,add: Int) -> Date {
+    _ = Calendar.current
     let newDay = Calendar.current.date(byAdding: .day, value: add, to: date)!
     return newDay
 }

@@ -52,7 +52,7 @@ struct TimerScreen: View {
                             CustomDatePicker(currentDate: $currentDate,dayBookListForState: $dayBookListForState)
                                 .background {
                                     RoundedRectangle(cornerRadius: 30, style: .continuous)
-                                        .fill(Color(red: 49 / 255, green: 38 / 255, blue: 126 / 255))
+                                        .fill(themeColor)
                                     //.matchedGeometryEffect(id: "Calender", in: animation)
                                 }
                                 .rotation3DEffect(.init(degrees: animationTopView ? 0 : -270), axis: (x: 1, y: 0, z: 0), anchor: .center)
@@ -553,8 +553,10 @@ struct TimelineViewRow: View {
     }
 }
 
+/*
 struct TimerScreen_Previews: PreviewProvider {
     static var previews: some View {
         TimerScreen()
     }
 }
+*/

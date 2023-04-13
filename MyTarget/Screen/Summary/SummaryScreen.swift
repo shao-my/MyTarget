@@ -43,9 +43,9 @@ struct SummaryScreen: View {
     
     @Environment(\.self) var env
     
-    @FetchRequest(entity: DayBook.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \DayBook.id, ascending: false)], predicate: NSPredicate(format: "dayTime = %@", getStringForYYYYMMDD(dateTime: Date())), animation: nil)
-    var dayBookList: FetchedResults<DayBook>
-    //@State var dayBookList:[DayBook] = []
+    /*@FetchRequest(entity: DayBook.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \DayBook.id, ascending: false)], predicate: NSPredicate(format: "dayTime = %@", getStringForYYYYMMDD(dateTime: Date())), animation: nil)
+    var dayBookList: FetchedResults<DayBook>*/
+    @State var dayBookList:[DayBook] = []
     
     @State var isShowHoldSheet: Bool = false
     @State var isShowQuitSheet: Bool = false
@@ -228,7 +228,7 @@ struct SummaryScreen: View {
                                         else{
                                             FlipIcon(dayBook: book,flipped: book.isCompleted)
                                                 .simultaneousGesture(
-                                                    TapGesture().onEnded{
+                                                    TapGesture().onEnded{ 
                                                         book.isCompleted.toggle()
                                                         if book.isCompleted {
                                                             book.finishedTime = Date()
@@ -361,6 +361,10 @@ struct SummaryScreen: View {
         }
         .sheet(isPresented: $isShowQuitSheet) {
             QuartzForm(quartzPrms: QuartzPrms.newQuit, onSubmit: addQuitQuartz )
+        }
+        .onAppear {
+            dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext)
+            //print(dayBookList)
         }
     } 
 }

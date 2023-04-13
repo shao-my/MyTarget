@@ -61,6 +61,9 @@ enum SFSymbol: String, CaseIterable {
     case gift = "gift.fill"
     case dollar = "dollarsign.circle"
     case bear = "teddybear.fill"
+    case calendar = "calendar"
+    case brain = "brain.head.profile"
+    case bandage = "bandage.fill"
 }
 
 extension Label where Title == Text, Icon == Image  {

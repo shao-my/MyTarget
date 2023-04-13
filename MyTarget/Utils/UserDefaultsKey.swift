@@ -17,6 +17,6 @@ extension UserDefaults {
         case isOpenFaceIdLock
         case isShowIsland
         case isUnlocked
-        case myLocale
+        case myLocale 
     }
 }

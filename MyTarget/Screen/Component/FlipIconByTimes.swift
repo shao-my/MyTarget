@@ -122,6 +122,11 @@ struct FlipIconByTimes: View {
         .onChange(of: dayBook) { newValue in
             
         }
+        .onAppear {
+            if(dayBook.isCompleted){
+                flipped = true
+            }
+        }
     }
 }
 

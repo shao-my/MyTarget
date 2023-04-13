@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct AppEntry: App {
     let persistenceController = PersistenceController.shared
+    @StateObject var pomodoroModel: PomodoroModel = .init()
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
@@ -22,6 +23,7 @@ struct AppEntry: App {
         WindowGroup {   
             HomeScreen()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(pomodoroModel)
         }
     }
     

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F509939629E6B5C600592BC5 /* ActivityAction+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F509939529E6B5C600592BC5 /* ActivityAction+.swift */; };
 		F50B1DC729D0209600A7C4E1 /* QuartzCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50B1DC629D0209600A7C4E1 /* QuartzCard.swift */; };
 		F50B1DC929D1453F00A7C4E1 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50B1DC829D1453F00A7C4E1 /* CustomTabBar.swift */; };
 		F50C5CB129C3084F001D1B5D /* DayBookSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F50C5CB029C3084F001D1B5D /* DayBookSummary.swift */; };
@@ -21,8 +22,8 @@
 		F53C27CA29CD7E5A0047F045 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53C27C929CD7E5A0047F045 /* Tab.swift */; };
 		F53C27F029CDE9CC0047F045 /* QuartzModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53C27EF29CDE9CC0047F045 /* QuartzModel.swift */; };
 		F53C27F229CDEAC90047F045 /* DayBookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53C27F129CDEAC90047F045 /* DayBookModel.swift */; };
-		F56C642329E3E90400B2428B /* WidgetDemoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56C642229E3E90400B2428B /* WidgetDemoAttributes.swift */; };
-		F56C642429E3E97500B2428B /* WidgetDemoAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56C642229E3E90400B2428B /* WidgetDemoAttributes.swift */; };
+		F56C642329E3E90400B2428B /* WidgetQuartzAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56C642229E3E90400B2428B /* WidgetQuartzAttributes.swift */; };
+		F56C642429E3E97500B2428B /* WidgetQuartzAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56C642229E3E90400B2428B /* WidgetQuartzAttributes.swift */; };
 		F56C642829E3F2A500B2428B /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A60F3529CDFF7B00A7AD9C /* Persistence.swift */; };
 		F56C642929E3F2DD00B2428B /* MyTarget.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F5DFD45029C01CA400211FE3 /* MyTarget.xcdatamodeld */; };
 		F56C642A29E3F45200B2428B /* DateFormatTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DFD42029BF707300211FE3 /* DateFormatTools.swift */; };
@@ -44,10 +45,13 @@
 		F595F09B29E3BEE90007172D /* TargetWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = F595F09729E3BEE90007172D /* TargetWidget.intentdefinition */; };
 		F595F09C29E3BEE90007172D /* TargetWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = F595F09729E3BEE90007172D /* TargetWidget.intentdefinition */; };
 		F595F09F29E3BEE90007172D /* TargetWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F595F08D29E3BEE80007172D /* TargetWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F59E100B29E85B29009994B2 /* SYSColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57CC84129C5A52100592E53 /* SYSColor.swift */; };
 		F5A60F3629CDFF7B00A7AD9C /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A60F3529CDFF7B00A7AD9C /* Persistence.swift */; };
 		F5ADB93F29E4F3DC00314203 /* SheetDelegate+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5ADB93E29E4F3DC00314203 /* SheetDelegate+.swift */; };
 		F5B7F45A29C2E8C100A7B86E /* SwiftMessages in Frameworks */ = {isa = PBXBuildFile; productRef = F5B7F45929C2E8C100A7B86E /* SwiftMessages */; };
 		F5B7F45C29C2EA3F00A7B86E /* CustomMessage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B7F45B29C2EA3F00A7B86E /* CustomMessage+.swift */; };
+		F5BAFCC629E5490400AB81AD /* FocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BAFCC529E5490400AB81AD /* FocusView.swift */; };
+		F5BAFCC829E54A2800AB81AD /* PomodoroModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BAFCC729E54A2800AB81AD /* PomodoroModel.swift */; };
 		F5BD969629C1B50B00F82B24 /* TextFieldWithFocus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BD969529C1B50B00F82B24 /* TextFieldWithFocus.swift */; };
 		F5C816C329C1BE6600EF2B5A /* Animation+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C816C229C1BE6600EF2B5A /* Animation+.swift */; };
 		F5DF181529C6F36300F0E471 /* BounceStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DF181429C6F36300F0E471 /* BounceStruct.swift */; };
@@ -106,6 +110,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F509939529E6B5C600592BC5 /* ActivityAction+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ActivityAction+.swift"; sourceTree = "<group>"; };
 		F50B1DC629D0209600A7C4E1 /* QuartzCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuartzCard.swift; sourceTree = "<group>"; };
 		F50B1DC829D1453F00A7C4E1 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		F50C5CB029C3084F001D1B5D /* DayBookSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayBookSummary.swift; sourceTree = "<group>"; };
@@ -122,7 +127,7 @@
 		F53C27C929CD7E5A0047F045 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		F53C27EF29CDE9CC0047F045 /* QuartzModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuartzModel.swift; sourceTree = "<group>"; };
 		F53C27F129CDEAC90047F045 /* DayBookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayBookModel.swift; sourceTree = "<group>"; };
-		F56C642229E3E90400B2428B /* WidgetDemoAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetDemoAttributes.swift; sourceTree = "<group>"; };
+		F56C642229E3E90400B2428B /* WidgetQuartzAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetQuartzAttributes.swift; sourceTree = "<group>"; };
 		F56DAF9D29C0CAE5003E9D04 /* QuartzSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuartzSheet.swift; sourceTree = "<group>"; };
 		F57BABFD29D71E5E0072A564 /* ShimeerEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimeerEffect.swift; sourceTree = "<group>"; };
 		F57CC83B29C41FC600592E53 /* CustomIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomIcon.swift; sourceTree = "<group>"; };
@@ -142,6 +147,8 @@
 		F5A60F3529CDFF7B00A7AD9C /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		F5ADB93E29E4F3DC00314203 /* SheetDelegate+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SheetDelegate+.swift"; sourceTree = "<group>"; };
 		F5B7F45B29C2EA3F00A7B86E /* CustomMessage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomMessage+.swift"; sourceTree = "<group>"; };
+		F5BAFCC529E5490400AB81AD /* FocusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusView.swift; sourceTree = "<group>"; };
+		F5BAFCC729E54A2800AB81AD /* PomodoroModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroModel.swift; sourceTree = "<group>"; };
 		F5BD969529C1B50B00F82B24 /* TextFieldWithFocus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithFocus.swift; sourceTree = "<group>"; };
 		F5C816C229C1BE6600EF2B5A /* Animation+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Animation+.swift"; sourceTree = "<group>"; };
 		F5DF181429C6F36300F0E471 /* BounceStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BounceStruct.swift; sourceTree = "<group>"; };
@@ -227,7 +234,7 @@
 		F56C642529E3EDA200B2428B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				F56C642229E3E90400B2428B /* WidgetDemoAttributes.swift */,
+				F56C642229E3E90400B2428B /* WidgetQuartzAttributes.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -329,6 +336,7 @@
 		F5DFD41129BF424500211FE3 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				F509939529E6B5C600592BC5 /* ActivityAction+.swift */,
 				F5DFD41229BF425E00211FE3 /* AppStorage+.swift */,
 				F5DFD42229BF70DF00211FE3 /* ShapeStyle+.swift */,
 				F5DFD42629BF72ED00211FE3 /* ViewLayout+.swift */,
@@ -395,6 +403,7 @@
 				F50B1DC629D0209600A7C4E1 /* QuartzCard.swift */,
 				F589D0F129DC6780000CBB64 /* TextAnimation.swift */,
 				F5FA60A529E18A81003ACB73 /* FaceIDModel.swift */,
+				F5BAFCC729E54A2800AB81AD /* PomodoroModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -429,6 +438,7 @@
 			isa = PBXGroup;
 			children = (
 				F5FA60AB29E2E4F2003ACB73 /* SelfRecount.swift */,
+				F5BAFCC529E5490400AB81AD /* FocusView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -543,10 +553,11 @@
 				F56C643529E436F100B2428B /* DayBookSummary.swift in Sources */,
 				F56C643829E448E400B2428B /* ShapeStyle+.swift in Sources */,
 				F56C642A29E3F45200B2428B /* DateFormatTools.swift in Sources */,
-				F56C642429E3E97500B2428B /* WidgetDemoAttributes.swift in Sources */,
+				F56C642429E3E97500B2428B /* WidgetQuartzAttributes.swift in Sources */,
 				F56C642929E3F2DD00B2428B /* MyTarget.xcdatamodeld in Sources */,
 				F595F09229E3BEE90007172D /* TargetWidgetBundle.swift in Sources */,
 				F595F09B29E3BEE90007172D /* TargetWidget.intentdefinition in Sources */,
+				F59E100B29E85B29009994B2 /* SYSColor.swift in Sources */,
 				F56C643929E448FF00B2428B /* ViewLayout+.swift in Sources */,
 				F56C642829E3F2A500B2428B /* Persistence.swift in Sources */,
 				F595F09429E3BEE90007172D /* TargetWidgetLiveActivity.swift in Sources */,
@@ -567,11 +578,12 @@
 				F5ED4EE629C88BAD00DDC5E6 /* RootView.swift in Sources */,
 				F5DFD41829BF431500211FE3 /* SettingsScreen.swift in Sources */,
 				F5DFD40D29BF402100211FE3 /* HomeScreen.swift in Sources */,
+				F5BAFCC629E5490400AB81AD /* FocusView.swift in Sources */,
 				F5DF181529C6F36300F0E471 /* BounceStruct.swift in Sources */,
 				F5ED4EF129C98C7400DDC5E6 /* FlipText.swift in Sources */,
 				F5DF181B29C73E3100F0E471 /* FlipIcon.swift in Sources */,
 				F5BD969629C1B50B00F82B24 /* TextFieldWithFocus.swift in Sources */,
-				F56C642329E3E90400B2428B /* WidgetDemoAttributes.swift in Sources */,
+				F56C642329E3E90400B2428B /* WidgetQuartzAttributes.swift in Sources */,
 				F519225D29C0D1B600C90BCE /* Unit.swift in Sources */,
 				F5DFD42729BF72ED00211FE3 /* ViewLayout+.swift in Sources */,
 				F5ADB93F29E4F3DC00314203 /* SheetDelegate+.swift in Sources */,
@@ -588,6 +600,7 @@
 				F57CC83C29C41FC600592E53 /* CustomIcon.swift in Sources */,
 				F5ED4EDE29C80AA300DDC5E6 /* FlipScore.swift in Sources */,
 				F53A44CE29C2D555006BD5CB /* QuartzPrms.swift in Sources */,
+				F509939629E6B5C600592BC5 /* ActivityAction+.swift in Sources */,
 				F5EF342429CB4B520005DF20 /* DateValue.swift in Sources */,
 				F5ED4EE029C82CD400DDC5E6 /* FlipIconByTimes.swift in Sources */,
 				F5FA60AC29E2E4F2003ACB73 /* SelfRecount.swift in Sources */,
@@ -595,6 +608,7 @@
 				F57CC84029C5A43400592E53 /* CustomColor.swift in Sources */,
 				F5EF342229CB406F0005DF20 /* CustomDatePicker.swift in Sources */,
 				F5FA60A429E18753003ACB73 /* FaceIDView.swift in Sources */,
+				F5BAFCC829E54A2800AB81AD /* PomodoroModel.swift in Sources */,
 				F5ED4EE229C8483600DDC5E6 /* Wave.swift in Sources */,
 				F5DFD45229C01CA400211FE3 /* MyTarget.xcdatamodeld in Sources */,
 				F5FA60A629E18A81003ACB73 /* FaceIDModel.swift in Sources */,

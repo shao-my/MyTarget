@@ -246,6 +246,16 @@ struct ManageScreen: View {
                     Text("flip")
                 }
                 
+                
+                Text("Change Color")
+                               .padding()
+                               .contextMenu {
+                                   Button(action: {
+                                       
+                                   }) {
+                                       Text("Red")
+                                   }
+                               }
             }
         }
         

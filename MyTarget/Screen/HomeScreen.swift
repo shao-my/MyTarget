@@ -54,13 +54,15 @@ struct HomeScreen: View {
     @StateObject var faceIDModel : FaceIDModel = FaceIDModel()
     @Environment(\.scenePhase) var scenePhase
     
-    
     @State var tab: Tab = {
         let rawValue = UserDefaults.standard.string(forKey: UserDefaults.Key.startTab.rawValue) ?? ""
         return Tab(rawValue: rawValue) ?? .summary
     }()
     
     @State var currentTab = "概要"
+    
+    @EnvironmentObject var pomodoroModel: PomodoroModel
+    @State var lastActiveTimeStamp: Date = Date() 
     
     var body: some View {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom)) {
@@ -69,23 +71,39 @@ struct HomeScreen: View {
             }
             
             TabView(selection: $tab) {
-                ForEach(Tab.allCases, id: \.self){ $0 }
+                ForEach(Tab.allCases, id: \.self){ $0.environmentObject(pomodoroModel) }
             }
             .preferredColorScheme(shouldUseDarkMod ? .dark : .light)  //只向上传递一层
             
-            CustomTabBar(currentTab: $tab)
-                .zIndex(999)
-                .background(.bg2)
+           
+                CustomTabBar(currentTab: $tab)
+                    .zIndex(999)
+                    .background(.bg2)
+           
         }
         .onAppear {
             if isOpenFaceIdLock {
                 isLocked = true
                 faceIDModel.authenticate()
-            } 
+            }
         }
         .onChange(of: scenePhase) { newPhase in
+           
             if newPhase == .active {
                 dayBookModel.initDayBooks(context: env.managedObjectContext)
+               
+                if pomodoroModel.isStarted && !pomodoroModel.isPaused {
+                    let currentTimeStampDiff = Date().timeIntervalSince(lastActiveTimeStamp)
+                    if pomodoroModel.totalSeconds - Int(currentTimeStampDiff) <= 0 {
+                        pomodoroModel.isStarted = false
+                        pomodoroModel.totalSeconds = 0
+                        pomodoroModel.isFinished = true
+                        pomodoroModel.isPaused = false
+                    }else{
+                        pomodoroModel.totalSeconds -= Int(currentTimeStampDiff)
+                    }
+                   // app.endBackgroundTask()
+                }
             } else if newPhase == .inactive {
                 if isOpenFaceIdLock {
                     isLocked = true
@@ -94,9 +112,18 @@ struct HomeScreen: View {
                 if isOpenFaceIdLock {
                     isLocked = true
                 }
+               
+                if pomodoroModel.isStarted {
+                    lastActiveTimeStamp = Date()
+                    /*let app = UIApplication.shared
+                    app.beginBackgroundTask(withName: "MyTarget") {
+                        print("MyTarget: Start")
+                    }*/
+                }
             }
         }
     }
+     
 }
 
 struct HomeScreen_Previews: PreviewProvider {
