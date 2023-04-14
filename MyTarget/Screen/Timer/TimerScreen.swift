@@ -64,9 +64,9 @@ struct TimerScreen: View {
                         animateTopButton()
                         dayBookListForState = dayBookList.reversed()
                     }
-                    .onDisappear{
+                    /*.onDisappear{
                         animationTopView.toggle()
-                    }
+                    }*/
                     .padding([.horizontal,.top])
                     .frame(maxHeight: .infinity,alignment: .top)
                     
@@ -78,9 +78,9 @@ struct TimerScreen: View {
                                 TimeLineView()
                             }
                             .padding([.horizontal,.top])
-                            .onAppear(){
+                            /*.onAppear(){
                                 startAnimation()
-                            }
+                            }*/
                         }
                         
                         if currentTab == .view {
@@ -433,9 +433,9 @@ struct TimelineViewRow: View {
                 showCardView = true
             }
         }
-        .onDisappear {
+        /*.onDisappear {
             showCardView = false
-        }
+        }*/
     }
     
     @ViewBuilder

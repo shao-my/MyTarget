@@ -47,6 +47,7 @@
 		F595F09F29E3BEE90007172D /* TargetWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F595F08D29E3BEE80007172D /* TargetWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F59E100B29E85B29009994B2 /* SYSColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57CC84129C5A52100592E53 /* SYSColor.swift */; };
 		F59E100D29E8F5B9009994B2 /* OpenUrlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59E100C29E8F5B9009994B2 /* OpenUrlModel.swift */; };
+		F59E101129E92878009994B2 /* Alimama_DongFangDaKai_Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = F59E101029E92878009994B2 /* Alimama_DongFangDaKai_Regular.otf */; };
 		F5A60F3629CDFF7B00A7AD9C /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A60F3529CDFF7B00A7AD9C /* Persistence.swift */; };
 		F5ADB93F29E4F3DC00314203 /* SheetDelegate+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5ADB93E29E4F3DC00314203 /* SheetDelegate+.swift */; };
 		F5B7F45A29C2E8C100A7B86E /* SwiftMessages in Frameworks */ = {isa = PBXBuildFile; productRef = F5B7F45929C2E8C100A7B86E /* SwiftMessages */; };
@@ -146,6 +147,7 @@
 		F595F0A629E3D0D10007172D /* MyTarget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyTarget.entitlements; sourceTree = "<group>"; };
 		F595F0A729E3D1150007172D /* TargetWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TargetWidgetExtension.entitlements; sourceTree = "<group>"; };
 		F59E100C29E8F5B9009994B2 /* OpenUrlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenUrlModel.swift; sourceTree = "<group>"; };
+		F59E101029E92878009994B2 /* Alimama_DongFangDaKai_Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Alimama_DongFangDaKai_Regular.otf; sourceTree = "<group>"; };
 		F5A60F3529CDFF7B00A7AD9C /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		F5ADB93E29E4F3DC00314203 /* SheetDelegate+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SheetDelegate+.swift"; sourceTree = "<group>"; };
 		F5B7F45B29C2EA3F00A7B86E /* CustomMessage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomMessage+.swift"; sourceTree = "<group>"; };
@@ -354,6 +356,7 @@
 		F5DFD41629BF428900211FE3 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				F59E101029E92878009994B2 /* Alimama_DongFangDaKai_Regular.otf */,
 				F5DFD45029C01CA400211FE3 /* MyTarget.xcdatamodeld */,
 				F5DFD40529BF310500211FE3 /* Info.plist */,
 				F5DFD3FB29BF310500211FE3 /* Assets.xcassets */,
@@ -541,6 +544,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F59E101129E92878009994B2 /* Alimama_DongFangDaKai_Regular.otf in Resources */,
 				F5DFD3FF29BF310500211FE3 /* Preview Assets.xcassets in Resources */,
 				F5DFD3FC29BF310500211FE3 /* Assets.xcassets in Resources */,
 			);

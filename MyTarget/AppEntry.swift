@@ -17,7 +17,7 @@ struct AppEntry: App {
 
     init() {
         applyTabBarBackground()
-        UITabBar.appearance().isHidden = true 
+        UITabBar.appearance().isHidden = true
     }
     
     var body: some Scene {
