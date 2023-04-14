@@ -46,6 +46,7 @@
 		F595F09C29E3BEE90007172D /* TargetWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = F595F09729E3BEE90007172D /* TargetWidget.intentdefinition */; };
 		F595F09F29E3BEE90007172D /* TargetWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F595F08D29E3BEE80007172D /* TargetWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F59E100B29E85B29009994B2 /* SYSColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57CC84129C5A52100592E53 /* SYSColor.swift */; };
+		F59E100D29E8F5B9009994B2 /* OpenUrlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59E100C29E8F5B9009994B2 /* OpenUrlModel.swift */; };
 		F5A60F3629CDFF7B00A7AD9C /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A60F3529CDFF7B00A7AD9C /* Persistence.swift */; };
 		F5ADB93F29E4F3DC00314203 /* SheetDelegate+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5ADB93E29E4F3DC00314203 /* SheetDelegate+.swift */; };
 		F5B7F45A29C2E8C100A7B86E /* SwiftMessages in Frameworks */ = {isa = PBXBuildFile; productRef = F5B7F45929C2E8C100A7B86E /* SwiftMessages */; };
@@ -144,6 +145,7 @@
 		F595F0A529E3BFE90007172D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F595F0A629E3D0D10007172D /* MyTarget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyTarget.entitlements; sourceTree = "<group>"; };
 		F595F0A729E3D1150007172D /* TargetWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TargetWidgetExtension.entitlements; sourceTree = "<group>"; };
+		F59E100C29E8F5B9009994B2 /* OpenUrlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenUrlModel.swift; sourceTree = "<group>"; };
 		F5A60F3529CDFF7B00A7AD9C /* Persistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		F5ADB93E29E4F3DC00314203 /* SheetDelegate+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SheetDelegate+.swift"; sourceTree = "<group>"; };
 		F5B7F45B29C2EA3F00A7B86E /* CustomMessage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomMessage+.swift"; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 				F589D0F129DC6780000CBB64 /* TextAnimation.swift */,
 				F5FA60A529E18A81003ACB73 /* FaceIDModel.swift */,
 				F5BAFCC729E54A2800AB81AD /* PomodoroModel.swift */,
+				F59E100C29E8F5B9009994B2 /* OpenUrlModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -582,6 +585,7 @@
 				F5DF181529C6F36300F0E471 /* BounceStruct.swift in Sources */,
 				F5ED4EF129C98C7400DDC5E6 /* FlipText.swift in Sources */,
 				F5DF181B29C73E3100F0E471 /* FlipIcon.swift in Sources */,
+				F59E100D29E8F5B9009994B2 /* OpenUrlModel.swift in Sources */,
 				F5BD969629C1B50B00F82B24 /* TextFieldWithFocus.swift in Sources */,
 				F56C642329E3E90400B2428B /* WidgetQuartzAttributes.swift in Sources */,
 				F519225D29C0D1B600C90BCE /* Unit.swift in Sources */,

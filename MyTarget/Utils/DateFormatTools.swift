@@ -206,6 +206,9 @@ func getTimeDifference(time1: Date, time2: Date) -> String {
     if second > 0 {
         str += " \(second) 秒"
     }
+    if str == "" {
+        str = "无"
+    }
     return str
 }
 
@@ -256,6 +259,9 @@ func getToDayTimeDifference(time1: Date, time2: Date) -> String {
     }
     if second > 0 {
         str += " \(second) 秒"
+    }
+    if str == "" {
+        str = "无"
     }
     return str
 }

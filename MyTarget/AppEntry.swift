@@ -11,7 +11,8 @@ import SwiftUI
 struct AppEntry: App {
     let persistenceController = PersistenceController.shared
     @StateObject var pomodoroModel: PomodoroModel = .init()
-    
+    @StateObject var openUrl: OpenUrlModel = OpenUrlModel()
+
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     init() {
@@ -24,6 +25,14 @@ struct AppEntry: App {
             HomeScreen()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(pomodoroModel)
+                .environmentObject(openUrl)
+                .onOpenURL { url in
+                    if openUrl.checkDeepLink(url: url) {
+                        print("DEEP")
+                    }else{
+                        print("BACK")
+                    }
+                }
         }
     }
     

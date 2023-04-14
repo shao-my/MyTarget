@@ -364,7 +364,6 @@ struct SummaryScreen: View {
         }
         .onAppear {
             dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext)
-            //print(dayBookList)
         }
     } 
 }

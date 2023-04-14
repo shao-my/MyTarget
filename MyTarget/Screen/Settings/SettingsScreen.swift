@@ -13,17 +13,19 @@ struct SettingsScreen: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.requestReview) var requestReview
     @EnvironmentObject var pomodoroModel: PomodoroModel
-
+    
     @AppStorage(.isOpenFaceIdLock) private var isOpenFaceIdLock: Bool = false
     @AppStorage(.isShowIsland) private var isShowIsland: Bool = false
-     
+    
     @State var isShowSelfRecount: Bool = false
-    @AppStorage(.myLocale) private var myLocale: String = "zh_cn" 
+    @AppStorage(.myLocale) private var myLocale: String = "zh_cn"
     
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @State private var countNum = 5
     
     @State private var settingPagePresented: Bool = false
+    
+    @EnvironmentObject var openUrl: OpenUrlModel
     
     var body: some View {
         NavigationView{
@@ -54,25 +56,28 @@ struct SettingsScreen: View {
                         }
                         .toggleStyle(.switch)
                         
+                        
+                        
                         LabeledContent {
-                           NavigationLink {
+                            NavigationLink(tag: "pomodoroTimer", selection: $openUrl.internalLink) {
                                 FocusView()
-                                        .environmentObject(pomodoroModel)
+                                    .environmentObject(pomodoroModel)
+                                    .environmentObject(openUrl)
                             } label: {
                                 Text("")
                                     .push(to: .trailing)
                             }
-                            .navigationBarTitle("设置")  
+                            .navigationBarTitle("设置")
                         } label: {
                             Label("专注模式", systemImage: .brain)
                         }
                         
                         /*if #available(iOS 16.1, *) {
-                            Toggle(isOn: $isShowIsland){
-                                Label("灵动岛", systemImage: .bear)
-                            }
-                            .toggleStyle(.switch)
-                        }*/
+                         Toggle(isOn: $isShowIsland){
+                         Label("灵动岛", systemImage: .bear)
+                         }
+                         .toggleStyle(.switch)
+                         }*/
                     }
                     
                     Section("说明书") {
@@ -137,5 +142,6 @@ struct SettingsScreen_Previews: PreviewProvider {
     static var previews: some View {
         SettingsScreen()
             .environmentObject(PomodoroModel())
+            .environmentObject(OpenUrlModel())
     }
 }

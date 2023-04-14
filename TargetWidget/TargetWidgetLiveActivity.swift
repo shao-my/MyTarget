@@ -63,12 +63,13 @@ struct TargetWidgetLiveActivity: Widget {
                 
                 Spacer() 
               
+                 
                 
                 let future =  Calendar.current.date(byAdding: .second, value: context.state.totalSeconds , to:  Date())!
                 let date =  Date.now...future
                 Text(timerInterval: date, countsDown: true)
                     .multilineTextAlignment(.trailing)
-                    .monospacedDigit()
+                    //.monospacedDigit()
                     .font(.title2.bold())
                     .foregroundColor(themeColor)
             }
@@ -115,18 +116,16 @@ struct TargetWidgetLiveActivity: Widget {
                 DynamicIslandExpandedRegion(.bottom) {
                     Button {
                         // Deep link into your app.
+                        //UIApplication.shared.open(URL(string:"https://www.wikipedia.org")!)
                     } label: {
                         Text("\(context.state.remainderText)")
                     }
-                    .foregroundColor(.indigo)
-                    
+                    .padding(.top,8)
+                    .foregroundColor(.white)
                 }
             } compactLeading: {
                 Image(systemName: context.state.quartzIcon)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding(4)
-                    .offset(x: -4)
+                    .font(.caption2.bold())
                     .foregroundColor(.indigo)
             } compactTrailing: {
                 let future =  Calendar.current.date(byAdding: .second, value: context.state.totalSeconds , to:  Date())!
@@ -136,15 +135,16 @@ struct TargetWidgetLiveActivity: Widget {
                     .frame(width: 60)
                     .font(.caption2)
             } minimal: {
-                let future =  Calendar.current.date(byAdding: .second, value: context.state.totalSeconds , to:  Date())!
-                let date =  Date.now...future
                 Image(systemName: context.state.quartzIcon)
-                Text(timerInterval: date, countsDown: true)
+                /*
+                 let future =  Calendar.current.date(byAdding: .second, value: context.state.totalSeconds , to:  Date())!
+                 let date =  Date.now...future
+                 Text(timerInterval: date, countsDown: true)
                     .multilineTextAlignment(.center)
                     .monospacedDigit()
-                    .font(.caption2)
+                    .font(.caption2)*/
             }
-            //.widgetURL(URL(string: "http://www.apple.com"))
+            .widgetURL(URL(string: "MyTarget://pomodoroTimer"))
             .keylineTint(Color.cyan)
         }
     }

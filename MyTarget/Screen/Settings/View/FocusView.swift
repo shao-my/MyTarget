@@ -12,9 +12,11 @@ import ActivityKit
 struct FocusView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @EnvironmentObject var pomodoroModel: PomodoroModel
+    @EnvironmentObject var openUrl: OpenUrlModel
     @AppStorage(.isShowIsland) private var isShowIsland: Bool = true
     @Environment(\.self) var env
- 
+   
+
     @FetchRequest(entity: Quartz.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Quartz.id, ascending: false)], predicate: NSPredicate(format: "status = %@", "1"), animation: .easeInOut)
     private var quartzList: FetchedResults<Quartz>
     
@@ -25,6 +27,7 @@ struct FocusView: View {
     @State var isBandageQuartz: Bool = false
     @State var quartzs: [Quartz] = []
     @State var selectedQuartz: Quartz = Quartz()
+     
     
     var body: some View {
         VStack {
@@ -130,8 +133,10 @@ struct FocusView: View {
                                 pomodoroModel.isPaused.toggle()
                                 if(pomodoroModel.isPaused){
                                     UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                                    endActivity()
                                 }else{
                                     pomodoroModel.addNotification()
+                                    startActivity()
                                 }
                             }
                         } label: {
@@ -182,12 +187,19 @@ struct FocusView: View {
             //  quartzs =  quartzModel.fetchQuartzList(context:  env.managedObjectContext)
             quartzs = quartzList.reversed()
             if (quartzs.count > 0 ){
+                selectedQuartz = Quartz(context: env.managedObjectContext)
                 //selectedQuartz =  quartzs.first!
+                //默认一些字段
+                selectedQuartz.quartzName = "计时器"
+                selectedQuartz.quartzIcon = "hand.thumbsup.circle"
+                selectedQuartz.quartzColor = "cyan"
+                selectedQuartz.remainderText = "言之无文,行而不远。——《左传》"
             }
         }
-        .onDisappear {
-            self.presentationMode.wrappedValue.dismiss()
-        }
+        /*.onDisappear {
+           // self.presentationMode.wrappedValue.dismiss()
+            openUrl.internalLink = ""
+        }*/
     }
     
     @ViewBuilder
@@ -288,33 +300,44 @@ struct FocusView: View {
                         }
                         .toggleStyle(.switch)
                         
-                        LabeledContent {
-                            Button {
-                                withAnimation(.mySpring) {
-                                    isBandageQuartz.toggle()
-                                    if isBandageQuartz {
-                                        pomodoroModel.quartzId = selectedQuartz.id!
-                                        //自动装载任务时长
-                                        let hms = getHMSTimeDifference(time1: selectedQuartz.startTime!, time2: selectedQuartz.endTime!)
-                                        pomodoroModel.hour = hms[0]
-                                        pomodoroModel.minutes = hms[1]
-                                        pomodoroModel.seconds = hms[2]
-                                    }else {
-                                        pomodoroModel.quartzId = UUID()
-                                        pomodoroModel.hour = 0
-                                        pomodoroModel.minutes = 0
-                                        pomodoroModel.seconds = 0
+                        if quartzs.count > 0 {
+                            LabeledContent {
+                                Button {
+                                    withAnimation(.mySpring) {
+                                        isBandageQuartz.toggle()
+                                        if isBandageQuartz {
+                                            selectedQuartz =  quartzs.first!
+                                            pomodoroModel.quartzId = selectedQuartz.id!
+                                            //自动装载任务时长
+                                            let hms = getHMSTimeDifference(time1: selectedQuartz.startTime!, time2: selectedQuartz.endTime!)
+                                            pomodoroModel.hour = hms[0]
+                                            pomodoroModel.minutes = hms[1]
+                                            pomodoroModel.seconds = hms[2]
+                                        }else {
+                                            pomodoroModel.quartzId = UUID()
+                                            pomodoroModel.hour = 0
+                                            pomodoroModel.minutes = 0
+                                            pomodoroModel.seconds = 0
+                                        }
                                     }
+                                } label: {
+                                    Image(systemName: "chevron.right.circle")
+                                        .font(.system(size: 25, weight: .semibold))
+                                        .foregroundColor(isBandageQuartz ? Color.red : Color.accentColor)
+                                        .rotationEffect(.init(degrees: isBandageQuartz ? 90 : 0))
                                 }
                             } label: {
-                                Image(systemName: "chevron.right.circle")
-                                    .font(.system(size: 25, weight: .semibold))
-                                    .foregroundColor(isBandageQuartz ? Color.red : Color.accentColor)
-                                    .rotationEffect(.init(degrees: isBandageQuartz ? 90 : 0))
+                                Label("关联任务", systemImage: .bandage)
                             }
-                        } label: {
-                            Label("关联任务", systemImage: .bandage)
                         }
+                        else{
+                            LabeledContent {
+                                Text("暂无任务")
+                            } label: {
+                                Label("关联任务", systemImage: .bandage)
+                            }
+                        }
+                        
                         
                         if isBandageQuartz {
                             LabeledContent {
@@ -327,7 +350,6 @@ struct FocusView: View {
                         }
                     }
                 }
-                
                 .frame(minHeight: 200)
                 .padding(.top, -20)
             }
@@ -351,7 +373,7 @@ struct FocusView: View {
                         }
                         .padding(.leading, 10)
                         .padding(.trailing,(trailingCardsToShown * trailingSpaceOfEachCards))
-                        .frame(height: size.height / 1.6)
+                        .frame(height: size.height / 1.3)
                         .frame(maxWidth: .infinity,maxHeight: .infinity,alignment: .center)
                     }
                     .transition(.moveUpWithOpacity)
@@ -440,17 +462,12 @@ struct InfiniteStackedCardsView: View {
     var body: some View {
         let qColor =  Color(SYSColor(rawValue: quartz.quartzColor ?? "gray")!.create)
         
-        VStack(alignment: .leading,spacing: 15){
+        VStack(alignment: .leading,spacing: 10){
              VStack(alignment: .leading)  {
-                 Image(systemName: "checkmark.circle")
-                        .font(.system(size: 25, weight: .semibold))
-                        .padding(.trailing)
-                        .push(to: .trailing)
-                        .opacity(getIndex() == 0 ? 1 : 0)
-               
                  HStack(alignment: .top) {
                      Image(systemName: quartz.quartzIcon!)
                          .font(.title.bold())
+                         .lineLimit(1)
                      
                      VStack(alignment: .leading,spacing: 15){
                          Text(quartz.quartzName!)
@@ -463,25 +480,32 @@ struct InfiniteStackedCardsView: View {
                          Text("提醒文本 : " + quartz.remainderText!)
                              .font(.caption.bold())
                              .push(to: .leading)
+                             .lineLimit(1)
                          
-                         
-                         Text("开始 : " + getStringForHHmm(dateTime:  quartz.startTime!))
-                             .font(.caption.bold())
-                             .push(to: .leading)
-                         
-                         Text("结束 : " +  getStringForHHmm(dateTime:  quartz.endTime!))
-                             .font(.caption.bold())
-                             .push(to: .leading)
+                         HStack {
+                             Text("开始 : " + getStringForHHmm(dateTime:  quartz.startTime!))
+                                 .font(.caption.bold())
+                                 .push(to: .leading)
+                             
+                             Text("结束 : " +  getStringForHHmm(dateTime:  quartz.endTime!))
+                                 .font(.caption.bold())
+                                 .push(to: .leading)
+                         }
                          
                          Text("时长 : " +  getTimeDifference(time1: quartz.startTime!, time2:  quartz.endTime!))
                              .font(.caption.bold())
                              .push(to: .leading)
                      }
                  }
-                
-                Spacer()
              }
-             .frame(maxHeight: 200)
+            .frame(maxHeight: 200)
+            .overlay(alignment: .topTrailing) {
+                Image(systemName: "checkmark.circle")
+                       .font(.system(size: 25, weight: .semibold))
+                       .padding(.trailing)
+                       .push(to: .trailing)
+                       .opacity(getIndex() == 0 ? 1 : 0)
+            }
         }
         .padding()
         .padding(.vertical, 10)
@@ -522,7 +546,7 @@ struct InfiniteStackedCardsView: View {
                     }
                 })
         )
-        .animation(.mySpring, value: quartzs)
+        .animation(.easeInOut, value: quartzs)
         .onChange(of: getIndex()) { newValue in
             if getIndex() == 0 {
                 selectedQuartz = quartz
