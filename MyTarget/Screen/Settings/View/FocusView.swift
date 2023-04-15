@@ -192,7 +192,7 @@ struct FocusView: View {
                 //selectedQuartz =  quartzs.first!
                 //默认一些字段
                 selectedQuartz.quartzName = "计时器"
-                selectedQuartz.quartzIcon = "hand.thumbsup.circle"
+                selectedQuartz.quartzIcon = "Default.Icon"
                 selectedQuartz.quartzColor = "cyan"
                 selectedQuartz.remainderText = "言之无文,行而不远。——《左传》"
             }
@@ -222,7 +222,7 @@ struct FocusView: View {
                     showingSheet = false
                     if isShowIsland {
                         startActivity()
-                    } 
+                    }
                 } label: {
                     Text("保存").font(.body.bold())
                 }

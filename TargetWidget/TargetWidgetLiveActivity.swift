@@ -47,14 +47,22 @@ struct TargetWidgetLiveActivity: Widget {
                         }
                 }*/
                 
-                Image(systemName: context.state.quartzIcon)
-                    .font(.title3.bold())
-                    .foregroundColor(.white)
-                    .padding()
-                    .background {
-                        Circle()
-                            .fill(Color(SYSColor(rawValue:  context.state.quartzColor )!.create).opacity(0.3))
-                    }
+                if context.state.quartzIcon == "Default.Icon" {
+                    Image("Check")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 36,height: 36)
+                        .padding(.leading)
+                }else{
+                    Image(systemName: context.state.quartzIcon)
+                        .font(.title3.bold())
+                        .foregroundColor(.white)
+                        .padding()
+                        .background {
+                            Circle()
+                                .fill(Color(SYSColor(rawValue:  context.state.quartzColor )!.create).opacity(0.3))
+                        }
+                }
                 
                 Text("\(context.state.quartzName)")
                         .multilineTextAlignment(.trailing)
@@ -84,10 +92,18 @@ struct TargetWidgetLiveActivity: Widget {
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
                     VStack {
-                        Image(systemName: context.state.quartzIcon)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 40, height: 40)
+                        if context.state.quartzIcon == "Default.Icon" {
+                            Image("Check")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 40, height: 40)
+                        }else{
+                            Image(systemName: context.state.quartzIcon)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 40, height: 40)
+                        }
+                        
                         Text(context.state.quartzName)
                             .foregroundColor(.indigo)
                             .font(.title2)
@@ -124,9 +140,17 @@ struct TargetWidgetLiveActivity: Widget {
                     .foregroundColor(.white)
                 }
             } compactLeading: {
-                Image(systemName: context.state.quartzIcon)
-                    .font(.caption2.bold())
-                    .foregroundColor(.indigo)
+                if context.state.quartzIcon == "Default.Icon" {
+                    Image("Check")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 12,height: 12)
+                        .padding(.leading)
+                }else{
+                    Image(systemName: context.state.quartzIcon)
+                        .font(.caption2.bold())
+                        .foregroundColor(.indigo)
+                }
             } compactTrailing: {
                 let future =  Calendar.current.date(byAdding: .second, value: context.state.totalSeconds , to:  Date())!
                 let date =  Date.now...future
