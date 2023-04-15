@@ -21,9 +21,7 @@ struct TargetWidgetLiveActivity: Widget {
         ActivityConfiguration(for: WidgetQuartzAttributes.self) { context in
             // Lock screen/banner UI goes here
             HStack(spacing: 15){
-               /* Button {
-                    isPaused.toggle()
-                } label: {
+               /* Link(destination: URL(filePath: "MyTarget://123")){
                     Image(systemName: isPaused ?  "play" : "pause")
                         .font(.title3.bold())
                         .foregroundColor(themeColor)
@@ -32,11 +30,10 @@ struct TargetWidgetLiveActivity: Widget {
                             Circle()
                                 .fill(themeColor.opacity(0.3))
                         }
-                      
+                         
                 }
                 
-                Button {
-                } label: {
+                Link(destination: URL(filePath: "maps://")){
                     Image(systemName: "xmark")
                         .font(.title3.bold())
                         .foregroundColor(.white)
@@ -44,6 +41,9 @@ struct TargetWidgetLiveActivity: Widget {
                         .background {
                             Circle()
                                 .fill(Color.gray.opacity(0.3))
+                        }
+                        .onTapGesture {
+                            isPaused.toggle()
                         }
                 }*/
                 

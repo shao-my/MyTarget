@@ -28,6 +28,7 @@ struct FocusView: View {
     @State var quartzs: [Quartz] = []
     @State var selectedQuartz: Quartz = Quartz()
      
+    //@AppStorage("active_icon") var activeAppIcon: String = "AppIcon"
     
     var body: some View {
         VStack {
@@ -221,7 +222,7 @@ struct FocusView: View {
                     showingSheet = false
                     if isShowIsland {
                         startActivity()
-                    }
+                    } 
                 } label: {
                     Text("保存").font(.body.bold())
                 }

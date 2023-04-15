@@ -12,12 +12,12 @@ struct AppEntry: App {
     let persistenceController = PersistenceController.shared
     @StateObject var pomodoroModel: PomodoroModel = .init()
     @StateObject var openUrl: OpenUrlModel = OpenUrlModel()
-
+    @Environment(\.openURL) var openURL
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     init() {
         applyTabBarBackground()
-        UITabBar.appearance().isHidden = true
+        UITabBar.appearance().isHidden = true 
     }
     
     var body: some Scene {
@@ -26,7 +26,7 @@ struct AppEntry: App {
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(pomodoroModel)
                 .environmentObject(openUrl)
-                .onOpenURL { url in
+                .onOpenURL { url in 
                     if openUrl.checkDeepLink(url: url) {
                         print("DEEP")
                     }else{

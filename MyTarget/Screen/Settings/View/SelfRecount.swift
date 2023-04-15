@@ -23,6 +23,8 @@ struct SelfRecount: View {
                             declareView()
                              
                             gratitudeView()
+                            
+                            contactView()
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
@@ -171,6 +173,20 @@ struct SelfRecount: View {
             .shimmer(.init(tint: Color.accentColor, highlight: .white,blur: 2))
             .padding(.top, -15)
             .push(to: .center)
+    }
+    
+    @ViewBuilder
+    func contactView() -> some View {
+        Text("联系方式：")
+            .font(customFont)
+            .foregroundColor(Color.accentColor)
+            .shimmer(.init(tint: Color.accentColor, highlight: .white,blur: 2))
+            .lineSpacing(10)
+        
+        Text("邮箱地址：286962439@163.com")
+            .font(customFont)
+            .lineSpacing(10)
+            .padding(.top, -10)
     }
 }
 

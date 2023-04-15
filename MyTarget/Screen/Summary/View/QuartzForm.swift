@@ -135,7 +135,6 @@ struct QuartzForm: View {
                          )*/
                             .shadow(color: .white, radius: 8)
                     }.offset(x: 40, y: 40)
-                    
                 )
                 
                 Form {

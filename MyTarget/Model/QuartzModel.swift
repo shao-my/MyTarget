@@ -36,7 +36,7 @@ class QuartzModel: ObservableObject {
         requestNotificationAccess()
     }
     
-    func addQuartz(context: NSManagedObjectContext,quartzPrms: QuartzPrms) {
+    func addQuartz(context: NSManagedObjectContext,quartzPrms: QuartzPrms) -> DayBook {
         let quartz = Quartz(context: context)
         
         quartz.id = quartzPrms.id
@@ -79,6 +79,7 @@ class QuartzModel: ObservableObject {
         dayBook.endTime = quartzPrms.endTime
         
         try? context.save()
+        return dayBook
     }
     
     func editQuartz(context: NSManagedObjectContext,quartzPrms: QuartzPrms) {

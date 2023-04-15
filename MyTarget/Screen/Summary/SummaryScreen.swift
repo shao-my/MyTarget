@@ -54,7 +54,8 @@ struct SummaryScreen: View {
     @State var quitText: [TextAnimation] = []
     
     func addHoldQuartz(prms: QuartzPrms) -> Void {
-        quartzModel.addQuartz(context: env.managedObjectContext, quartzPrms: prms)
+        let newBook = quartzModel.addQuartz(context: env.managedObjectContext, quartzPrms: prms)
+        dayBookList.append(newBook)
         holdSummaryStr = getDayBookSummary(dayBooks:  dayBookList.reversed(), quartzType: "HOLD")
         holdProgress = getDayBookPercent(dayBooks:  dayBookList.reversed(), quartzType: "HOLD")
         flipHoldScore.toggle()
@@ -64,12 +65,14 @@ struct SummaryScreen: View {
     }
     
     func addQuitQuartz(prms: QuartzPrms) -> Void {
-        quartzModel.addQuartz(context: env.managedObjectContext, quartzPrms: prms)
+        let newBook = quartzModel.addQuartz(context: env.managedObjectContext, quartzPrms: prms)
+        dayBookList.append(newBook)
         quitSummaryStr = getDayBookSummary(dayBooks: dayBookList.reversed(), quartzType: "QUIT")
         quitProgress = getDayBookPercent(dayBooks: dayBookList.reversed(), quartzType: "QUIT")
         flipQuitScore.toggle()
         quitFrontDegrees = quitFrontDegrees + 180
         quitTotalNumber = Int(quitSummaryStr.suffix(2))!
+        dayBookList = dayBookModel.fetchDayBookForDay(context: env.managedObjectContext)
         WidgetCenter.shared.reloadAllTimelines()
     }
     

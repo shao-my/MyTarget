@@ -54,46 +54,71 @@ struct HomeScreen: View {
     @StateObject var faceIDModel : FaceIDModel = FaceIDModel()
     @Environment(\.scenePhase) var scenePhase
     
-    /*@State var tab: Tab = {
-        let rawValue = UserDefaults.standard.string(forKey: UserDefaults.Key.startTab.rawValue) ?? ""
-        return Tab(rawValue: rawValue) ?? .summary
-    }()*/
-    
-    @State var tab: Tab = .summary
-    
-    @State var currentTab = "概要"
-    
     @EnvironmentObject var pomodoroModel: PomodoroModel
     @State var lastActiveTimeStamp: Date = Date()
     
     @EnvironmentObject var openUrl: OpenUrlModel
     
+    @Namespace var animationForHome
+    @State var animationStates: [Bool] = Array(repeating: false, count: 3)
+    //let bgColor: Color = Color(red: 120 / 255, green: 96 / 255, blue: 160 / 255)
+    
     var body: some View {
-        ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom)) {
-            if isLocked {
-                FaceIDView()
-            }
-            
-            TabView(selection: $openUrl.currentTab) {
-                ForEach(Tab.allCases, id: \.self){
-                    $0
-                        .environmentObject(pomodoroModel)
-                        .environmentObject(openUrl)
+        ZStack{
+            if !animationStates[1]   {
+                ZStack {
+                    RoundedRectangle(cornerRadius:  40,style: .continuous)
+                        .fill(Color("Purple"))
+                        .ignoresSafeArea()
+                        
+                    Image("Check")
+                    .scaleEffect(animationStates[0] ? 0.25 : 1)
                 }
-            }
-            .preferredColorScheme(shouldUseDarkMod ? .dark : .light)  //只向上传递一层
-            
-            CustomTabBar(currentTab: $openUrl.currentTab)
                 .zIndex(999)
-                .background(.bg2)
+                .matchedGeometryEffect(id: "LOGO", in: animationForHome)
+            }
             
+            ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom)) {
+                if isLocked {
+                    FaceIDView()
+                }
+                
+                TabView(selection: $openUrl.currentTab) {
+                    ForEach(Tab.allCases, id: \.self){
+                        $0
+                            .environmentObject(pomodoroModel)
+                            .environmentObject(openUrl)
+                            .overlay(alignment: .topTrailing) {
+                                if animationStates[0]    {
+                                    ZStack {
+                                        RoundedRectangle(cornerRadius:  40  ,style: .continuous)
+                                            .fill(Color("Purple"))
+                                            .frame(width: 40,height: 40)
+                                            
+                                        Image("Check")
+                                        .scaleEffect( 0.25 )
+                                    }
+                                    .matchedGeometryEffect(id: "LOGO", in: animationForHome)
+                                   // .offset(x: 65,y: 16)
+                                    .opacity(openUrl.currentTab == .summary ? 1 : 0)
+                                }
+                            }
+                    }
+                }
+                .preferredColorScheme(shouldUseDarkMod ? .dark : .light)  //只向上传递一层
+                
+                CustomTabBar(currentTab: $openUrl.currentTab)
+                    .zIndex(9)
+                    .background(.bg2)
+            }
         }
-        .onAppear { 
+        .onAppear {
             if isOpenFaceIdLock {
                 isLocked = true
                 faceIDModel.authenticate()
             }
         }
+        .onAppear(perform: startAnimations)
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
                 dayBookModel.initDayBooks(context: env.managedObjectContext)
@@ -118,11 +143,22 @@ struct HomeScreen: View {
                 }
                 if pomodoroModel.isStarted {
                     lastActiveTimeStamp = Date()
-                } 
+                }
             }
         }
     }
     
+    func startAnimations(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            withAnimation(.easeIn) {
+                animationStates[0] = true
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                animationStates[1] = true
+            }
+        }
+    }
 }
 
 struct HomeScreen_Previews: PreviewProvider {
