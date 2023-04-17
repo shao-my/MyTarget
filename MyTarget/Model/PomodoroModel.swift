@@ -112,7 +112,7 @@ class PomodoroModel: NSObject, ObservableObject, UNUserNotificationCenterDelegat
         content.subtitle = "倒计时完成"
         content.sound = UNNotificationSound.default
         
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(totalSeconds), repeats: false))
+        let request = UNNotificationRequest(identifier: "MyTarger Timer", content: content, trigger: UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(totalSeconds), repeats: false))
         
         UNUserNotificationCenter.current().add(request)
     }

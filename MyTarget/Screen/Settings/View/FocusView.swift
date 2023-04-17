@@ -15,8 +15,8 @@ struct FocusView: View {
     @EnvironmentObject var openUrl: OpenUrlModel
     @AppStorage(.isShowIsland) private var isShowIsland: Bool = true
     @Environment(\.self) var env
-   
-
+    
+    
     @FetchRequest(entity: Quartz.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Quartz.id, ascending: false)], predicate: NSPredicate(format: "status = %@", "1"), animation: .easeInOut)
     private var quartzList: FetchedResults<Quartz>
     
@@ -27,7 +27,7 @@ struct FocusView: View {
     @State var isBandageQuartz: Bool = false
     @State var quartzs: [Quartz] = []
     @State var selectedQuartz: Quartz = Quartz()
-     
+    
     //@AppStorage("active_icon") var activeAppIcon: String = "AppIcon"
     
     var body: some View {
@@ -39,7 +39,7 @@ struct FocusView: View {
                 } label: {
                     SFSymbol.arrowLeft
                         .font(.callout.bold())
-                   // Text("返回")
+                    // Text("返回")
                 }
                 .padding(.leading)
                 .push(to: .leading)
@@ -108,7 +108,13 @@ struct FocusView: View {
                         Button {
                             if pomodoroModel.isStarted {
                                 pomodoroModel.stopTimer()
-                                UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                                let dq = DispatchQueue.global(qos: .userInteractive)
+                                dq.async {
+                                    let group  = DispatchGroup()
+                                    group.enter()
+                                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["MyTarger Timer"])
+                                    group.leave()
+                                }
                                 endActivity()
                             }
                         } label: {
@@ -133,7 +139,13 @@ struct FocusView: View {
                             }else{
                                 pomodoroModel.isPaused.toggle()
                                 if(pomodoroModel.isPaused){
-                                    UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                                    let dq = DispatchQueue.global(qos: .userInteractive)
+                                    dq.async {
+                                        let group  = DispatchGroup()
+                                        group.enter()
+                                        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["MyTarger Timer"])
+                                        group.leave()
+                                    }
                                     endActivity()
                                 }else{
                                     pomodoroModel.addNotification()
@@ -151,7 +163,7 @@ struct FocusView: View {
                                 }
                                 .shadow(color: Color.accentColor, radius: 8,x: 0,y: 0)
                         }
-                      
+                        
                     }
                     .padding(.bottom, 60)
                     .padding(.horizontal)
@@ -161,7 +173,7 @@ struct FocusView: View {
         }
         .padding()
         .sheet(isPresented: $showingSheet, onDismiss: {
-           
+            
         }, content: {
             NewTimerView()
         })
@@ -171,9 +183,9 @@ struct FocusView: View {
             if pomodoroModel.isStarted && !pomodoroModel.isPaused {
                 pomodoroModel.updateTimer(context: env.managedObjectContext)
                 /*if isShowIsland {
-                    updateActivity()
-                    print("pomo" + pomodoroModel.timerStringValue)
-                }*/
+                 updateActivity()
+                 print("pomo" + pomodoroModel.timerStringValue)
+                 }*/
             }
         }
         .onChange(of: pomodoroModel.isFinished) { newValue in
@@ -198,9 +210,9 @@ struct FocusView: View {
             }
         }
         /*.onDisappear {
-           // self.presentationMode.wrappedValue.dismiss()
-            openUrl.internalLink = ""
-        }*/
+         // self.presentationMode.wrappedValue.dismiss()
+         openUrl.internalLink = ""
+         }*/
     }
     
     @ViewBuilder
@@ -389,68 +401,68 @@ struct FocusView: View {
     }
     
     /// 开启灵动岛显示功能
-        func startActivity(){
-            Task{
-                let attributes = WidgetQuartzAttributes(name:"Quartz")
-                let initialContentState = WidgetQuartzAttributes.ContentState(quartzName: selectedQuartz.quartzName ?? "倒计时",quartzIcon: selectedQuartz.quartzIcon ?? "lock.fill",quartzColor: selectedQuartz.quartzColor ?? "cyan" ,remainderText: selectedQuartz.remainderText ?? "",totalSeconds: pomodoroModel.totalSeconds)
+    func startActivity(){
+        Task{
+            let attributes = WidgetQuartzAttributes(name:"Quartz")
+            let initialContentState = WidgetQuartzAttributes.ContentState(quartzName: selectedQuartz.quartzName ?? "倒计时",quartzIcon: selectedQuartz.quartzIcon ?? "lock.fill",quartzColor: selectedQuartz.quartzColor ?? "cyan" ,remainderText: selectedQuartz.remainderText ?? "",totalSeconds: pomodoroModel.totalSeconds)
+            
+            /* let initialContentState = WidgetQuartzAttributes.ContentState(quartzName: "倒计时",quartzIcon:   "lock.fill",quartzColor:  "cyan" ,remainderText:   "",timerStringValue: pomodoroModel.timerStringValue)*/
+            do {
+                if #available(iOS 16.1, *) {
+                    _ = try Activity<WidgetQuartzAttributes>.request(
+                        attributes: attributes,
+                        contentState: initialContentState,
+                        pushType: nil)
+                } else {
+                    // Fallback on earlier versions
+                }
                 
-               /* let initialContentState = WidgetQuartzAttributes.ContentState(quartzName: "倒计时",quartzIcon:   "lock.fill",quartzColor:  "cyan" ,remainderText:   "",timerStringValue: pomodoroModel.timerStringValue)*/
-                do {
-                    if #available(iOS 16.1, *) {
-                        _ = try Activity<WidgetQuartzAttributes>.request(
-                            attributes: attributes,
-                            contentState: initialContentState,
-                            pushType: nil)
-                    } else {
-                        // Fallback on earlier versions
-                    }
-                    
-                } catch (let error) {
-                    print("Error requesting pizza delivery Live Activity \(error.localizedDescription)")
-                }
+            } catch (let error) {
+                print("Error requesting pizza delivery Live Activity \(error.localizedDescription)")
             }
         }
-        
-        /// 更新灵动岛显示
-        func updateActivity(){
-            Task{
-                let updatedStatus = WidgetQuartzAttributes.ContentState(quartzName: selectedQuartz.quartzName ?? "倒计时",quartzIcon: selectedQuartz.quartzIcon ?? "lock.fill",quartzColor: selectedQuartz.quartzColor ?? "cyan" ,remainderText: selectedQuartz.remainderText ?? "",totalSeconds: pomodoroModel.totalSeconds)
-                /* let updatedStatus =  WidgetQuartzAttributes.ContentState(quartzName: "倒计时",quartzIcon:   "lock.fill",quartzColor:  "cyan" ,remainderText:   "",timerStringValue: pomodoroModel.timerStringValue)*/
-                if #available(iOS 16.1, *) {
-                    for activity in Activity<WidgetQuartzAttributes>.activities{
-                        await activity.update(using: updatedStatus)
-                        print("已更新灵动岛显示 Value:" + pomodoroModel.timerStringValue)
-                    }
-                } else {
-                    // Fallback on earlier versions
+    }
+    
+    /// 更新灵动岛显示
+    func updateActivity(){
+        Task{
+            let updatedStatus = WidgetQuartzAttributes.ContentState(quartzName: selectedQuartz.quartzName ?? "倒计时",quartzIcon: selectedQuartz.quartzIcon ?? "lock.fill",quartzColor: selectedQuartz.quartzColor ?? "cyan" ,remainderText: selectedQuartz.remainderText ?? "",totalSeconds: pomodoroModel.totalSeconds)
+            /* let updatedStatus =  WidgetQuartzAttributes.ContentState(quartzName: "倒计时",quartzIcon:   "lock.fill",quartzColor:  "cyan" ,remainderText:   "",timerStringValue: pomodoroModel.timerStringValue)*/
+            if #available(iOS 16.1, *) {
+                for activity in Activity<WidgetQuartzAttributes>.activities{
+                    await activity.update(using: updatedStatus)
+                    print("已更新灵动岛显示 Value:" + pomodoroModel.timerStringValue)
                 }
+            } else {
+                // Fallback on earlier versions
             }
         }
-        
-        /// 结束灵动岛显示
-        func endActivity(){
-            Task{
-                if #available(iOS 16.1, *) {
-                    /*for activity in Activity<WidgetQuartzAttributes>.activities{
-                        await activity.end(dismissalPolicy: .immediate)
-                        print("已关闭灵动岛显示")
+    }
+    
+    /// 结束灵动岛显示
+    func endActivity(){
+        Task{
+            if #available(iOS 16.1, *) {
+                /*for activity in Activity<WidgetQuartzAttributes>.activities{
+                 await activity.end(dismissalPolicy: .immediate)
+                 print("已关闭灵动岛显示")
+                 }
+                 */
+                Activity<WidgetQuartzAttributes>.activities.forEach { item in
+                    Task{
+                        //                    await item.end() //默认结束后，会在锁屏界面等待4小时彻底移除
+                        await item.end(dismissalPolicy:.immediate) // 立即结束
                     }
-                    */
-                    Activity<WidgetQuartzAttributes>.activities.forEach { item in
-                                   Task{
-                   //                    await item.end() //默认结束后，会在锁屏界面等待4小时彻底移除
-                                       await item.end(dismissalPolicy:.immediate) // 立即结束
-                                   }
-                               }
-                } else {
-                    // Fallback on earlier versions
                 }
+            } else {
+                // Fallback on earlier versions
             }
         }
+    }
 }
 
 struct InfiniteStackedCardsView: View {
-    @EnvironmentObject var pomodoroModel: PomodoroModel 
+    @EnvironmentObject var pomodoroModel: PomodoroModel
     @Binding var quartzs: [Quartz]
     var quartz: Quartz
     @Binding var selectedQuartz: Quartz
@@ -464,48 +476,48 @@ struct InfiniteStackedCardsView: View {
         let qColor =  Color(SYSColor(rawValue: quartz.quartzColor ?? "gray")!.create)
         
         VStack(alignment: .leading,spacing: 10){
-             VStack(alignment: .leading)  {
-                 HStack(alignment: .top) {
-                     Image(systemName: quartz.quartzIcon!)
-                         .font(.title.bold())
-                         .lineLimit(1)
-                     
-                     VStack(alignment: .leading,spacing: 15){
-                         Text(quartz.quartzName!)
-                             .font(.title.bold())
-                         
-                         Text("开始日期 : " + quartz.startDay!)
-                             .font(.caption)
-                             .fontWeight(.semibold)
-                         
-                         Text("提醒文本 : " + quartz.remainderText!)
-                             .font(.caption.bold())
-                             .push(to: .leading)
-                             .lineLimit(1)
-                         
-                         HStack {
-                             Text("开始 : " + getStringForHHmm(dateTime:  quartz.startTime!))
-                                 .font(.caption.bold())
-                                 .push(to: .leading)
-                             
-                             Text("结束 : " +  getStringForHHmm(dateTime:  quartz.endTime!))
-                                 .font(.caption.bold())
-                                 .push(to: .leading)
-                         }
-                         
-                         Text("时长 : " +  getTimeDifference(time1: quartz.startTime!, time2:  quartz.endTime!))
-                             .font(.caption.bold())
-                             .push(to: .leading)
-                     }
-                 }
-             }
+            VStack(alignment: .leading)  {
+                HStack(alignment: .top) {
+                    Image(systemName: quartz.quartzIcon!)
+                        .font(.title.bold())
+                        .lineLimit(1)
+                    
+                    VStack(alignment: .leading,spacing: 15){
+                        Text(quartz.quartzName!)
+                            .font(.title.bold())
+                        
+                        Text("开始日期 : " + quartz.startDay!)
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                        
+                        Text("提醒文本 : " + quartz.remainderText!)
+                            .font(.caption.bold())
+                            .push(to: .leading)
+                            .lineLimit(1)
+                        
+                        HStack {
+                            Text("开始 : " + getStringForHHmm(dateTime:  quartz.startTime!))
+                                .font(.caption.bold())
+                                .push(to: .leading)
+                            
+                            Text("结束 : " +  getStringForHHmm(dateTime:  quartz.endTime!))
+                                .font(.caption.bold())
+                                .push(to: .leading)
+                        }
+                        
+                        Text("时长 : " +  getTimeDifference(time1: quartz.startTime!, time2:  quartz.endTime!))
+                            .font(.caption.bold())
+                            .push(to: .leading)
+                    }
+                }
+            }
             .frame(maxHeight: 200)
             .overlay(alignment: .topTrailing) {
                 Image(systemName: "checkmark.circle")
-                       .font(.system(size: 25, weight: .semibold))
-                       .padding(.trailing)
-                       .push(to: .trailing)
-                       .opacity(getIndex() == 0 ? 1 : 0)
+                    .font(.system(size: 25, weight: .semibold))
+                    .padding(.trailing)
+                    .push(to: .trailing)
+                    .opacity(getIndex() == 0 ? 1 : 0)
             }
         }
         .padding()
