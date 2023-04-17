@@ -4,12 +4,12 @@
 //
 //  Created by 邵明易 on 2023/3/16.
 //
-import SwiftMessages
+//import SwiftMessages
 import SwiftUI
 
 func popSuccessMessage(icon: String, title: String, body: String){
        
-        let view = MessageView.viewFromNib(layout: .cardView)
+        /*let view = MessageView.viewFromNib(layout: .cardView)
  
         // Theme message elements with the warning style.
         view.configureTheme(.info)
@@ -37,13 +37,13 @@ func popSuccessMessage(icon: String, title: String, body: String){
  
         // Show the message.
         SwiftMessages.show(view: view)
-        
+        */
     }
 
 
 func popTipMessage(icon: String, title: String, body: String){
        
-        let view = MessageView.viewFromNib(layout: .cardView)
+        /*let view = MessageView.viewFromNib(layout: .cardView)
  
         // Theme message elements with the warning style.
         view.configureTheme(.info)
@@ -71,5 +71,5 @@ func popTipMessage(icon: String, title: String, body: String){
  
         // Show the message.
         SwiftMessages.show(view: view)
-        
+        */
     }

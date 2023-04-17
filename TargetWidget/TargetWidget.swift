@@ -161,7 +161,9 @@ struct TargetWidgetEntryView : View {
                 .padding(.trailing, 5)
                 .padding(.vertical, 5)
             }
+            .widgetBackground(self)
     }
+      
     
     func makeCircle(_ geometry: GeometryProxy,holdProgress: Double,quitProgress: Double) -> some View {
         return  ZStack {
@@ -172,7 +174,6 @@ struct TargetWidgetEntryView : View {
             
             RingInnerShape(progress: 1, thickness: 25)
                 .fill(Color(.red).opacity(0.3))
-            
             /*   SFSymbol.arrowRight
              .font(.body.bold())
              .imageScale(.large)
@@ -224,6 +225,7 @@ struct TargetWidgetEntryView : View {
         .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
         .animation(Animation.easeOut(duration: 1.6),value: holdProgress)
         .animation(Animation.easeOut(duration: 1.6),value: quitProgress)
+         
     }
     
     
@@ -387,5 +389,18 @@ struct TargetWidget_Previews: PreviewProvider {
     static var previews: some View {
         TargetWidgetEntryView(entry: SimpleEntry(date: Date(), configuration: ConfigurationIntent()))
             .previewContext(WidgetPreviewContext(family: .systemMedium))
+    }
+}
+
+
+extension View {
+    func widgetBackground(_ backgroundView: some View) -> some View {
+        if #available(iOSApplicationExtension 17.0, *){
+            return containerBackground(for: .widget){
+                Color.clear
+            }
+        }else {
+            return backgroundView
+        }
     }
 }

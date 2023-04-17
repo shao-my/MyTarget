@@ -51,7 +51,6 @@
 		F59E101429EAD7C1009994B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5DFD3FB29BF310500211FE3 /* Assets.xcassets */; };
 		F5A60F3629CDFF7B00A7AD9C /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A60F3529CDFF7B00A7AD9C /* Persistence.swift */; };
 		F5ADB93F29E4F3DC00314203 /* SheetDelegate+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5ADB93E29E4F3DC00314203 /* SheetDelegate+.swift */; };
-		F5B7F45A29C2E8C100A7B86E /* SwiftMessages in Frameworks */ = {isa = PBXBuildFile; productRef = F5B7F45929C2E8C100A7B86E /* SwiftMessages */; };
 		F5B7F45C29C2EA3F00A7B86E /* CustomMessage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B7F45B29C2EA3F00A7B86E /* CustomMessage+.swift */; };
 		F5BAFCC629E5490400AB81AD /* FocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BAFCC529E5490400AB81AD /* FocusView.swift */; };
 		F5BAFCC829E54A2800AB81AD /* PomodoroModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BAFCC729E54A2800AB81AD /* PomodoroModel.swift */; };
@@ -203,7 +202,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5B7F45A29C2E8C100A7B86E /* SwiftMessages in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,7 +484,6 @@
 			);
 			name = MyTarget;
 			packageProductDependencies = (
-				F5B7F45929C2E8C100A7B86E /* SwiftMessages */,
 			);
 			productName = MyTarget;
 			productReference = F5DFD3F429BF310500211FE3 /* MyTarget.app */;
@@ -520,7 +517,6 @@
 			);
 			mainGroup = F5DFD3EB29BF310500211FE3;
 			packageReferences = (
-				F5B7F45829C2E8C100A7B86E /* XCRemoteSwiftPackageReference "SwiftMessages" */,
 			);
 			productRefGroup = F5DFD3F529BF310500211FE3 /* Products */;
 			projectDirPath = "";
@@ -925,25 +921,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		F5B7F45829C2E8C100A7B86E /* XCRemoteSwiftPackageReference "SwiftMessages" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://gitcode.net/mirrors/SwiftKickMobile/SwiftMessages.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		F5B7F45929C2E8C100A7B86E /* SwiftMessages */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F5B7F45829C2E8C100A7B86E /* XCRemoteSwiftPackageReference "SwiftMessages" */;
-			productName = SwiftMessages;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		F5DFD45029C01CA400211FE3 /* MyTarget.xcdatamodeld */ = {

@@ -59,13 +59,13 @@ struct QuartzForm: View {
                     Button {
                         var shouldSave = true
                         if quartzPrms.quartzName == "" {
-                            popTipMessage(icon: "", title: "提示", body: "目标名称必填")
+                            //popTipMessage(icon: "", title: "提示", body: "目标名称必填")
                             shouldSave = false
                             return
                         }
                         
                         if (quartzPrms.quartzWay == "TIMES" && quartzPrms.quartzTimes == "0") {
-                            popTipMessage(icon: "", title: "提示", body: "目标次数不能为0")
+                            //popTipMessage(icon: "", title: "提示", body: "目标次数不能为0")
                             shouldSave = false
                             return
                         }
@@ -463,7 +463,6 @@ struct QuartzForm: View {
                 .font(.body)
                 .padding()
                 .push(to: .trailing)
-            
         }
     }
     
@@ -473,10 +472,7 @@ struct QuartzForm: View {
     
     func addQuartz ()   {
         dismiss()
-    }
-    
-    
-    
+    } 
 }
 
 private enum Dialog: String{

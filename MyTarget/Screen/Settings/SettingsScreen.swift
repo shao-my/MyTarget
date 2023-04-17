@@ -80,6 +80,14 @@ struct SettingsScreen: View {
                          }*/
                     }
                     
+                    Section("危险区域") {
+                        Button  {
+                            confirmationDialog = .clearNotification
+                        }label: {
+                            Label("清除所有定时提醒", systemImage: "paintbrush.fill")
+                        } .tint(Color(.label))
+                    }
+                    
                     Section("说明书") {
                         LabeledContent {
                             Text("V1.0")
@@ -135,8 +143,41 @@ struct SettingsScreen: View {
         .sheet(isPresented: $isShowSelfRecount) {
             SelfRecount()
         }
+        .confirmationDialog(confirmationDialog.rawValue,
+                            isPresented: shouldShowDialog,
+                            titleVisibility: .visible) {
+            Button("确定", role: .destructive, action:  {
+                UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+            })
+            Button("取消", role: .cancel){}
+        } message: {
+            Text(confirmationDialog.message)
+        }
     }
-}
+    
+    @State private var confirmationDialog: DelDialog = .inactive
+    private var shouldShowDialog: Binding<Bool> {
+        Binding (
+            get: { confirmationDialog != .inactive},
+            set: { _ in confirmationDialog = .inactive}
+        )
+    }
+    
+    private enum DelDialog: String, CaseIterable, Identifiable{
+        var id: Self { self }
+        case clearNotification = "清除所有定时提醒"
+        case inactive
+        
+        var message: String {
+            switch self {
+            case .clearNotification:
+                return "此操作无法复原，确定进行吗？"
+            case .inactive:
+                return ""
+            }
+        }
+    }
+} 
 
 struct SettingsScreen_Previews: PreviewProvider {
     static var previews: some View {
